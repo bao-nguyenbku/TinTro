@@ -1,18 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from '@reduxjs/toolkit';
+
 const initialState = {
-  userName: 'TinTro',
+    userName: 'TinTro'
 }
 
 export const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-  },
+    name: 'user',
+    initialState,
+    reducers: {}
 })
 export const selectUserState = createSelector(
-  [state => state.user],
-  (userState => userState)
+    [state => state.user],
+    (userState => userState)
 )
 
 // Action creators are generated for each case reducer function
