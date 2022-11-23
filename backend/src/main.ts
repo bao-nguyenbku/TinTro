@@ -8,8 +8,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Median')
-    .setDescription('The Median API description')
+    .setTitle('TinTro')
+    .setDescription('The TinTro API description')
     .setVersion('0.1')
     .build();
 
