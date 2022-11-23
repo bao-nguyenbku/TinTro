@@ -19,7 +19,7 @@ export class AuthService {
   }
 
   async login(user: any) {
-    // TODO: return access token sign with jwt, naming conventions here is aligned with jwt conventions
+    // TODO: return access token sign with jwt, naming conventions here is aligned with jwt conventions, change payload here
     const payload = { username: user.username, sub: user.userId };
     return {
       access_token: this.jwtService.sign(payload),
