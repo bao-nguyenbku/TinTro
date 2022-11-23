@@ -1,3 +1,3 @@
-export class tokenPayload {
+export class TokenPayload {
   access_token: string;
 }
