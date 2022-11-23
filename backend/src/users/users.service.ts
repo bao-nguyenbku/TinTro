@@ -19,6 +19,11 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
+  // ------------------------------ find username and password --------------------------------
+  async findCredentials(username: string) {
+    // user name can be email or phone number
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }

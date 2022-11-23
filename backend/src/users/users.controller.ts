@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { UserEntity } from './entities/user.entity';
 import {
   Controller,
@@ -7,6 +8,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -30,6 +32,8 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  // protected routes
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiOkResponse({ type: UserEntity })
   findOne(@Param('id') id: string) {
