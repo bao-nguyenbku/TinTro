@@ -5,8 +5,9 @@ services:
     image: postgres:13.5
     restart: always
     environment:
-      - POSTGRES_USER=myuser
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=tin_tro
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
