@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import MyApp from './src';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-
-
+import { NativeBaseProvider } from 'native-base';
+import { NavigationContainer } from '@react-navigation/native';
 
 SplashScreen.preventAutoHideAsync();
 export default function App() {
@@ -23,7 +23,11 @@ export default function App() {
   if (isReady) {
     return (
       <Provider store={store}>
-        <MyApp />
+        <NavigationContainer>
+          <NativeBaseProvider>
+            <MyApp />
+          </NativeBaseProvider>
+        </NavigationContainer>
       </Provider>
     );
   }
