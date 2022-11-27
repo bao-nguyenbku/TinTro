@@ -9,9 +9,9 @@ import request from '../../utils/axios';
 
 // INITIAL STATE
 const userAdapater = createEntityAdapter();
-// const initialState = userAdapater.getInitialState({
-//   status: 'idle',
-// });
+const initialState = userAdapater.getInitialState({
+  status: 'idle',
+});
 
 // --------------------------- THUNKS ---------------------------
 export const register = createAsyncThunk(
