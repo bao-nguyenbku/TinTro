@@ -1,33 +1,26 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createEntityAdapter,
-  createSelector,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter, createSelector } from '@reduxjs/toolkit';
 
 import request from '../../utils/axios';
 
 // INITIAL STATE
 const userAdapater = createEntityAdapter();
-// const initialState = userAdapater.getInitialState({
-//   status: 'idle',
-// });
+const initialState = userAdapater.getInitialState({
+  status: 'idle',
+});
 
 // --------------------------- THUNKS ---------------------------
-export const register = createAsyncThunk(
-  async ({ name, email, phone, password, reEnterPassword }) => {
-    const response = await request.post('/auth/register', {
-      data: {
-        name,
-        email,
-        phone,
-        password,
-        reEnterPassword,
-      },
-    });
-    return response.json();
-  }
-);
+export const register = createAsyncThunk(async ({ name, email, phone, password, reEnterPassword }) => {
+  const response = await request.post('/auth/register', {
+    data: {
+      name,
+      email,
+      phone,
+      password,
+      reEnterPassword,
+    },
+  });
+  return response.json();
+});
 
 export const signIn = createAsyncThunk(async ({ email, password }) => {
   const response = await request.post('/auth/login', {
