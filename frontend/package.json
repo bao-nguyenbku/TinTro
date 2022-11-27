@@ -11,6 +11,11 @@
     "lint:fix": "eslint src/ --fix",
     "prepare": "husky install"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "*{.jsx,.js}": [
       "eslint "
