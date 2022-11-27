@@ -18,8 +18,7 @@
   },
   "lint-staged": {
     "*{.jsx,.js}": [
-      "eslint ",
-      "git add"
+      "eslint "
     ]
   },
   "dependencies": {
