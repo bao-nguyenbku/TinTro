@@ -1,3 +1,4 @@
+import { UserResponseDto } from './../users/dto/user.dto';
 import { LocalAuthGuard } from './local-auth-guard';
 import { Controller, Request, Post, UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
@@ -14,5 +15,11 @@ export class AuthController {
   @ApiCreatedResponse({ type: TokenPayload })
   login(@Request() req): TokenPayload {
     return this.authService.login(req.user);
+  }
+
+  @post('/register')
+  @ApiCreatedResponse({ type: UserResponseDto })
+  register(@Body() user: UserRequestDto): Promise<UserResponseDto> {
+    return this.authService.register(user);
   }
 }
