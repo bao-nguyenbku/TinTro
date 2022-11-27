@@ -23,7 +23,7 @@ export const register = createAsyncThunk(async ({ name, email, phone, password, 
     },
   });
   return response.json();
-})
+});
 
 export const logIn = createAsyncThunk(async ({ email, password }) => {
   const response = await request.post('/auth/login', {

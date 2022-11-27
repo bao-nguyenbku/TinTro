@@ -19,8 +19,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  userName: {
-    fontSize: 20,
-    color: '#17bd00',
-  },
 });
