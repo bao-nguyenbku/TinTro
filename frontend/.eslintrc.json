@@ -19,7 +19,8 @@
     "no-console": "off",
     // prevent eslint to complain about the "styles" variable being used before it was defined
     "no-use-before-define": ["error", { "variables": false }],
-
+    "no-param-reassign": 0,
+    "no-unused-vars": ["error", { "argsIgnorePattern": "_" }],
     // ignore errors for the react-navigation package
     "react/prop-types": ["error", { "ignore": ["navigation", "navigation.navigate"] }]
   }
