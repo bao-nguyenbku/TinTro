@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Image } from 'react-native';
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useSelector } from 'react-redux';
@@ -73,10 +73,7 @@ function Example() {
               The Silicon Valley of India.
             </Text>
           </Stack>
-          <Text fontWeight="400">
-            Bengaluru (also called Bangalore) is the center of India&apos;s high-tech industry. The
-            city is also known for its parks and nightlife.
-          </Text>
+          <Text fontWeight="400">Bengaluru (also called Bangalore) is the center of India&apos;s high-tech industry. The city is also known for its parks and nightlife.</Text>
           <HStack alignItems="center" space={4} justifyContent="space-between">
             <HStack alignItems="center">
               <Text
@@ -96,10 +93,10 @@ function Example() {
   );
 }
 function Index() {
-  const { userName } = useSelector(selectUserState);
+  // const { userName } = useSelector(selectUserState);
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar />
       <Example />
     </SafeAreaView>
   );
