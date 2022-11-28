@@ -19,11 +19,39 @@ model User {
   name String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  accommodation Accommodation?
   @@index(id)
 }
 
 enum Role {
   ADMIN
   USER
+}
+
+
+model Accommodation {
+  id Int @id @default(autoincrement())
+  name String
+  addressNumber String
+  addressStreet String
+  addressDistrict String
+  addressCity String
+  area Float 
+  rooms Room[]
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId Int @unique
+  description String
+  utilities String[]
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  accommodation Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId Int
+  status RoomStatus
+}
+
+enum RoomStatus {
+  RENTING
+  AVAILABLE
 }
