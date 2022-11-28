@@ -11,15 +11,9 @@ import { NavigationContainer } from '@react-navigation/native';
 SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [isReady, setIsReady] = useState(false);
-  // const [fontsLoaded] = useFonts({
-  //   'SF-Medium': require('./src/assets/fonts/SFProDisplay-Medium.ttf'),
-  // });
   setTimeout(() => {
     SplashScreen.hideAsync().then(() => setIsReady(true))
-  }, 2000);
-  // if (!fontsLoaded) {
-  //     return <Text>Loading...</Text>;
-  // }
+  }, 2000)
   if (isReady) {
     return (
       <Provider store={store}>
