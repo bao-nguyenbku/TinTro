@@ -1,12 +1,11 @@
-
 import { StyleSheet, SafeAreaView } from 'react-native';
 import React from 'react';
-import LoginScreen from 'screens/login';
+import LoginNav from './navigations/LoginNav';
 
 function Index() {
   return (
     <SafeAreaView style={styles.container}>
-      <LoginScreen />
+      <LoginNav />
     </SafeAreaView>
   );
 }
