@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Button, Center, Flex, Heading, Input, Pressable, VStack, Text } from 'native-base';
+import { Box, Button, Center, Flex, Heading, Input, Pressable, VStack, Text, FormControl } from 'native-base';
 import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { logIn } from 'store/reducer/user';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { Formik } from 'formik';
+import ErrorMessage from 'components/ErrorFormMessage';
 
 const loginSchema = yup.object().shape({
   email: yup.string().email('Email không hợp lệ').required('Email không được để trống'),
@@ -36,49 +37,52 @@ function LoginScreen() {
       </Center>
       <Center h="1/3" px="3.5" w="100%" alignItems="center" justifyContent="center">
         <Formik validationSchema={loginSchema} initialValues={{ email: '', password: '' }} onSubmit={(values) => handleSubmitLogin(values)}>
-          {({ handleChange, handleSubmit, handleBlur, values, isValid }) => (
-            <>
-              <Input
-                _hover={{ backgroundColor: '#fff' }}
-                InputLeftElement={
-                  <Box pl="3.5">
-                    <MaterialCommunityIcons name="email-outline" size={24} color="grey" />
-                  </Box>
-                }
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                value={values.email}
-                size="2xl"
-                borderRadius="xl"
-                mb="3.5"
-                w="100%"
-                placeholder="Email"
-                keyboardType="email-address"
-              />
-
-              <Input
-                px="3"
-                w="100%"
-                InputLeftElement={
-                  <Box pl="3.5">
-                    <Ionicons name="lock-closed-outline" size={24} color="grey" />
-                  </Box>
-                }
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                value={values.password}
-                type={show ? 'text' : 'password'}
-                InputRightElement={
-                  <Pressable onPress={() => setShow(!show)}>
-                    <Box mx="3.5">
-                      <MaterialIcons color="grey" size={24} name={show ? 'visibility' : 'visibility-off'} />
+          {({ handleChange, handleSubmit, handleBlur, values, isValid, errors, touched }) => (
+            <FormControl>
+              <Box mb="3.5">
+                {errors.email && touched.email && <ErrorMessage name="email" errors={errors} />}
+                <Input
+                  _hover={{ backgroundColor: '#fff' }}
+                  InputLeftElement={
+                    <Box pl="3.5">
+                      <MaterialCommunityIcons name="email-outline" size={24} color="grey" />
                     </Box>
-                  </Pressable>
-                }
-                size="2xl"
-                borderRadius="xl"
-                placeholder="Password"
-              />
+                  }
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                  size="2xl"
+                  borderRadius="xl"
+                  w="100%"
+                  placeholder="Email"
+                  keyboardType="email-address"
+                />
+              </Box>
+              <Box mb="3.5">
+                <Input
+                  px="3"
+                  w="100%"
+                  InputLeftElement={
+                    <Box pl="3.5">
+                      <Ionicons name="lock-closed-outline" size={24} color="grey" />
+                    </Box>
+                  }
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                  type={show ? 'text' : 'password'}
+                  InputRightElement={
+                    <Pressable onPress={() => setShow(!show)}>
+                      <Box mx="3.5">
+                        <MaterialIcons color="grey" size={24} name={show ? 'visibility' : 'visibility-off'} />
+                      </Box>
+                    </Pressable>
+                  }
+                  size="2xl"
+                  borderRadius="xl"
+                  placeholder="Password"
+                />
+              </Box>
               <Flex h="1/4" mt={12} w="100%">
                 <Button disabled={!isValid} onPress={() => handleSubmit()} type="submit" h="16" bg="tertiary.600" borderRadius="xl">
                   <Heading size="lg" color="#FAFAFA">
@@ -86,7 +90,7 @@ function LoginScreen() {
                   </Heading>
                 </Button>
               </Flex>
-            </>
+            </FormControl>
           )}
         </Formik>
       </Center>

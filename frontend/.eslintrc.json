@@ -22,7 +22,7 @@
     "no-param-reassign": 0,
     "no-unused-vars": ["error", { "argsIgnorePattern": "_" }],
     // ignore errors for the react-navigation package
-    "react/prop-types": ["error", { "ignore": ["navigation", "navigation.navigate"] }],
+    "react/prop-types": "off",
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
     "react/jsx-props-no-spreading": "off",

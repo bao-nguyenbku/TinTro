@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Box, Button, Center, Flex, Divider, Heading, Input, Pressable, Text, VStack } from 'native-base';
+import { Box, Button, Center, Flex, Divider, Heading, Input, Pressable, Text, VStack, FormControl } from 'native-base';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { register } from 'store/reducer/user';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { useNavigation } from '@react-navigation/native';
+import ErrorMessage from 'components/ErrorFormMessage';
 
 const registerSchema = yup.object().shape({
   email: yup.string().email('Email không hợp lệ').required('Email không được để trống'),
-  name: yup.string().required(),
-  phone: yup.string().required(),
+  name: yup.string().required('Tên không được để trống'),
+  phone: yup.string().required('Số điện thoại không được để trống'),
   password: yup
     .string()
     .min(8, ({ min }) => `Mật khẩu phải có ít nhất ${min} ký tự`)
@@ -57,9 +58,10 @@ function RegisterScreen() {
           onSubmit={(values) => handleSubmitRegister(values)}
           mb="3.5"
         >
-          {({ handleChange, handleSubmit, handleBlur, values, isValid }) => (
-            <>
-              <Box>
+          {({ handleChange, handleSubmit, handleBlur, values, errors, touched }) => (
+            <FormControl>
+              <Box mb="3.5">
+                {errors.name && touched.name && <ErrorMessage name="name" errors={errors} />}
                 <Input
                   type="text"
                   value={values.name}
@@ -72,13 +74,14 @@ function RegisterScreen() {
                     </Box>
                   }
                   size="2xl"
+                  isRequired
                   borderRadius="xl"
-                  mb="3.5"
                   w="100%"
                   placeholder="Username"
                 />
               </Box>
-              <Box>
+              <Box mb="3.5">
+                {errors.email && touched.email && <ErrorMessage name="email" errors={errors} />}
                 <Input
                   type="email"
                   onChangeText={handleChange('email')}
@@ -91,16 +94,16 @@ function RegisterScreen() {
                   }
                   size="2xl"
                   borderRadius="xl"
-                  mb="3.5"
                   w="100%"
                   placeholder="Email"
                 />
               </Box>
-              <Box>
+              <Box mb="3.5">
+                {errors.phone && touched.phone && <ErrorMessage name="phone" errors={errors} />}
                 <Input
                   InputLeftElement={
                     <Box pl="3.5">
-                      <MaterialCommunityIcons name="email-outline" size={24} color="grey" />
+                      <MaterialCommunityIcons name="phone-outline" size={24} color="grey" />
                     </Box>
                   }
                   onChangeText={handleChange('phone')}
@@ -108,12 +111,12 @@ function RegisterScreen() {
                   value={values.phone}
                   size="2xl"
                   borderRadius="xl"
-                  mb="3.5"
                   w="100%"
                   placeholder="Số điện thoại"
                 />
               </Box>
-              <Box>
+              <Box mb="3.5">
+                {errors.password && touched.password && <ErrorMessage name="password" errors={errors} />}
                 <Input
                   _hover={{ backgroundColor: '#fff' }}
                   onChangeText={handleChange('password')}
@@ -135,14 +138,15 @@ function RegisterScreen() {
                   }
                   size="2xl"
                   borderRadius="xl"
-                  mb="3.5"
                   w="100%"
                   placeholder="Password"
                 />
               </Box>
-              <Box>
+              {errors.reEnterPassword && touched.reEnterPassword && <ErrorMessage name="reEnterPassword" errors={errors} />}
+              <Box mb="3.5">
                 <Input
                   px="3"
+                  isRequired
                   onChangeText={handleChange('reEnterPassword')}
                   onBlur={handleBlur('reEnterPassword')}
                   value={values.reEnterPassword}
@@ -160,20 +164,19 @@ function RegisterScreen() {
                     </Pressable>
                   }
                   size="2xl"
-                  mb="3.5"
                   w="100%"
-                  borderRadius="xl"
+                  // borderRadius="xl"
                   placeholder="Re-enter password"
                 />
               </Box>
               <Flex mt={8} w="100%">
-                <Button disabled={!isValid} onPress={handleSubmit} h="16" bg="tertiary.600" borderRadius="xl">
+                <Button onPress={handleSubmit} h="16" bg="tertiary.600" borderRadius="xl">
                   <Heading size="lg" color="#FAFAFA">
                     Đăng ký
                   </Heading>
                 </Button>
               </Flex>
-            </>
+            </FormControl>
           )}
         </Formik>
       </Center>
@@ -192,12 +195,16 @@ function RegisterScreen() {
       </Flex>
 
       {/* Footer */}
-
-      <Flex mt={12  } justifyContent="center" alignItems="center" w="100%" px={3.5}>
+      <Flex mt={12} justifyContent="center" alignItems="center" w="100%" px={3.5}>
         <Text color="text.500">
           {' '}
           Đã có tài khoản?{' '}
-          <Text color="tertiary.600" onPress={() => navigation.navigate('Login')}>
+          <Text
+            color="tertiary.600"
+            onPress={() => {
+              navigation.navigate('Login');
+            }}
+          >
             Đăng nhập
           </Text>{' '}
         </Text>
