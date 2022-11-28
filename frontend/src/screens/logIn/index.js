@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Button, Center, Flex, Heading, Input, Pressable, VStack, Text, FormControl } from 'native-base';
 import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { logIn } from 'store/reducer/user';
-import { useDispatch } from 'react-redux';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { logIn, resetData } from 'store/reducer/user';
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import ErrorMessage from 'components/ErrorFormMessage';
@@ -17,12 +17,17 @@ const loginSchema = yup.object().shape({
 });
 
 function LoginScreen() {
+  const user = useSelector((state) => state.user);
   const [show, setShow] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const handleSubmitLogin = ({ email, password }) => {
     dispatch(logIn({ email, password }));
   };
+
+  useFocusEffect(() => {
+    dispatch(resetData());
+  });
 
   return (
     <VStack w="100%" space={3} alignItems="center">
@@ -34,6 +39,7 @@ function LoginScreen() {
         <Text fontSize="lg">
           Đăng nhập vào <Text color="tertiary.600">TinTro</Text> ngay
         </Text>
+        {user.error && <Text color="danger.600">{user.error}</Text>}
       </Center>
       <Center h="1/3" px="3.5" w="100%" alignItems="center" justifyContent="center">
         <Formik validationSchema={loginSchema} initialValues={{ email: '', password: '' }} onSubmit={(values) => handleSubmitLogin(values)}>

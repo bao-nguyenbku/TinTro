@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Box, Button, Center, Flex, Divider, Heading, Input, Pressable, Text, VStack, FormControl } from 'native-base';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
-import { register } from 'store/reducer/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { register, resetData } from 'store/reducer/user';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { useNavigation } from '@react-navigation/native';
+
 import ErrorMessage from 'components/ErrorFormMessage';
 
 const registerSchema = yup.object().shape({
@@ -23,15 +24,19 @@ const registerSchema = yup.object().shape({
 });
 
 function RegisterScreen() {
+  const user = useSelector((state) => state.user);
   const [show, setShow] = useState(false);
   const [showReEnter, setShowReEnter] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const handleSubmitRegister = (values) => {
-    console.log(values);
-    dispatch(register(values));
+    dispatch(register({ ...values, done: () => navigation.navigate('Login') }));
   };
+
+  useFocusEffect(() => {
+    dispatch(resetData());
+  });
 
   return (
     <VStack w="100%" space={3} alignItems="center">
@@ -42,6 +47,7 @@ function RegisterScreen() {
           {' '}
           để khám phá <Text color="tertiary.600">TinTro</Text>{' '}
         </Heading>
+        {user.error && <Text color="danger.600">{user.error}</Text>}
       </Center>
 
       {/* Form */}
@@ -170,7 +176,7 @@ function RegisterScreen() {
                 />
               </Box>
               <Flex mt={8} w="100%">
-                <Button onPress={handleSubmit} h="16" bg="tertiary.600" borderRadius="xl">
+                <Button isLoading={user.loading} onPress={handleSubmit} h="16" bg="tertiary.600" borderRadius="xl">
                   <Heading size="lg" color="#FAFAFA">
                     Đăng ký
                   </Heading>

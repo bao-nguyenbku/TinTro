@@ -8,37 +8,49 @@ const initialState = {
   email: '',
   phone: '',
   loading: false,
-  error: false,
+  error: null,
 };
 
 // --------------------------- THUNKS ---------------------------
-export const register = createAsyncThunk(async ({ name, email, phone, password, reEnterPassword }) => {
-  const response = await request.post('/auth/register', {
-    data: {
+export const register = createAsyncThunk('users/register', async ({ name, email, phone, password, reEnterPassword, done }, { rejectWithValue, fullfillWithValue }) => {
+  try {
+    console.log({ name, email, phone, password, reEnterPassword });
+    const response = await request.post('/auth/register', {
       name,
       email,
       phone,
       password,
       reEnterPassword,
-    },
-  });
-  return response.json();
+    });
+    if (done) done();
+    fullfillWithValue(response.data);
+  } catch (err) {
+    return rejectWithValue({ statusCode: err.response.data.statusCode, message: err.response.data.message });
+  }
 });
 
-export const logIn = createAsyncThunk(async ({ email, password }) => {
-  const response = await request.post('/auth/login', {
-    data: {
+export const logIn = createAsyncThunk('users/login', async ({ email, password }, { rejectWithValue }) => {
+  try {
+    const response = await request.post('/auth/login', {
       email,
       password,
-    },
-  });
-  return response.json();
+    });
+    return response.data;
+  } catch (err) {
+    console.log(JSON.stringify(err.response.data, null, 2));
+    return rejectWithValue({ statusCode: err.response.data.statusCode, message: err.response.data.message });
+  }
 });
 // --------------------------- SLICE ---------------------------
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    resetData: (state, _) => {
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(register.pending, (state, _) => {
       state.loading = true;
@@ -46,8 +58,9 @@ export const userSlice = createSlice({
     builder.addCase(register.fulfilled, (state, _) => {
       state.loading = false;
     });
-    builder.addCase(register.rejected, (state, _) => {
-      state.error = true;
+    builder.addCase(register.rejected, (state, action) => {
+      if (action.payload.statusCode === 400) state.error = 'Email hoặc số điện thoại đã tồn tại.';
+      else state.error = Array.isArray(action.payload.message) ? action.payload.message[0] : action.payload.message;
       state.loading = false;
     });
     builder.addCase(logIn.pending, (state, _) => {
@@ -57,8 +70,9 @@ export const userSlice = createSlice({
       state.loading = false;
       // TODO: set token in local storage, save user data in state object
     });
-    builder.addCase(logIn.rejected, (state, _) => {
-      state.error = true;
+    builder.addCase(logIn.rejected, (state, action) => {
+      if (action.payload.statusCode === 400) state.error = 'Email hoặc mật khẩu không đúng.';
+      else state.error = Array.isArray(action.payload.message) ? action.payload.message[0] : action.payload.message;
       state.loading = false;
     });
   },
@@ -66,4 +80,7 @@ export const userSlice = createSlice({
 // --------------------------- SELECTORS ---------------------------
 export const selectUserState = createSelector([(state) => state.user], (userState) => userState);
 // Action creators are generated for each case reducer function
+const { resetData } = userSlice.actions;
+export { resetData };
+
 export default userSlice.reducer;

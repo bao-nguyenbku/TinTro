@@ -1,18 +1,17 @@
 import { UserEntity } from './../entities/user.entity';
-import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsByteLength,
-  IsEmail,
-  IsNotEmpty,
-  IsPhoneNumber,
-} from 'class-validator';
-export class RegisterUserDtos extends UserEntity {
+import { ApiProperty, OmitType } from '@nestjs/swagger';
+import { IsByteLength, IsEmail, IsNotEmpty } from 'class-validator';
+export class RegisterUserDtos extends OmitType(UserEntity, [
+  'id',
+  'role',
+  'createdAt',
+  'updatedAt',
+]) {
   @ApiProperty()
   @IsEmail()
   email: string;
 
   @ApiProperty()
-  @IsPhoneNumber()
   phone: string;
 
   @ApiProperty()

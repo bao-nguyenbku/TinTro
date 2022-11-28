@@ -4,4 +4,6 @@ import { OmitType } from '@nestjs/swagger';
 export class CreateUserDto extends OmitType(UserEntity, [
   'createdAt',
   'updatedAt',
+  'id',
+  'role',
 ]) {}

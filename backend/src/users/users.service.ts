@@ -4,7 +4,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { userInfo } from 'os';
 
 @Injectable()
 export class UsersService {
@@ -22,16 +21,20 @@ export class UsersService {
 
   // FOR USERs ONLY
   async create(user: CreateUserDto): Promise<UserEntity> {
-    const newUser = await this.prisma.user.create({
-      data: {
-        email: user.email,
-        password: user.password,
-        role: Role.USER,
-        name: user.name,
-        phone: user.phone,
-      },
-    });
-    return newUser;
+    try {
+      const newUser = await this.prisma.user.create({
+        data: {
+          email: user.email,
+          password: user.password,
+          role: Role.USER,
+          name: user.name,
+          phone: user.phone,
+        },
+      });
+      return newUser;
+    } catch (e) {
+      throw e;
+    }
   }
 
   findAll() {
