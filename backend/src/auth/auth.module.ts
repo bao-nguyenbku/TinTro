@@ -11,7 +11,15 @@ import { RolesGuard } from './role.guard';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
   imports: [
     UsersModule,
     PassportModule,

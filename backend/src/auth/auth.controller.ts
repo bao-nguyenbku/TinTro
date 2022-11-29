@@ -7,7 +7,6 @@ import {
   Post,
   UseGuards,
   HttpStatus,
-  Logger,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -25,7 +24,6 @@ export class AuthController {
   @Post('/login')
   @ApiCreatedResponse({ type: TokenPayload })
   login(@Request() req): TokenPayload {
-    Logger.log(req.user);
     return this.authService.login(req.user);
   }
 

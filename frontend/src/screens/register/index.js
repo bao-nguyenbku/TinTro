@@ -31,6 +31,7 @@ function RegisterScreen() {
   const navigation = useNavigation();
 
   const handleSubmitRegister = (values) => {
+    // TODO: done callback function: add something to notify user that they have logged in successfully
     dispatch(register({ ...values, done: () => navigation.navigate('Login') }));
   };
 

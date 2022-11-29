@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const request = axios.create({
-  baseURL: process.env.API_BASE_URL || 'http://192.168.100.5:3001',
+  baseURL: process.env.API_BASE_URL || 'http://localhost:3001',
   headers: {
     Accept: '*/*',
     Connection: 'keep-alive',
