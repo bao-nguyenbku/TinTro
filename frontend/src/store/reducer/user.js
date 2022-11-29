@@ -1,12 +1,11 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
+import { jwtParse, setToken, tokenKey } from 'utils/token';
 
 import request from '../../utils/axios';
 
 // INITIAL STATE
 const initialState = {
-  name: '',
-  email: '',
-  phone: '',
+  currentUser: {},
   loading: false,
   error: null,
 };
@@ -68,9 +67,11 @@ export const userSlice = createSlice({
     builder.addCase(logIn.pending, (state, _) => {
       state.loading = true;
     });
-    builder.addCase(logIn.fulfilled, (state, _) => {
+    builder.addCase(logIn.fulfilled, (state, action) => {
       state.loading = false;
-      // TODO: set token in local storage, save token in state, save user data in state object
+      setToken(tokenKey, action.payload.access_token);
+      const decoded = jwtParse(action.payload.access_token);
+      state.currentUser = decoded;
     });
     builder.addCase(logIn.rejected, (state, action) => {
       if (action.payload.statusCode === 401) state.error = 'Email hoặc mật khẩu không đúng.';
