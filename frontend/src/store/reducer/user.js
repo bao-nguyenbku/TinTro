@@ -5,8 +5,9 @@ import request from '../../utils/axios';
 
 // INITIAL STATE
 const initialState = {
-  currentUser: {},
+  currentUser: null,
   loading: false,
+  messagedUsers: [],
   error: null,
 };
 
@@ -45,6 +46,8 @@ export const logIn = createAsyncThunk('users/login', async ({ email, password, d
     return rejectWithValue({ statusCode: 500, message: 'Something went wrong' });
   }
 });
+
+export const fetchMessagedUsers = createAsyncThunk('users/fetchMessagedUsers', async ({ done }, { rejectWithValue }) => {});
 // --------------------------- SLICE ---------------------------
 export const userSlice = createSlice({
   name: 'user',
@@ -53,6 +56,7 @@ export const userSlice = createSlice({
     resetData: (_state, _) => {},
   },
   extraReducers: (builder) => {
+    // ----------------------------- REGISTER -----------------------------------
     builder.addCase(register.pending, (state, _) => {
       state.loading = true;
     });
@@ -64,6 +68,7 @@ export const userSlice = createSlice({
       else state.error = Array.isArray(action.payload.message) ? action.payload.message[0] : action.payload.message;
       state.loading = false;
     });
+    // ----------------------------- LOGIN -----------------------------------
     builder.addCase(logIn.pending, (state, _) => {
       state.loading = true;
     });
@@ -77,6 +82,18 @@ export const userSlice = createSlice({
       if (action.payload.statusCode === 401) state.error = 'Email hoặc mật khẩu không đúng.';
       else state.error = Array.isArray(action.payload.message) ? action.payload.message[0] : action.payload.message;
       state.loading = false;
+    });
+    // ----------------------------- FETCH MESSAGES -----------------------------------
+    builder.addCase(fetchMessagedUsers.pending, (state, _) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchMessagedUsers.fulfilled, (state, action) => {
+      // TODO: store messaged users in messagedUsers in state
+      state.loading = false;
+    });
+    builder.addCase(fetchMessagedUsers.rejected, (state, action) => {
+      state.loading = false;
+      state.error = Array.isArray(action.payload.message) ? action.payload.message[0] : action.payload.message;
     });
   },
 });

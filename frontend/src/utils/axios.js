@@ -1,8 +1,10 @@
 import axios from 'axios';
+import { getToken } from './token';
 
 const request = axios.create({
   baseURL: process.env.API_BASE_URL || 'http://localhost:3001',
   headers: {
+    Authorization: `Bearer ${getToken()}`,
     Accept: '*/*',
     Connection: 'keep-alive',
     'Accept-Encoding': 'gzip, deflate, br',
