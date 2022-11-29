@@ -7,5 +7,6 @@ import { MessagesController } from './messages.controller';
   controllers: [MessagesController],
   providers: [MessagesService],
   imports: [PrismaModule],
+  exports: [MessagesService],
 })
 export class MessagesModule {}

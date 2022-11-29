@@ -41,8 +41,25 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number): Promise<UserEntity> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id },
+      });
+      delete user.password;
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findPastMessagedUsers(id: number): Promise<any> {
+    try {
+      // Get from and to
+      return null;
+    } catch (err) {
+      throw err;
+    }
   }
 
   // ------------------------------ find username and password --------------------------------

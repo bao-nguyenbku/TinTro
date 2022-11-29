@@ -22,6 +22,8 @@ model User {
   updatedAt DateTime @updatedAt()
   receivedMessage Message[] @relation(name: "receivedMessage")
   sentMessage Message[] @relation(name: "sentMessage")
+  currentUserMessageSection MessageSection[] @relation(name: "currentUserMessageSection")
+  otherUserMessageSection MessageSection[] @relation(name: "otherUserMessageSection")
   @@index(id)
 }
 
@@ -33,8 +35,20 @@ model Message {
   toId Int
   to User @relation(name: "receivedMessage", fields: [toId], references: [id])
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-  @@index([id, fromId, toId])
+  latestMessageForSection MessageSection?
+  @@index([id, fromId, toId, createdAt])
+}
+
+model MessageSection {
+  id Int @id @default(autoincrement())
+  currentUserId Int
+  currentUser User @relation(name: "currentUserMessageSection", fields: [currentUserId], references: [id])
+  otherUser User @relation(name: "otherUserMessageSection", fields: [otherUserId], references: [id])
+  otherUserId Int 
+  isLatestFromCurrentUser Boolean
+  latestMessageId Int @unique
+  latestMessage Message @relation(fields: [latestMessageId], references: [id])
+  @@unique([currentUserId, otherUserId])
 }
 
 enum Role {

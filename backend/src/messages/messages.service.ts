@@ -12,6 +12,10 @@ export class MessagesService {
     return `This action returns all messages`;
   }
 
+  findUniqueById(fromId: number) {
+    return `This action returns a #${fromId} message`;
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} message`;
   }
