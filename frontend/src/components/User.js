@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import React from 'react';
 
 function User() {
@@ -10,5 +10,3 @@ function User() {
 }
 
 export default User;
-
-// const styles = StyleSheet.create({});
