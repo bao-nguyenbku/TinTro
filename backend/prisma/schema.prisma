@@ -14,7 +14,7 @@ model User {
   id Int @id @default(autoincrement())
   role Role @default(USER)
   email String @unique()
-  phone String @unique()
+  phone String   @unique()
   password String
   name String
   avatar String @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
