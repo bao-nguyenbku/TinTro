@@ -17,6 +17,9 @@ export class UserEntity implements User {
   role: Role;
 
   @ApiProperty()
+  avatar: string;
+
+  @ApiProperty()
   @IsNotEmpty()
   name: string;
 
