@@ -11,21 +11,13 @@ import { RolesGuard } from './role.guard';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
-  providers: [
-    AuthService,
-    LocalStrategy,
-    JwtStrategy,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   imports: [
     UsersModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || jwtConstants.secret,
-      signOptions: { expiresIn: process.env.JWT_EXPIRATION_TIME || '2 days' },
+      signOptions: { expiresIn: process.env.JWT_EXPIRATION_TIME || '7d' },
     }),
   ],
   controllers: [AuthController],

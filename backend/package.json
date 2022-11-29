@@ -39,6 +39,7 @@
     "cookie-parser": "^1.4.6",
     "csurf": "^1.11.0",
     "helmet": "^6.0.0",
+    "morgan": "^1.10.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",

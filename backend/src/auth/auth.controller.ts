@@ -19,14 +19,13 @@ import { BadRequestException } from '@nestjs/common/exceptions/bad-request.excep
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
-  private readonly logger = new Logger(AuthService.name);
   constructor(private authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   @ApiCreatedResponse({ type: TokenPayload })
   login(@Request() req): TokenPayload {
-    this.logger.debug('User: ' + JSON.stringify(req.user));
+    Logger.log(req.user);
     return this.authService.login(req.user);
   }
 
