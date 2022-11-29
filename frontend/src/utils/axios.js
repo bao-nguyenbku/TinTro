@@ -1,7 +1,5 @@
 import axios from 'axios';
+import { API_BASE_URL } from '@env';
 
-const request = axios.create({
-    baseUrl: process.env.API_BASE_URL,
-});
-
-export default request;
+axios.defaults.baseURL = API_BASE_URL || '';
+export default axios;

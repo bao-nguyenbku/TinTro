@@ -264,8 +264,11 @@ CREATE TABLE public."Accommodation" (
     "addressDistrict" text NOT NULL,
     "addressCity" text NOT NULL,
     area double precision NOT NULL,
+    price integer DEFAULT 0 NOT NULL,
     "ownerId" integer NOT NULL,
     description text NOT NULL,
+    thumbnail text DEFAULT ''::text NOT NULL,
+    images text[] DEFAULT ARRAY[''::text],
     utilities text[]
 );
 
@@ -335,13 +338,13 @@ ALTER SEQUENCE public."Room_id_seq" OWNED BY public."Room".id;
 
 CREATE TABLE public."User" (
     id integer NOT NULL,
-    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    email text NOT NULL,
-    name text NOT NULL,
-    password text NOT NULL,
     role public."Role" DEFAULT 'USER'::public."Role" NOT NULL,
-    "updatedAt" timestamp(3) without time zone NOT NULL,
-    phone text NOT NULL
+    email text NOT NULL,
+    phone text NOT NULL,
+    password text NOT NULL,
+    name text NOT NULL,
+    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "updatedAt" timestamp(3) without time zone NOT NULL
 );
 
 
@@ -412,8 +415,9 @@ ALTER TABLE ONLY public."User" ALTER COLUMN id SET DEFAULT nextval('public."User
 -- Data for Name: Accommodation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Accommodation" (id, name, "addressNumber", "addressStreet", "addressDistrict", "addressCity", area, "ownerId", description, utilities) FROM stdin;
-2	Nhà Trọ Thiên Phúc	123/4	Trần Phú	Quận 10	Hồ Chí Minh	30.4	2	Đây là mô tả của nhà trọ này	{}
+COPY public."Accommodation" (id, name, "addressNumber", "addressStreet", "addressDistrict", "addressCity", area, price, "ownerId", description, thumbnail, images, utilities) FROM stdin;
+1	Nhà trọ Phúc Thiên	123/12	Trần Phú	Quận 10	Hồ Chí Minh	30.5	2100000	1	Đây là mô tả cho nhà trọ này	https://blog.rever.vn/hubfs/cho_thue_phong_tro_moi_xay_gia_re_ngay_phuong_15_tan_binh3.jpg	{"",https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2021/11/16/cho-thue-phong-tro-1613975723_1637034014.jpg,https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2019/08/27/1_1566888997.jpg}	{}
+2	Nhà trọ Phong Nhất	156	Nguyễn Huệ	Quận 1	Hồ Chí Minh	24.5	1750000	2	Nhà trọ nằm tại khu vực đắc địa của thành phố Hồ Chí Minh	http://sbshouse.vn/wp-content/uploads/2020/05/thiet-ke-nha-tro-cho-thue-ket-hop-sieu-thi-6.jpg	{"",https://dichvuchuyendo.net/wp-content/uploads/2020/10/phong-tro.jpg,https://static2.yan.vn/YanNews/2167221/202008/117138659_2049754861827696_6445929331803413929_o-b662fc8c.jpg}	{}
 \.
 
 
@@ -429,8 +433,9 @@ COPY public."Room" (id, "accommodationId", status) FROM stdin;
 -- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."User" (id, "createdAt", email, name, password, role, "updatedAt", phone) FROM stdin;
-2	2022-11-28 03:40:38.245	bao@gmail.com	Bảo Nguyễn	password	USER	2022-11-28 03:40:38.245	0123456789
+COPY public."User" (id, role, email, phone, password, name, "createdAt", "updatedAt") FROM stdin;
+1	USER	bao@gmail.com	012345678	password	Bảo Nguyễn	2022-11-29 07:10:20.851	2022-11-29 07:10:20.851
+2	USER	trung@gmail.com	0934156799	password	Trung Lê	2022-11-29 07:11:08.647	2022-11-29 07:11:08.647
 \.
 
 
@@ -439,11 +444,7 @@ COPY public."User" (id, "createdAt", email, name, password, role, "updatedAt", p
 --
 
 COPY public._prisma_migrations (id, checksum, finished_at, migration_name, logs, rolled_back_at, started_at, applied_steps_count) FROM stdin;
-5310e02a-de0c-41b2-afc3-722ff0cc0636	dae92e25d1b27e42b2aeeffc3cb8c2e7523246aa2495e30ddfe2384ca54dd127	2022-11-23 16:36:23.177213+00	20221123074859_init	\N	\N	2022-11-23 16:36:23.077785+00	1
-068a3480-65d1-45f1-af45-784ab24bb904	e41ba08a2a87dd286e895ea2b68a6f76a8f585eaf5e82a429827f867fcecf98e	2022-11-23 16:36:23.321231+00	20221123125128_init	\N	\N	2022-11-23 16:36:23.223778+00	1
-2d7fc065-ec7d-43b0-9cae-c64e1c44d2df	116feb4d25679dfdf826e6656a61370cc1badc2d8870e4ddb95d789a8bf335e8	2022-11-23 16:36:23.469688+00	20221123125218_init	\N	\N	2022-11-23 16:36:23.371765+00	1
-0702e233-3b6d-41e6-9228-b294254522b7	457e233249e3fd098bdfb6d9acb4da5994ae505389f852b53030953f758a1645	2022-11-23 16:36:23.616933+00	20221123142922_init	\N	\N	2022-11-23 16:36:23.515643+00	1
-f5233df0-b576-4e7b-bf91-9ef8a3a79522	918a553b99f7f371c976aa9092c520b4250c1557032c1daf6013c39a1e3642f0	2022-11-28 02:46:35.031702+00	20221128024634_init	\N	\N	2022-11-28 02:46:34.928652+00	1
+f42c2f73-184b-4cc9-bccd-553c7d5c9ecf	b2236f7ec04447f6f8077c659ebbd0178cd9edb2b4f117b73c979474f02f0556	2022-11-29 07:09:24.812153+00	20221129070924_init	\N	\N	2022-11-29 07:09:24.695561+00	1
 \.
 
 

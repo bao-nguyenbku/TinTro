@@ -38,9 +38,12 @@ model Accommodation {
   addressCity String
   area Float 
   rooms Room[]
+  price Int @default(0)
   owner User @relation(fields: [ownerId], references: [id])
   ownerId Int @unique
   description String
+  thumbnail String @default("")
+  images String[] @default([""])
   utilities String[]
 }
 

@@ -1,9 +1,7 @@
-import { Text } from 'react-native';
+import React, { useState } from 'react';
 import { store } from './src/store';
-import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import MyApp from './src';
-import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';

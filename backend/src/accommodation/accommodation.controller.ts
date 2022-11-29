@@ -8,7 +8,11 @@ export class AccommodationController {
   @Get()
   async getAllAccommodation() {
     try {
-      return await this.accommodationService.getAllAccommodation();
+      const result = await this.accommodationService.getAllAccommodation();
+      return result.map(item => ({
+        ...item,
+        reviewStar: Math.round(Math.random() * 5)
+      }))
     } catch (error) {
       throw new Error(error);
     }
