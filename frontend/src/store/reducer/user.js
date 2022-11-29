@@ -21,7 +21,7 @@ export const register = createAsyncThunk('users/register', async ({ name, email,
       reEnterPassword,
     });
     if (done) done();
-    return response.json();
+    return response.data.json();
   } catch (err) {
     return rejectWithValue({ statusCode: err.response.data.statusCode, message: err.response.data.message });
   }
@@ -71,7 +71,7 @@ export const userSlice = createSlice({
       state.loading = false;
       setToken(tokenKey, action.payload.access_token);
       const decoded = jwtParse(action.payload.access_token);
-      state.currentUser = decoded;
+      state.currentUser = { ...decoded, id: decoded.sub };
     });
     builder.addCase(logIn.rejected, (state, action) => {
       if (action.payload.statusCode === 401) state.error = 'Email hoặc mật khẩu không đúng.';
