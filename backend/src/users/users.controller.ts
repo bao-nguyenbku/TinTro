@@ -18,7 +18,6 @@ import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/auth/role.decorator';
 import { Role } from '@prisma/client';
 import { UserResponseDto } from './dto/user.dto';
-import { Message } from 'src/messages/entities/message.entity';
 
 @Controller('users')
 @ApiTags('users')
@@ -43,20 +42,6 @@ export class UsersController {
   @ApiOkResponse({ type: UserResponseDto })
   findOne(@Request() req) {
     return this.usersService.findOne(req.user.id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('messages/past-messagers')
-  @ApiOkResponse({ type: Message, isArray: true })
-  async findPastMessagedUsers(@Request() req) {
-    try {
-      // FIXME: We might want to do pagination here
-      const id = req.user.id;
-      const pastMessagedUsers = this.usersService.findPastMessagedUsers(id);
-      return pastMessagedUsers;
-    } catch (err) {
-      throw err;
-    }
   }
 
   @Patch(':id')

@@ -3,17 +3,13 @@ import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 
 @Injectable()
-export class MessagesService {
+export class MessageService {
   create(createMessageDto: CreateMessageDto) {
     return 'This action adds a new message';
   }
 
   findAll() {
-    return `This action returns all messages`;
-  }
-
-  findUniqueById(fromId: number) {
-    return `This action returns a #${fromId} message`;
+    return `This action returns all message`;
   }
 
   findOne(id: number) {

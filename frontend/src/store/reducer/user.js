@@ -47,7 +47,6 @@ export const logIn = createAsyncThunk('users/login', async ({ email, password, d
   }
 });
 
-export const fetchMessagedUsers = createAsyncThunk('users/fetchMessagedUsers', async ({ done }, { rejectWithValue }) => {});
 // --------------------------- SLICE ---------------------------
 export const userSlice = createSlice({
   name: 'user',
@@ -84,17 +83,6 @@ export const userSlice = createSlice({
       state.loading = false;
     });
     // ----------------------------- FETCH MESSAGES -----------------------------------
-    builder.addCase(fetchMessagedUsers.pending, (state, _) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchMessagedUsers.fulfilled, (state, action) => {
-      // TODO: store messaged users in messagedUsers in state
-      state.loading = false;
-    });
-    builder.addCase(fetchMessagedUsers.rejected, (state, action) => {
-      state.loading = false;
-      state.error = Array.isArray(action.payload.message) ? action.payload.message[0] : action.payload.message;
-    });
   },
 });
 // --------------------------- SELECTORS ---------------------------

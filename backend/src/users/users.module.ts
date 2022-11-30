@@ -1,4 +1,3 @@
-import { MessagesModule } from './../messages/messages.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -8,6 +7,6 @@ import { UsersController } from './users.controller';
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],
-  imports: [PrismaModule, MessagesModule],
+  imports: [PrismaModule],
 })
 export class UsersModule {}

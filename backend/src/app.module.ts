@@ -7,7 +7,9 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { MessagesModule } from './messages/messages.module';
+
+import { MessageSectionModule } from './message-section/message-section.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -21,7 +23,8 @@ import { MessagesModule } from './messages/messages.module';
       ttl: 60,
       limit: 10,
     }),
-    MessagesModule,
+    MessageSectionModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
