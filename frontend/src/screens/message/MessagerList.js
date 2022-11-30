@@ -5,7 +5,7 @@ const MessagerList = () => {
   const user = useSelector((state) => state.user.currentUser);
 
   if (!user) {
-    // TODO: Redirect to login page
+    // TODO: Redirect to login screen
   }
 
   const dispatch = useDispatch();
