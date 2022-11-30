@@ -1,9 +1,5 @@
-import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { useSelector } from 'react-redux';
-import { selectUserState } from './store/reducer/user';
-import { Box, AspectRatio, Center, Stack, Heading, HStack } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ROUTES } from 'routes';
@@ -11,7 +7,7 @@ import ExploreScreen from 'screens/explore';
 import MyRoomScreen from 'screens/my-room';
 import MessageScreen from 'screens/message';
 import AccountScreen from 'screens/account';
-import Header from 'components/Header';
+import Header from 'components/header';
 const Tab = createBottomTabNavigator();
 
 const Index = () => {
@@ -64,13 +60,3 @@ const Index = () => {
 }
 
 export default Index;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  userName: {
-    fontSize: 20,
-    color: '#17bd00'
-  }
-})

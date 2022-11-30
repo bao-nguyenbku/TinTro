@@ -32,25 +32,24 @@ export const accommodationSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(getAllAccommodations.pending,
-                (state, action) => {
+                (state) => {
                     state.loading = true;
                 }
             ).addCase(getAllAccommodations.fulfilled,
                 (state, action) => {  
-                    console.log(action.payload);
                     const accommodationList = action.payload;
                     state.loading = false;
                     state.accommodations = accommodationList;
                 }
             ).addCase(getAllAccommodations.rejected, 
                 (state, action) => {
-                    console.log('Rejected');
                     const error = action.payload;
                     state.loading = false;
                     state.error = error;
                 }
             )
     }
+                
 })
 export const selectAccommodationState = createSelector(
     [state => state.accommodation],
@@ -62,10 +61,15 @@ export const getAllAccommodations = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         return getAllAccommodationsService()
         .then(response => response.data)
-        .catch(error => rejectWithValue(error.toJSON()))
+        .catch(error => {
+            console.log(error);
+            return rejectWithValue({
+                statusCode: error.status,
+                message: error.message
+            })
+        })
     }
+        
 )
-// Action creators are generated for each case reducer function
-// export const { increment, decrement, incrementByAmount } = accommodationSlice.actions
 
 export default accommodationSlice.reducer
