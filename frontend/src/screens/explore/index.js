@@ -1,25 +1,34 @@
-import React, { useEffect } from 'react';
-import { Box } from 'native-base';
-import SingleItem from './SingleItem'
-import { getAllAccommodations, selectAccommodationState } from 'store/reducer/accommodation';
-import { useDispatch, useSelector } from 'react-redux';
-const ExploreScreen = () => {
-  const dispatch = useDispatch();
-  const { accommodations } = useSelector(selectAccommodationState);
-  useEffect(() => {
-    dispatch(getAllAccommodations())
-  }, [])
+import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ExploreHeader from 'components/header/ExploreHeader';
+const Stack = createNativeStackNavigator();
+
+const ExploreScreen = (props) => {
+  const { accommodationDetails, allAccommodations } = props.stack;
+  
   return (
-    <Box>
-      {accommodations.length > 0 && accommodations.map(item => {
+    <Stack.Navigator
+      initialRouteName={allAccommodations.title}
+      screenOptions={{
+        header: (stackProps) => <ExploreHeader {...stackProps} />,
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+      }}
+    >
+      {Object.keys(props.stack).map(stackScreen => {
+        const StackComponent = props.stack[stackScreen].component;
         return (
-          <SingleItem 
-            key={item.id}
-            data={item}
+          <Stack.Screen 
+            name={props.stack[stackScreen].title}
+            options={{
+              title: props.stack[stackScreen].label
+            }}
+            key={stackScreen}
+            children={(stackProps) => <StackComponent {...stackProps } {...props} />}
           />
         )
       })}
-    </Box>
+    </Stack.Navigator>
   )
 }
 
