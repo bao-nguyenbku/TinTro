@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { store } from './src/store';
 import { Provider } from 'react-redux';
-
+import MyApp from './src';
 import * as SplashScreen from 'expo-splash-screen';
 import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
@@ -14,6 +15,7 @@ export default function App() {
   setTimeout(() => {
     SplashScreen.hideAsync().then(() => setIsReady(true));
   }, 2000);
+
 
   if (isReady) {
     return (

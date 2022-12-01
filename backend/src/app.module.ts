@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { AccommodationModule } from './accommodation/accommodation.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
       ttl: 60,
       limit: 10,
     }),
+    AccommodationModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
