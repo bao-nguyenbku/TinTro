@@ -1,48 +1,33 @@
-import React, { useEffect } from "react";
-import { ScrollView, Box } from "native-base";
+import React, { useEffect } from 'react';
+import { ScrollView, Box } from 'native-base';
 import { RefreshControl, TouchableOpacity } from 'react-native';
-import { getAllAccommodations, selectAccommodationState } from "store/reducer/accommodation";
-import { useDispatch, useSelector } from "react-redux";
-import SingleItem from "./SingleItem";
-const AccommodationList = (props) => {
-  const { navigation, route } = props;
-  const { accommodationDetails } = props.stack;
-  const dispatch = useDispatch();
-  async function fetchAllAccommodationData() {
-    dispatch(getAllAccommodations());
-  }
-  const { accommodations, loading } = useSelector(selectAccommodationState);
-  useEffect(() => {
-    fetchAllAccommodationData();
-  }, [])
-  return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl
-          refreshing={loading}
-          onRefresh={fetchAllAccommodationData}
+import { getAllAccommodations, selectAccommodationState } from 'store/reducer/accommodation';
+import { useDispatch, useSelector } from 'react-redux';
+import SingleItem from './SingleItem';
 
-        />
-      }
-    >
-      <Box
-        paddingX='2'
-      >
-        {accommodations.length > 0 && accommodations.map(item => {
-          return (
-            <TouchableOpacity
-              onPress={() => navigation.push(accommodationDetails.title)}
-              key={item.id}
-            >
-              <SingleItem
-                data={item}
-              />
+const AccommodationList = (props) => {
+  const { stack } = props;
+  const { navigation } = props;
+  const { accommodationDetails } = stack;
+  const dispatch = useDispatch();
+
+  const { accommodations, loading } = useSelector(selectAccommodationState);
+
+  useEffect(() => {
+    dispatch(getAllAccommodations());
+  }, [dispatch]);
+  return (
+    <ScrollView refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getAllAccommodations())} />}>
+      <Box paddingX="2">
+        {accommodations.length > 0 &&
+          accommodations.map((item) => (
+            <TouchableOpacity onPress={() => navigation.push(accommodationDetails.title)} key={item.id}>
+              <SingleItem data={item} />
             </TouchableOpacity>
-          )
-        })}
+          ))}
       </Box>
-    </ScrollView >
-  )
-}
+    </ScrollView>
+  );
+};
 
 export default AccommodationList;

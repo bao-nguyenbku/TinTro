@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { AccommodationModule } from './accommodation/accommodation.module';
 
 @Module({
@@ -15,6 +16,10 @@ import { AccommodationModule } from './accommodation/accommodation.module';
     AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
     }),
     AccommodationModule,
   ],

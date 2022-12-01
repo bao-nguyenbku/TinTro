@@ -5,13 +5,18 @@ import MyApp from './src';
 import * as SplashScreen from 'expo-splash-screen';
 import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
+import MyApp from './src';
+import store from './src/store';
 
 SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [isReady, setIsReady] = useState(false);
+
   setTimeout(() => {
-    SplashScreen.hideAsync().then(() => setIsReady(true))
-  }, 2000)
+    SplashScreen.hideAsync().then(() => setIsReady(true));
+  }, 2000);
+
+
   if (isReady) {
     return (
       <Provider store={store}>

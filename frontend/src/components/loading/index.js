@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const Loading = () => {
-  //TODO: Implement loading component here
-  return (
+const Loading = () => 
+  // TODO: Implement loading component here
+   (
     <View style={styles.container}>
       <Text>Loading...</Text>
     </View>
   )
-}
+
 
 export default Loading
 
