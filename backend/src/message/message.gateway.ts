@@ -92,26 +92,6 @@ export class MessageGateway
       const sender =
         this.currentUser ||
         (await this.messageService.getUserFromSocket(socket));
-
-      const newMessage: MessageEntity =
-        await this.messageService.createNewMessage(
-          sender.id,
-          message,
-          this.isExistSection,
-          this.messageSection,
-          async () => {
-            this.isExistSection = true;
-            this.messageSection =
-              await this.messageSectionService.checkExistSectionBetween2Users(
-                this.currentUser.id,
-                receiverId,
-              );
-          },
-        );
-
-      this.logger.log(JSON.stringify(newMessage, null, 2));
-      this.server.sockets.emit('receive_message', newMessage);
-      return newMessage;
     } catch (err) {
       this.logger.error(err);
       throw err;
@@ -126,18 +106,10 @@ export class MessageGateway
         this.currentUser ||
         (await this.messageService.getUserFromSocket(socket));
 
-      const messages: MessageEntity[] =
-        await this.messageService.getAllMessagesFrom2UserIds(
-          currentUser.id,
-          Number(socket.handshake.query.receiverId),
-        );
       this.logger.log(
         `----------------------- ALL MESSAGES OF ${currentUser.id} --------------------`,
       );
       this.logger.debug(JSON.stringify(currentUser, null, 2));
-      this.logger.debug(JSON.stringify(messages, null, 2));
-
-      socket.emit('send_all_messages', messages);
     } catch (err) {
       this.logger.error(err);
       throw err;

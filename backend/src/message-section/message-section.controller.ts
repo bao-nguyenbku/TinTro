@@ -28,21 +28,4 @@ export class MessageSectionController {
       throw e;
     }
   }
-
-  @Post()
-  @ApiCreatedResponse({ type: MessageSectionResponse })
-  async createNewSection(
-    @Request() req,
-    @Body('otherUserId') otherUserId: number,
-  ) {
-    try {
-      // TODO: check if section already exists
-      const userId = req.user.id;
-      const newSection = await this.messageSectionService.createNewSection(
-        userId,
-        otherUserId,
-      );
-      return newSection;
-    } catch (e) {}
-  }
 }
