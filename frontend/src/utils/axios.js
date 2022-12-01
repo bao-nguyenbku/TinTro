@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { API_BASE_URL } from '@env';
 import { getToken } from './token';
 
 const request = axios.create({
-  baseURL: process.env.API_BASE_URL || 'http://localhost:3001',
+  baseURL: API_BASE_URL || 'http://192.168.100.8:5000',
   headers: {
     Accept: '*/*',
     Connection: 'keep-alive',
@@ -19,9 +20,7 @@ const request = axios.create({
 // Set token int header
 request.interceptors.request.use(async (config) => {
   const token = await getToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 

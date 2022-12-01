@@ -1,7 +1,8 @@
-import request from "utils/axios";
+import request from 'utils/axios';
 
 const prefix = '/accommodations';
 
-const getAllAccommodationsService = () => request.get(prefix)
-
+const getAllAccommodationsService = () => {
+  return request.get(prefix);
+};
 export { getAllAccommodationsService };
