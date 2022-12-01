@@ -2,20 +2,20 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from '@reduxjs/toolkit';
 
 const initialState = {
-    userName: 'TinTro'
+    text: 'TinTro'
 }
 
 export const userSlice = createSlice({
-    name: 'user',
+    name: 'example',
     initialState,
     reducers: {}
 })
-export const selectUserState = createSelector(
+export const selectExampleState = createSelector(
     [state => state.user],
     (userState => userState)
 )
 
 // Action creators are generated for each case reducer function
-// export const { increment, decrement, incrementByAmount } = userSlice.actions
+// export const { reducerMethod } = userSlice.actions
 
 export default userSlice.reducer

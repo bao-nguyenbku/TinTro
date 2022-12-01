@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from './reducer/user';
+import accommodationReducer from './reducer/accommodation';
 
 export const store = configureStore({
     reducer: {
-        user: userReducer
+        accommodation: accommodationReducer
     }
 })
 
