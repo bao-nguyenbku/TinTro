@@ -1,92 +1,22 @@
-import 'react-native-gesture-handler';
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { ROUTES } from 'navigation';
-import ExploreScreen from 'screens/explore';
-import MyRoomScreen from 'screens/my-room';
-import MessageScreen from 'screens/message';
-import AccountScreen from 'screens/account';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const Tab = createBottomTabNavigator();
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginNav from 'navigation/authentication';
+import HomeNav from 'navigation/home';
+
 const Stack = createNativeStackNavigator();
+
+
 
 const Index = () => (
     <>
-      <StatusBar style='auto' />
-      <Tab.Navigator
-        initialRouteName={ROUTES.explore.title}
-        sceneContainerStyle='#F3F4F6'
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            if (route.name === ROUTES.explore.title) {
-              iconName = focused ? 'home' : 'home-outline';
-            }
-            else if (route.name === ROUTES.myRoom.title) {
-              iconName = focused ? 'albums' : 'albums-outline';
-            }
-            else if (route.name === ROUTES.message.title) {
-              iconName = focused ? 'chatbox' : 'chatbox-outline';
-            }
-            else if (route.name === ROUTES.account.title) {
-              iconName = focused ? 'person' : 'person-outline';
-            }
 
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: '#059669',
-          tabBarInactiveTintColor: '#71717A',
-          tabBarStyle: {
-            position: 'absolute',
-            overflow: 'hidden',
-            left: 0,
-            bottom: 0,
-            right: 0,
-            justifyContent: 'center',
-          },
-          // TODO: Temporary disable bottom tab nav header
-          // header: (props) => <Header {...props} />
-          headerShown: false
-        })}
-      >
-        {Object.keys(ROUTES).map(tabScreen => {
-          let TabScreen;
-          switch (ROUTES[tabScreen].title) {
-            case ROUTES.explore.title: {
-              TabScreen = ExploreScreen;
-              break;
-            }
-            case ROUTES.myRoom.title: {
-              TabScreen = MyRoomScreen;
-              break;
-            }
-            case ROUTES.message.title: {
-              TabScreen = MessageScreen;
-              break;
-            }
-            case ROUTES.account.title: {
-              TabScreen = AccountScreen;
-              break;
-            }
-            default:
-              break;
-          }
-          return (
-            <Tab.Screen
-              name={ROUTES[tabScreen].title}
-              key={tabScreen.toString()}
-              children={() => <TabScreen {...ROUTES[tabScreen]} />}
-              options={{
-                title: ROUTES[tabScreen].label
-              }}
-            />
-          )
-        })}
-      </Tab.Navigator>
+      <StatusBar/>
+      <Stack.Navigator>
+        <Stack.Screen name="Authentication" component={LoginNav} />
+        <Stack.Screen name="Home" component={HomeNav} />
+      </Stack.Navigator>
     </>
 
   )
