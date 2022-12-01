@@ -5,7 +5,7 @@ import request from '../../utils/axios';
 
 // INITIAL STATE
 const initialState = {
-  currentUser: {},
+  currentUser: null,
   loading: false,
   error: null,
 };
@@ -50,7 +50,10 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    resetData: (_state, _) => {},
+    resetData: (state, _) => {
+      state.loading = false;
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(register.pending, (state, _) => {

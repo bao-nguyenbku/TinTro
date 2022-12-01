@@ -26,7 +26,7 @@ const ExploreScreen = (props) => {
               title: stack[stackScreen].label,
             }}
             key={stackScreen}
-            component={StackComponent}
+            children={(stackProps) => <StackComponent {...stackProps} {...props} />}
           />
         );
       })}

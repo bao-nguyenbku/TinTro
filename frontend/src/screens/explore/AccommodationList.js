@@ -6,13 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import SingleItem from './SingleItem';
 
 const AccommodationList = (props) => {
-  const { stack } = props;
-  const { navigation } = props;
+  const { navigation, stack } = props;
   const { accommodationDetails } = stack;
   const dispatch = useDispatch();
 
   const { accommodations, loading } = useSelector(selectAccommodationState);
-
   useEffect(() => {
     dispatch(getAllAccommodations());
   }, [dispatch]);

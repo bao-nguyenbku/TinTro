@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,26 +8,44 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  role Role @default(USER)
-  email String @unique()
-  phone String   @unique()
-  password String
-  name String
-  avatar String @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
+  id             Int              @id @default(autoincrement())
+  createdAt      DateTime         @default(now())
+  email          String           @unique
+  name           String
+  password       String
+  role           Role             @default(USER)
+  updatedAt      DateTime         @updatedAt
+  phone          String           @unique
+  avatar         String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
+  Message        Message[]
   accommodation Accommodation?
+  MessageSection MessageSection[] @relation("users_in_message_section")
 
-  @@index(id)
+  @@index([id])
+}
+
+model Message {
+  id               Int            @id @default(autoincrement())
+  text             String
+  createdAt        DateTime       @default(now())
+  fromId           Int
+  messageSectionId Int
+  User             User           @relation(fields: [fromId], references: [id])
+  MessageSection   MessageSection @relation(fields: [messageSectionId], references: [id])
+
+  @@index([id, fromId, createdAt])
+}
+
+model MessageSection {
+  id      Int       @id @default(autoincrement())
+  Message Message[]
+  User    User[]    @relation("users_in_message_section")
 }
 
 enum Role {
   ADMIN
   USER
 }
-
 
 model Accommodation {
   id Int @id @default(autoincrement())

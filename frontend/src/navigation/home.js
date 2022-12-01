@@ -1,14 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useEffect } from 'react';
+import React from 'react';
 import ExploreScreen from 'screens/explore';
 import MyRoomScreen from 'screens/my-room';
 import MessageScreen from 'screens/message';
 import AccountScreen from 'screens/account';
 import { ROUTES } from 'navigation';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { setGlobalNavigation } from 'store/reducer/system';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,13 +26,6 @@ const RenderIcon = ({ route, focused, color, size }) => {
 };
 
 const HomeNav = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setGlobalNavigation({ navigation }));
-  }, [navigation, dispatch]);
-
   return (
     <Tab.Navigator
       initialRouteName={ROUTES.explore.title}
@@ -83,7 +73,7 @@ const HomeNav = () => {
           <Tab.Screen
             name={ROUTES[tabScreen].title}
             key={tabScreen.toString()}
-            component={TabScreen}
+            children={() => <TabScreen {...ROUTES[tabScreen]} />}
             options={{
               title: ROUTES[tabScreen].label,
             }}
