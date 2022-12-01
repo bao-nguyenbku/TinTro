@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginNav from 'navigation/authentication';
 import HomeNav from 'navigation/home';
 import { useSelector } from 'react-redux';
+import { isEmptyObj } from 'native-base';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +19,7 @@ const Index = () => {
           headerShown: false,
         }}
       >
-        {!user.currentUser && <Stack.Screen name="Authentication" component={LoginNav} />}
+        {isEmptyObj(user.currentUser) && <Stack.Screen name="Authentication" component={LoginNav} />}
         <Stack.Screen name="Home" component={HomeNav} />
       </Stack.Navigator>
     </>

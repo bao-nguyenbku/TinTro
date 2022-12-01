@@ -11,9 +11,11 @@ const AccommodationList = (props) => {
   const dispatch = useDispatch();
 
   const { accommodations, loading } = useSelector(selectAccommodationState);
+
   useEffect(() => {
     dispatch(getAllAccommodations());
   }, [dispatch]);
+
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getAllAccommodations())} />}>
       <Box paddingX="2">

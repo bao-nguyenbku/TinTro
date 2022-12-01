@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, Center, Flex, Heading, Input, Pressable, VStack, Text, FormControl } from 'native-base';
 import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { logIn, resetData } from 'store/reducer/user';
+import { useNavigation } from '@react-navigation/native';
+import { logIn } from 'store/reducer/user';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 import { Formik } from 'formik';
@@ -24,21 +24,17 @@ function LoginScreen() {
 
   const handleSubmitLogin = ({ email, password }) => {
     // done: navigate to home screen
-    const rootNavigation = navigation.getParent();
+
     dispatch(
       logIn({
         email,
         password,
         done: () => {
-          rootNavigation.navigate('Home');
+          // rootNavigation.navigate('Home');
         },
       })
     );
   };
-
-  useFocusEffect(() => {
-    dispatch(resetData());
-  });
 
   return (
     <VStack w="100%" space={3} alignItems="center">
@@ -101,7 +97,7 @@ function LoginScreen() {
                 />
               </Box>
               <Flex h="1/4" mt={12} w="100%">
-                <Button disabled={!isValid} onPress={() => handleSubmit()} type="submit" h="16" bg="tertiary.600" borderRadius="xl">
+                <Button isLoading={user.loading} disabled={!isValid} onPress={() => handleSubmit()} type="submit" h="16" bg="tertiary.600" borderRadius="xl">
                   <Heading size="lg" color="#FAFAFA">
                     Đăng nhập
                   </Heading>

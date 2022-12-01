@@ -32,6 +32,7 @@ function RegisterScreen() {
 
   const handleSubmitRegister = (values) => {
     // TODO: done callback function: add something to notify user that they have logged in successfully
+    console.log(JSON.stringify(values, null, 2));
     dispatch(register({ ...values, done: () => navigation.navigate('Login') }));
   };
 
@@ -103,6 +104,7 @@ function RegisterScreen() {
                   borderRadius="xl"
                   w="100%"
                   placeholder="Email"
+                  keyboardType="email-address"
                 />
               </Box>
               <Box mb="3.5">

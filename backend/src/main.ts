@@ -17,9 +17,10 @@ async function bootstrap() {
     .setVersion('0.1')
     .build();
   app.use(helmet());
+  app.enableCors();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 3001;
   await app.listen(PORT, () =>
     console.log(`Server is listening at port ${PORT}`),
   );

@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
-import { jwtParse, setToken, tokenKey } from 'utils/token';
+import { jwtParse, setToken } from 'utils/token';
 
 import request from '../../utils/axios';
 
 // INITIAL STATE
 const initialState = {
-  currentUser: null,
+  currentUser: {},
+  token: null,
   loading: false,
   messagedUsers: [],
   error: null,
@@ -22,19 +23,35 @@ export const register = createAsyncThunk('users/register', async ({ name, email,
       reEnterPassword,
     });
     if (done) done();
-    return response.data.json();
+    return response.data;
   } catch (err) {
+    console.error(JSON.stringify(err, null, 2));
+    if (!err.response) {
+      return rejectWithValue({ statusCode: 500, message: err.message });
+    }
     return rejectWithValue({ statusCode: err.response.data.statusCode, message: err.response.data.message });
   }
 });
 
-export const logIn = createAsyncThunk('users/login', async ({ email, password, done }, { rejectWithValue }) => {
+export const saveUser = createAsyncThunk('users/saveUser', async ({ token }, { rejectWithValue }) => {
+  try {
+    console.log(token);
+    const user = jwtParse(token);
+    await setToken(token);
+    return user;
+  } catch (err) {
+    return rejectWithValue({ message: err?.message || 'Something went wrong!' });
+  }
+});
+
+export const logIn = createAsyncThunk('users/login', async ({ email, password, done }, { rejectWithValue, dispatch }) => {
   try {
     const response = await request.post('/auth/login', {
       email,
       password,
     });
     if (done) done();
+    dispatch(saveUser({ token: response.data.access_token }));
     return response.data;
   } catch (err) {
     if (err.response) {
@@ -58,7 +75,7 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // ----------------------------- REGISTER -----------------------------------
+    // --------------------------- REGISTER ---------------------------
     builder.addCase(register.pending, (state, _) => {
       state.loading = true;
     });
@@ -70,22 +87,31 @@ export const userSlice = createSlice({
       else state.error = Array.isArray(action.payload.message) ? action.payload.message[0] : action.payload.message;
       state.loading = false;
     });
-    // ----------------------------- LOGIN -----------------------------------
+    // --------------------------- LOGIN ---------------------------
     builder.addCase(logIn.pending, (state, _) => {
       state.loading = true;
     });
     builder.addCase(logIn.fulfilled, (state, action) => {
+      state.token = action.payload.token;
       state.loading = false;
-      setToken(tokenKey, action.payload.access_token);
-      const decoded = jwtParse(action.payload.access_token);
-      state.currentUser = { ...decoded, id: decoded.sub };
     });
     builder.addCase(logIn.rejected, (state, action) => {
       if (action.payload.statusCode === 401) state.error = 'Email hoặc mật khẩu không đúng.';
       else state.error = Array.isArray(action.payload.message) ? action.payload.message[0] : action.payload.message;
       state.loading = false;
     });
-    // ----------------------------- FETCH MESSAGES -----------------------------------
+    // --------------------------- SAVE USER ---------------------------
+    builder.addCase(saveUser.pending, (state, _) => {
+      state.loading = true;
+    });
+    builder.addCase(saveUser.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(saveUser.rejected, (state, action) => {
+      state.error = action.payload.message || 'Something went wrong';
+      state.loading = false;
+    });
   },
 });
 // --------------------------- SELECTORS ---------------------------
