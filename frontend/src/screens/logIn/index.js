@@ -21,10 +21,19 @@ function LoginScreen() {
   const [show, setShow] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const system = useSelector((state) => state.system);
 
   const handleSubmitLogin = ({ email, password }) => {
-    // TODO: navigate to home screen
-    dispatch(logIn({ email, password, done: () => {} }));
+    // done: navigate to home screen
+    dispatch(
+      logIn({
+        email,
+        password,
+        done: () => {
+          system.globalNavigation.navigate('HomeNav');
+        },
+      })
+    );
   };
 
   useFocusEffect(() => {

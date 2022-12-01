@@ -1,9 +1,7 @@
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import React from 'react'
 import { Box, Text } from 'native-base';
 import { getHeaderTitle } from '@react-navigation/elements';
 import BackButton from 'components/back-button';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
 const ExploreHeader = (props) => {
   const { navigation, route, options, back } = props;
