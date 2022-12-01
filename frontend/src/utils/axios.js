@@ -17,4 +17,13 @@ const request = axios.create({
   },
 });
 
+// Set token int header
+request.interceptors.request.use(async (config) => {
+  const token = await getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export default request;

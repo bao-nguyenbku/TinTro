@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 const MessagerList = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -8,14 +8,14 @@ const MessagerList = () => {
     // TODO: Redirect to login screen
   }
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   useEffect(() => {
     // Get list of users that have message the current user
   });
 
   // render list of users that have message the current user
-  return <></>;
+  return null;
 };
 
 export default MessagerList;

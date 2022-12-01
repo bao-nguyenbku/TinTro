@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
-
 import * as SplashScreen from 'expo-splash-screen';
 import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';

@@ -26,6 +26,14 @@
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/function-component-definition": "off"
+    "react/function-component-definition": "off",
+    "react/no-unstable-nested-components": [
+      "error",
+      {
+        "allowAsProps": true
+      }
+    ],
+    "react/no-children-prop": "off",
+    "arrow-body-style": "off"
   }
 }

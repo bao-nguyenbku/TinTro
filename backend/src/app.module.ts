@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { AccommodationModule } from './accommodation/accommodation.module';
 
 import { MessageSectionModule } from './message-section/message-section.module';
 import { MessageModule } from './message/message.module';
@@ -25,6 +26,7 @@ import { MessageModule } from './message/message.module';
     }),
     MessageSectionModule,
     MessageModule,
+    AccommodationModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

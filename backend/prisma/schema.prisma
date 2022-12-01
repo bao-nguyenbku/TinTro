@@ -17,7 +17,8 @@ model User {
   updatedAt       DateTime         @updatedAt
   phone           String           @unique
   avatar          String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
-  sentMessage     Message[]        @relation("sentMessage")
+  messages        Message[]
+  accommodation   Accommodation?
   messageSections MessageSection[] @relation("users_in_message_section")
 
   @@index([id])
@@ -29,19 +30,49 @@ model Message {
   createdAt        DateTime       @default(now())
   fromId           Int
   messageSectionId Int
-  from             User           @relation("sentMessage", fields: [fromId], references: [id])
-  messageSection   MessageSection @relation("message", fields: [messageSectionId], references: [id])
+  from             User           @relation(fields: [fromId], references: [id])
+  messageSection   MessageSection @relation(fields: [messageSectionId], references: [id])
 
   @@index([id, fromId, createdAt])
 }
 
 model MessageSection {
   id       Int       @id @default(autoincrement())
-  messages Message[] @relation("message")
+  messages Message[]
   users    User[]    @relation("users_in_message_section")
 }
 
 enum Role {
   ADMIN
   USER
+}
+
+model Accommodation {
+  id              Int      @id @default(autoincrement())
+  name            String
+  addressNumber   String
+  addressStreet   String
+  addressDistrict String
+  addressCity     String
+  area            Float
+  rooms           Room[]
+  price           Int      @default(0)
+  owner           User     @relation(fields: [ownerId], references: [id])
+  ownerId         Int      @unique
+  description     String
+  thumbnail       String   @default("")
+  images          String[] @default([""])
+  utilities       String[]
+}
+
+model Room {
+  id              Int           @id @default(autoincrement())
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId Int
+  status          RoomStatus
+}
+
+enum RoomStatus {
+  RENTING
+  AVAILABLE
 }

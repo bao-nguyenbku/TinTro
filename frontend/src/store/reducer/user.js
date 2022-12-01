@@ -52,7 +52,10 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    resetData: (_state, _) => {},
+    resetData: (state, _) => {
+      state.loading = false;
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     // ----------------------------- REGISTER -----------------------------------

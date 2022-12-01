@@ -23,8 +23,17 @@ function LoginScreen() {
   const dispatch = useDispatch();
 
   const handleSubmitLogin = ({ email, password }) => {
-    // TODO: navigate to home screen
-    dispatch(logIn({ email, password, done: () => {} }));
+    // done: navigate to home screen
+    const rootNavigation = navigation.getParent();
+    dispatch(
+      logIn({
+        email,
+        password,
+        done: () => {
+          rootNavigation.navigate('Home');
+        },
+      })
+    );
   };
 
   useFocusEffect(() => {

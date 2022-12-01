@@ -14,7 +14,7 @@ export const setToken = async (_accessToken) => {
   try {
     await AsyncStorage.setItem(tokenKey, _accessToken);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -24,7 +24,7 @@ export const getToken = async () => {
     if (token) return token;
     return null;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return null;
   }
 };
