@@ -31,7 +31,9 @@ const AccommodationList = (props) => {
         {accommodations.length > 0 && accommodations.map(item => {
           return (
             <TouchableOpacity
-              onPress={() => navigation.push(accommodationDetails.title)}
+              onPress={() => navigation.navigate(accommodationDetails.title, {
+                item
+              })}
               key={item.id}
             >
               <SingleItem

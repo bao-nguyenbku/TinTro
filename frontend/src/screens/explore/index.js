@@ -4,7 +4,7 @@ import ExploreHeader from 'components/header/ExploreHeader';
 const Stack = createNativeStackNavigator();
 
 const ExploreScreen = (props) => {
-  const { accommodationDetails, allAccommodations } = props.stack;
+  const { allAccommodations } = props.stack;
   
   return (
     <Stack.Navigator

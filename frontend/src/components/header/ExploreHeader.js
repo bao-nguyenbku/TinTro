@@ -10,7 +10,7 @@ const ExploreHeader = (props) => {
   const title = getHeaderTitle(options, route.name);
   return (
     <Box  
-      bg="transparent" 
+      bg="coolGray.100" 
       height='90px'
       flexDirection='row'
       justifyContent='center'
