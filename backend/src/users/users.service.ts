@@ -1,9 +1,8 @@
-import { Role } from '@prisma/client';
+import { MessageSection, Role } from '@prisma/client';
 import { UserEntity } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -37,11 +36,7 @@ export class UsersService {
     }
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
-  async findOne(id: number): Promise<UserEntity> {
+  async findById(id: number): Promise<UserEntity> {
     try {
       const user = await this.prisma.user.findUnique({
         where: { id },
@@ -53,16 +48,6 @@ export class UsersService {
     }
   }
 
-  async findPastMessagedUsers(id: number): Promise<any> {
-    try {
-      // Get from and to
-      return null;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  // ------------------------------ find username and password --------------------------------
   async findByEmail(username: string) {
     // user name must be email
     const user = await this.prisma.user.findUnique({
@@ -73,12 +58,54 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findMessageSectionsByUserId(id: number): Promise<UserEntity | any> {
+    const userWithMessageSections = await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        messageSections: {
+          select: {
+            id: true,
+            messages: {
+              select: {
+                id: true,
+                text: true,
+              },
+            },
+            users: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return userWithMessageSections;
   }
 
-  // Example of role based on role
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async findMessageSectionsBetweenCurrentUserAndTheOther(
+    currentUserId: number,
+    otherUserId: number,
+  ): Promise<any | null> {
+    const checkSection = await this.prisma.user.findUnique({
+      where: { id: currentUserId },
+      select: {
+        messageSections: {
+          where: {
+            users: {
+              some: {
+                id: otherUserId,
+              },
+            },
+          },
+          take: 1,
+        },
+      },
+    });
+    if (!checkSection) return null;
+    return checkSection;
   }
 }

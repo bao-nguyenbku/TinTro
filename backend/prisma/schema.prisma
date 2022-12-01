@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,42 +8,37 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  role Role @default(USER)
-  email String @unique()
-  phone String   @unique()
-  password String
-  name String
-  avatar String @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-  receivedMessage Message[] @relation(name: "receivedMessage")
-  sentMessage Message[] @relation(name: "sentMessage")
-  currentUserMessageSection MessageSection[] @relation(name: "currentUserMessageSection")
-  otherUserMessageSection MessageSection[] @relation(name: "otherUserMessageSection")
-  @@index(id)
+  id              Int              @id @default(autoincrement())
+  createdAt       DateTime         @default(now())
+  email           String           @unique
+  name            String
+  password        String
+  role            Role             @default(USER)
+  updatedAt       DateTime         @updatedAt
+  phone           String           @unique
+  avatar          String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
+  sentMessage     Message[]        @relation("sentMessage")
+  messageSections MessageSection[] @relation("users_in_message_section")
+
+  @@index([id])
 }
 
 model Message {
-  id Int @id @default(autoincrement())
-  text String
-  fromId Int
-  from User @relation(name: "sentMessage", fields: [fromId], references: [id])
-  toId Int
-  to User @relation(name: "receivedMessage", fields: [toId], references: [id])
-  createdAt DateTime @default(now())
-  latestMessageForSection MessageSection?
-  @@index([id, fromId, toId, createdAt])
+  id               Int            @id @default(autoincrement())
+  text             String
+  createdAt        DateTime       @default(now())
+  fromId           Int
+  messageSectionId Int
+  from             User           @relation("sentMessage", fields: [fromId], references: [id])
+  messageSection   MessageSection @relation("message", fields: [messageSectionId], references: [id])
+
+  @@index([id, fromId, createdAt])
 }
 
 model MessageSection {
-  id Int @id @default(autoincrement())
-  currentUserId Int
-  currentUser User @relation(name: "currentUserMessageSection", fields: [currentUserId], references: [id])
-  otherUser User @relation(name: "otherUserMessageSection", fields: [otherUserId], references: [id])
-  otherUserId Int 
-  latestMessageId Int @unique
-  latestMessage Message @relation(fields: [latestMessageId], references: [id])
+  id       Int       @id @default(autoincrement())
+  messages Message[] @relation("message")
+  users    User[]    @relation("users_in_message_section")
 }
 
 enum Role {
