@@ -17,7 +17,7 @@ model User {
   updatedAt      DateTime         @updatedAt
   phone          String           @unique
   avatar         String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
-  Message        Message[]
+  message        Message[]
   accommodation Accommodation?
   MessageSection MessageSection[] @relation("users_in_message_section")
 
@@ -30,7 +30,7 @@ model Message {
   createdAt        DateTime       @default(now())
   fromId           Int
   messageSectionId Int
-  User             User           @relation(fields: [fromId], references: [id])
+  from             User           @relation(fields: [fromId], references: [id])
   MessageSection   MessageSection @relation(fields: [messageSectionId], references: [id])
 
   @@index([id, fromId, createdAt])
