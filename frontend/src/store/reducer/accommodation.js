@@ -59,15 +59,15 @@ export const selectAccommodationState = createSelector(
 export const getAllAccommodations = createAsyncThunk(
     'accommodation/getAllAccommodations',
     async (_, { rejectWithValue }) => {
-        return getAllAccommodationsService()
-        .then(response => response.data)
-        .catch(error => {
-            console.log(error);
+        try {
+            const response = await getAllAccommodationsService();
+            return response.data;
+        } catch (error) {
             return rejectWithValue({
-                statusCode: error.status,
-                message: error.message
+                message: error.message,
+                statusCode: error.status
             })
-        })
+        }
     }
         
 )

@@ -5,9 +5,11 @@ import MyApp from './src';
 import * as SplashScreen from 'expo-splash-screen';
 import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
+import { enableScreens } from 'react-native-screens';
 
 SplashScreen.preventAutoHideAsync();
 export default function App() {
+  enableScreens(false);
   const [isReady, setIsReady] = useState(false);
   setTimeout(() => {
     SplashScreen.hideAsync().then(() => setIsReady(true))

@@ -21,7 +21,6 @@ const AccommodationList = (props) => {
         <RefreshControl
           refreshing={loading}
           onRefresh={fetchAllAccommodationData}
-
         />
       }
     >

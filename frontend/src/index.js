@@ -19,6 +19,9 @@ const Index = () => {
         initialRouteName={ROUTES.explore.title}
         sceneContainerStyle='#F3F4F6'
         screenOptions={({ route }) => ({
+          tabBarStyle: {
+            display: 'absolute'
+          },
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === ROUTES.explore.title) {

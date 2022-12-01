@@ -1,7 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
+import { SafeAreaView } from 'react-native';
 import { Box, Text, Image, ScrollView, Divider } from 'native-base';
 import Loading from 'components/loading';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import CommonInfo from './CommonInfo';
+import OwnerContact from './OwnerContact';
+import Description from './Description';
+import RequestRentalButton from './RequestRentalButton';
 
 const AccommodationDetailsScreen = (props) => {
   const { navigation, route } = props;
@@ -9,70 +14,56 @@ const AccommodationDetailsScreen = (props) => {
   useEffect(() => {
     navigation.getParent()?.setOptions({
       tabBarStyle: {
-        display: "none"
-      }
+        display: 'none'
+      },
     });
     return () => navigation.getParent()?.setOptions({
-      tabBarStyle: undefined
+      tabBarStyle: undefined,
     });
   }, [navigation]);
   if (!item) {
     return <Loading />
   }
   return (
-    <ScrollView>
+    <SafeAreaView
+      style={{
+        flex: 1,
+      }}
+    >
       <Box
-        bgColor='transparent'
+        flex={1}
         paddingX='5'
+        paddingBottom='2'
       >
-        <Box
-          height='222px'
-        >
-          <Image 
-            source={{
-              uri: item.thumbnail
-            }}
-            alt='thumbnail'
-            size='full'
-            rounded='12'
-          />
-        </Box>
-        <Text>{item.name}</Text>
-        <Box
-          flexDirection='row'
-          width='full'
-          bgColor='coolGray.600'
-        >
+        <ScrollView>
           <Box
-            flexDirection='row'
-            alignItems='center'
-            bgColor='coolGray.400'
-            justifyContent='center'
+            bgColor='transparent'
           >
-            <Ionicons name='location-sharp' size={20} color='#737373'/>
-            <Text>{[item.addressNumber, item.addressStreet, item.addressDistrict, item.addressCity].join(', ')}</Text>
+            <Box
+              height='222px'
+            >
+              <Image
+                source={{
+                  uri: item.thumbnail
+                }}
+                alt='thumbnail'
+                size='full'
+                rounded='12'
+              />
+            </Box>
+            <Text
+              fontSize='2xl'
+              fontWeight='700'
+              marginTop='2'
+            >{item.name}</Text>
+            <CommonInfo item={item} />
+            <OwnerContact item={item} />
+            <Description item={item} />
           </Box>
-          <Box
-            flexDirection='row'
-            alignItems='center'
-            bgColor='coolGray.400'
-            justifyContent='center'
-          >
-            <Ionicons name='scan-outline' size={20} color='#737373'/>
-            <Text>{item.area}m2</Text>
-          </Box>
-          <Box
-            flexDirection='row'
-            alignItems='center'
-            bgColor='coolGray.400'
-            justifyContent='center'
-          >
-            <Ionicons name='checkbox' size={20} color='#059669'/>
-            <Text>Còn 3 phòng trống</Text>
-          </Box>
-        </Box>
+        </ScrollView>
+        <RequestRentalButton />
       </Box>
-    </ScrollView>
+    </SafeAreaView>
   )
 }
 
