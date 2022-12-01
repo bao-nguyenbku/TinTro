@@ -8,18 +8,18 @@ datasource db {
 }
 
 model User {
-  id             Int              @id @default(autoincrement())
-  createdAt      DateTime         @default(now())
-  email          String           @unique
-  name           String
-  password       String
-  role           Role             @default(USER)
-  updatedAt      DateTime         @updatedAt
-  phone          String           @unique
-  avatar         String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
-  message        Message[]
-  accommodation Accommodation?
-  MessageSection MessageSection[] @relation("users_in_message_section")
+  id              Int              @id @default(autoincrement())
+  createdAt       DateTime         @default(now())
+  email           String           @unique
+  name            String
+  password        String
+  role            Role             @default(USER)
+  updatedAt       DateTime         @updatedAt
+  phone           String           @unique
+  avatar          String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
+  messages        Message[]
+  accommodation   Accommodation?
+  messageSections MessageSection[] @relation("users_in_message_section")
 
   @@index([id])
 }
@@ -31,15 +31,15 @@ model Message {
   fromId           Int
   messageSectionId Int
   from             User           @relation(fields: [fromId], references: [id])
-  MessageSection   MessageSection @relation(fields: [messageSectionId], references: [id])
+  messageSection   MessageSection @relation(fields: [messageSectionId], references: [id])
 
   @@index([id, fromId, createdAt])
 }
 
 model MessageSection {
-  id      Int       @id @default(autoincrement())
-  Message Message[]
-  User    User[]    @relation("users_in_message_section")
+  id       Int       @id @default(autoincrement())
+  messages Message[]
+  users    User[]    @relation("users_in_message_section")
 }
 
 enum Role {
@@ -48,28 +48,28 @@ enum Role {
 }
 
 model Accommodation {
-  id Int @id @default(autoincrement())
-  name String
-  addressNumber String
-  addressStreet String
+  id              Int      @id @default(autoincrement())
+  name            String
+  addressNumber   String
+  addressStreet   String
   addressDistrict String
-  addressCity String
-  area Float 
-  rooms Room[]
-  price Int @default(0)
-  owner User @relation(fields: [ownerId], references: [id])
-  ownerId Int @unique
-  description String
-  thumbnail String @default("")
-  images String[] @default([""])
-  utilities String[]
+  addressCity     String
+  area            Float
+  rooms           Room[]
+  price           Int      @default(0)
+  owner           User     @relation(fields: [ownerId], references: [id])
+  ownerId         Int      @unique
+  description     String
+  thumbnail       String   @default("")
+  images          String[] @default([""])
+  utilities       String[]
 }
 
 model Room {
-  id Int @id @default(autoincrement())
-  accommodation Accommodation @relation(fields: [accommodationId], references: [id])
+  id              Int           @id @default(autoincrement())
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
   accommodationId Int
-  status RoomStatus
+  status          RoomStatus
 }
 
 enum RoomStatus {
