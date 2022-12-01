@@ -32,6 +32,8 @@
       {
         "allowAsProps": true
       }
-    ]
+    ],
+    "react/no-children-prop": "off",
+    "arrow-body-style": "off"
   }
 }
