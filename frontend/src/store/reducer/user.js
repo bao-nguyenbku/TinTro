@@ -35,7 +35,6 @@ export const register = createAsyncThunk('users/register', async ({ name, email,
 
 export const saveUser = createAsyncThunk('users/saveUser', async ({ token }, { rejectWithValue }) => {
   try {
-    console.log(token);
     const user = jwtParse(token);
     await setToken(token);
     return user;

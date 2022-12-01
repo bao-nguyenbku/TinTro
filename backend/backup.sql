@@ -416,8 +416,8 @@ ALTER TABLE ONLY public."User" ALTER COLUMN id SET DEFAULT nextval('public."User
 --
 
 COPY public."Accommodation" (id, name, "addressNumber", "addressStreet", "addressDistrict", "addressCity", area, price, "ownerId", description, thumbnail, images, utilities) FROM stdin;
-1	Nhà trọ Phúc Thiên	123/12	Trần Phú	Quận 10	Hồ Chí Minh	30.5	2100000	1	Đây là mô tả cho nhà trọ này	https://blog.rever.vn/hubfs/cho_thue_phong_tro_moi_xay_gia_re_ngay_phuong_15_tan_binh3.jpg	{"",https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2021/11/16/cho-thue-phong-tro-1613975723_1637034014.jpg,https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2019/08/27/1_1566888997.jpg}	{}
-2	Nhà trọ Phong Nhất	156	Nguyễn Huệ	Quận 1	Hồ Chí Minh	24.5	1750000	2	Nhà trọ nằm tại khu vực đắc địa của thành phố Hồ Chí Minh	http://sbshouse.vn/wp-content/uploads/2020/05/thiet-ke-nha-tro-cho-thue-ket-hop-sieu-thi-6.jpg	{"",https://dichvuchuyendo.net/wp-content/uploads/2020/10/phong-tro.jpg,https://static2.yan.vn/YanNews/2167221/202008/117138659_2049754861827696_6445929331803413929_o-b662fc8c.jpg}	{}
+1	Nh?? tr??? Ph??c Thi??n	123/12	Tr???n Ph??	Qu???n 10	H??? Ch?? Minh	30.5	2100000	1	????y l?? m?? t??? cho nh?? tr??? n??y	https://blog.rever.vn/hubfs/cho_thue_phong_tro_moi_xay_gia_re_ngay_phuong_15_tan_binh3.jpg	{"",https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2021/11/16/cho-thue-phong-tro-1613975723_1637034014.jpg,https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2019/08/27/1_1566888997.jpg}	{}
+2	Nh?? tr??? Phong Nh???t	156	Nguy???n Hu???	Qu???n 1	H??? Ch?? Minh	24.5	1750000	2	Nh?? tr??? n???m t???i khu v???c ?????c ?????a c???a th??nh ph??? H??? Ch?? Minh	http://sbshouse.vn/wp-content/uploads/2020/05/thiet-ke-nha-tro-cho-thue-ket-hop-sieu-thi-6.jpg	{"",https://dichvuchuyendo.net/wp-content/uploads/2020/10/phong-tro.jpg,https://static2.yan.vn/YanNews/2167221/202008/117138659_2049754861827696_6445929331803413929_o-b662fc8c.jpg}	{}
 \.
 
 
@@ -434,8 +434,8 @@ COPY public."Room" (id, "accommodationId", status) FROM stdin;
 --
 
 COPY public."User" (id, role, email, phone, password, name, "createdAt", "updatedAt") FROM stdin;
-1	USER	bao@gmail.com	012345678	password	Bảo Nguyễn	2022-11-29 07:10:20.851	2022-11-29 07:10:20.851
-2	USER	trung@gmail.com	0934156799	password	Trung Lê	2022-11-29 07:11:08.647	2022-11-29 07:11:08.647
+1	USER	bao@gmail.com	012345678	password	B???o Nguy???n	2022-11-29 07:10:20.851	2022-11-29 07:10:20.851
+2	USER	trung@gmail.com	0934156799	password	Trung L??	2022-11-29 07:11:08.647	2022-11-29 07:11:08.647
 \.
 
 

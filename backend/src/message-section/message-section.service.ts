@@ -29,8 +29,4 @@ export class MessageSectionService {
       );
     return checkSection;
   }
-
-  async createNewSection(currentUserId: number, otherUserId: number) {
-    
-  }
 }
