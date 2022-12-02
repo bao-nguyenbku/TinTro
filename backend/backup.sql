@@ -416,8 +416,8 @@ ALTER TABLE ONLY public."User" ALTER COLUMN id SET DEFAULT nextval('public."User
 --
 
 COPY public."Accommodation" (id, name, "addressNumber", "addressStreet", "addressDistrict", "addressCity", area, price, "ownerId", description, thumbnail, images, utilities) FROM stdin;
-1	Nhà trọ Phúc Thiên	123/12	Trần Phú	Quận 10	Hồ Chí Minh	30.5	2100000	1	Đây là mô tả cho nhà trọ này	https://blog.rever.vn/hubfs/cho_thue_phong_tro_moi_xay_gia_re_ngay_phuong_15_tan_binh3.jpg	{"",https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2021/11/16/cho-thue-phong-tro-1613975723_1637034014.jpg,https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2019/08/27/1_1566888997.jpg}	{}
-2	Nhà trọ Phong Nhất	156	Nguyễn Huệ	Quận 1	Hồ Chí Minh	24.5	1750000	2	Nhà trọ nằm tại khu vực đắc địa của thành phố Hồ Chí Minh	http://sbshouse.vn/wp-content/uploads/2020/05/thiet-ke-nha-tro-cho-thue-ket-hop-sieu-thi-6.jpg	{"",https://dichvuchuyendo.net/wp-content/uploads/2020/10/phong-tro.jpg,https://static2.yan.vn/YanNews/2167221/202008/117138659_2049754861827696_6445929331803413929_o-b662fc8c.jpg}	{}
+1	Nhà trọ Phúc Thiên	123/12	Trần Phú	Quận 10	Hồ Chí Minh	30.5	2100000	1	Đây là mô tả cho nhà trọ này	https://blog.rever.vn/hubfs/cho_thue_phong_tro_moi_xay_gia_re_ngay_phuong_15_tan_binh3.jpg	{https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2021/11/16/cho-thue-phong-tro-1613975723_1637034014.jpg,https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2019/08/27/1_1566888997.jpg}	{}
+2	Nhà trọ Phong Nhất	156	Nguyễn Huệ	Quận 1	Hồ Chí Minh	24.5	1750000	2	Nhà trọ nằm tại khu vực đắc địa của thành phố Hồ Chí Minh	http://sbshouse.vn/wp-content/uploads/2020/05/thiet-ke-nha-tro-cho-thue-ket-hop-sieu-thi-6.jpg	{https://dichvuchuyendo.net/wp-content/uploads/2020/10/phong-tro.jpg,https://static2.yan.vn/YanNews/2167221/202008/117138659_2049754861827696_6445929331803413929_o-b662fc8c.jpg}	{}
 \.
 
 

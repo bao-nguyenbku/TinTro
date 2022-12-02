@@ -12,6 +12,8 @@ datasource db {
 
 model User {
   id Int @id @default(autoincrement())
+  owner Owner?
+  renter Renter?
   role Role @default(USER)
   email String @unique
   phone String @unique
@@ -19,10 +21,42 @@ model User {
   name String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  accommodation Accommodation?
   @@index(id)
 }
 
+model Owner {
+  user User @relation(fields: [userId], references: [id])
+  userId Int @unique
+  role Role @default(USER)
+  email String @unique
+  phone String @unique
+  password String
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index(userId)
+
+  accommodation Accommodation?
+  rentRequest RentRequest[]
+
+}
+
+model Renter {
+  user User @relation(fields: [userId], references: [id])
+  userId Int @unique
+  role Role @default(USER)
+  email String @unique
+  phone String @unique
+  password String
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index(userId)
+
+  rentRequest RentRequest[]
+  rentRoom Room? @relation(fields: [rentRoomId], references: [id])
+  rentRoomId Int?
+}
 enum Role {
   ADMIN
   USER
@@ -39,19 +73,37 @@ model Accommodation {
   area Float 
   rooms Room[]
   price Int @default(0)
-  owner User @relation(fields: [ownerId], references: [id])
+  owner Owner @relation(fields: [ownerId], references: [userId])
   ownerId Int @unique
   description String
   thumbnail String @default("")
-  images String[] @default([""])
+  images String[] @default([])
   utilities String[]
+  rentRequest RentRequest[]
+}
+
+model RentRequest {
+  id Int @id @default(autoincrement())
+  renter Renter @relation(fields: [renterId], references: [userId])
+  renterId Int
+  owner Owner @relation(fields: [ownerId], references: [userId])
+  ownerId Int
+  accommodation Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId Int
+  status RequestStatus
 }
 
 model Room {
   id Int @id @default(autoincrement())
   accommodation Accommodation @relation(fields: [accommodationId], references: [id])
   accommodationId Int
+  renter Renter[]
   status RoomStatus
+}
+
+enum RequestStatus {
+  WAITING
+  CONFIRM
 }
 
 enum RoomStatus {
