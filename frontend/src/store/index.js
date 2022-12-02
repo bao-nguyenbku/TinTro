@@ -1,9 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 import accommodationReducer from './reducer/accommodation';
+import userReducer from './reducer/user';
 
-export const store = configureStore({
-    reducer: {
-        accommodation: accommodationReducer
-    }
-})
+const store = configureStore({
+  reducer: {
+    user: userReducer,
+    accommodation: accommodationReducer,
+  },
+});
 
+export default store;

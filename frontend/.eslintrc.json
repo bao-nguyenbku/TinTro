@@ -1,0 +1,39 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true,
+    "react-native/react-native": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb", "airbnb/hooks", "prettier"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "react-native"],
+  "rules": {
+    // allow .js files to contain JSX code
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "no-console": "off",
+    // prevent eslint to complain about the "styles" variable being used before it was defined
+    "no-use-before-define": ["error", { "variables": false }],
+    "no-param-reassign": 0,
+    "no-unused-vars": ["error", { "argsIgnorePattern": "_" }],
+    // ignore errors for the react-navigation package
+    "react/prop-types": "off",
+    "import/prefer-default-export": "off",
+    "import/no-unresolved": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": "off",
+    "react/no-unstable-nested-components": [
+      "error",
+      {
+        "allowAsProps": true
+      }
+    ],
+    "react/no-children-prop": "off",
+    "arrow-body-style": "off"
+  }
+}

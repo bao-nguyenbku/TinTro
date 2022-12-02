@@ -1,17 +1,16 @@
-import 'react-native-gesture-handler';
-import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { ROUTES } from 'navigation';
-import ExploreScreen from 'screens/explore';
-import MyRoomScreen from 'screens/my-room';
-import MessageScreen from 'screens/message';
-import AccountScreen from 'screens/account';
+import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginNav from 'navigation/authentication';
+import HomeNav from 'navigation/home';
+import { useSelector } from 'react-redux';
+import { isEmptyObj } from 'native-base';
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const Index = () => {
+  const user = useSelector((state) => state.user);
+
   return (
     <>
       <StatusBar style='auto' />
@@ -54,44 +53,16 @@ const Index = () => {
           // header: (props) => <Header {...props} />
           headerShown: false
         })}
+      />
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
       >
-        {Object.keys(ROUTES).map(tabScreen => {
-          let TabScreen;
-          switch (ROUTES[tabScreen].title) {
-            case ROUTES.explore.title: {
-              TabScreen = ExploreScreen;
-              break;
-            }
-            case ROUTES.myRoom.title: {
-              TabScreen = MyRoomScreen;
-              break;
-            }
-            case ROUTES.message.title: {
-              TabScreen = MessageScreen;
-              break;
-            }
-            case ROUTES.account.title: {
-              TabScreen = AccountScreen;
-              break;
-            }
-            default:
-              break;
-          }
-          return (
-            <Tab.Screen
-              name={ROUTES[tabScreen].title}
-              key={tabScreen.toString()}
-              children={() => <TabScreen {...ROUTES[tabScreen]} />}
-              options={{
-                title: ROUTES[tabScreen].label
-              }}
-            />
-          )
-        })}
-      </Tab.Navigator>
+        {isEmptyObj(user.currentUser) && <Stack.Screen name="Authentication" component={LoginNav} />}
+        <Stack.Screen name="Home" component={HomeNav} />
+      </Stack.Navigator>
     </>
-
-  )
-}
-
+  );
+};
 export default Index;

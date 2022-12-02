@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { Box } from "native-base";
 const Loading = () => (
   <Box
@@ -11,17 +11,5 @@ const Loading = () => (
     <ActivityIndicator size="large" color="#059669" />
   </Box>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center"
-  },
-  horizontal: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
-  }
-});
 
 export default Loading;

@@ -1,10 +1,12 @@
 import { Text, View } from 'react-native';
 import React from 'react';
 
-const MyRoomScreen = () => (
+function User() {
+  return (
     <View>
-      <Text>MyRoomScreen</Text>
+      <Text>User</Text>
     </View>
-  )
+  );
+}
 
-export default MyRoomScreen;
+export default User;

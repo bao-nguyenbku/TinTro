@@ -7,6 +7,7 @@ import CommonInfo from './CommonInfo';
 import OwnerContact from './OwnerContact';
 import Description from './Description';
 import RequestRentalButton from './RequestRentalButton';
+import { Text, View } from 'react-native';
 
 const AccommodationDetailsScreen = (props) => {
   const { navigation, route } = props;
@@ -17,14 +18,16 @@ const AccommodationDetailsScreen = (props) => {
         display: 'none'
       },
     });
-    return () => navigation.getParent()?.setOptions({
-      tabBarStyle: undefined,
-    });
+    return () =>
+      navigation.getParent()?.setOptions({
+        tabBarStyle: undefined,
+      });
   }, [navigation]);
   if (!item) {
     return <Loading />
   }
   return (
+
     <SafeAreaView
       style={{
         flex: 1,
