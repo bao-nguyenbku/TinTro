@@ -1,41 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UserEntity as  } from "../../users/entities/user.entity";
+// import { UserEntity as Renter } from "~/users/entities/user.entity";
 
-export class AccommodationDto {
+export class RequestRentRoomDto {
   @ApiProperty()
-  id: Int32Array
-
-  @ApiProperty()
-  name: string
+  renterId: number
 
   @ApiProperty()
-  addressNumber: string
-  
-  @ApiProperty()
-  addressStreet: string
+  ownerId: number
 
   @ApiProperty()
-  addressDistrict: string
-
-  @ApiProperty()
-  addressCity: string
-
-  @ApiProperty()
-  area: Float32Array 
-
-  // @ApiProperty()
-  // rooms: Room[]
-
-  @ApiProperty()
-  owner: User 
-
-  @ApiProperty()
-  ownerId: Int32Array
-
-  @ApiProperty()
-  description: string
-
-  @ApiProperty()
-  utilities: string[]
-
+  accommodationId: number
 }

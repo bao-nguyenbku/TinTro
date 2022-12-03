@@ -1,9 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UserEntity as User } from "../../users/entities/user.entity";
-
-export class AccommodationDto {
+import { Owner, Room, RentRequest } from "@prisma/client";
+export class AccommodationResponseDto {
   @ApiProperty()
-  id: Int32Array
+  id: number
 
   @ApiProperty()
   name: string
@@ -21,21 +20,32 @@ export class AccommodationDto {
   addressCity: string
 
   @ApiProperty()
-  area: Float32Array 
-
-  // @ApiProperty()
-  // rooms: Room[]
+  area: number
 
   @ApiProperty()
-  owner: User 
+  rooms: Room[]
 
   @ApiProperty()
-  ownerId: Int32Array
+  price: number
+
+  @ApiProperty()
+  owner: Owner 
+
+  @ApiProperty()
+  ownerId: number
 
   @ApiProperty()
   description: string
+  
+  @ApiProperty()
+  thumbnail: string
+
+  @ApiProperty()
+  images: string[]
 
   @ApiProperty()
   utilities: string[]
 
+  @ApiProperty()
+  rentRequest: RentRequest[]
 }
