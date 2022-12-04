@@ -86,9 +86,11 @@ const SendMessage = ({ route }) => {
           return (
             <Flex my="4" key={messageInSection.id} w="100%">
               <Flex alignItems="flex-end" direction={pos}>
-                <Avatar size="sm" source={{ uri: messageInSection.from.avatar }} />
+                <Avatar mx={2} size="sm" source={{ uri: messageInSection.from.avatar }} />
                 <Box alignItems="center" p={3} borderRadius="2xl" backgroundColor={messageInSection.fromId === currentUser.id ? 'tertiary.600' : '#fff'}>
-                  <Text fontSize={16}>{messageInSection.text}</Text>
+                  <Text color={messageInSection.fromId === currentUser.id ? '#fff' : '#000'} fontSize={16}>
+                    {messageInSection.text}
+                  </Text>
                 </Box>
               </Flex>
             </Flex>
