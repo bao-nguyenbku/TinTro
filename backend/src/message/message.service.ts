@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { AuthService } from 'src/auth/auth.service';
 import { Socket } from 'socket.io';
-import { MessageEntity } from './entities/message.entity';
 
 @Injectable()
 export class MessageService {
@@ -14,11 +13,11 @@ export class MessageService {
   ) {}
 
   async getUserFromSocket(socket: Socket): Promise<UserEntity | null> {
-    const token = socket.handshake.headers.authorization;
+    const token =
+      socket.handshake.auth?.token || socket.handshake.headers?.authorization;
     if (!token) {
       throw new WsException('Token not found');
     }
-
     const user = await this.authService.verifyTokenWs(token);
     if (!user) {
       throw new WsException('Invalid credentials.');
@@ -26,7 +25,11 @@ export class MessageService {
     return user;
   }
 
-  async createNewMessage(fromId, messageSectionId, text) {
+  async createNewMessage(
+    fromId: number,
+    messageSectionId: number,
+    text: string,
+  ) {
     const message = await this.prisma.message.create({
       data: {
         fromId,

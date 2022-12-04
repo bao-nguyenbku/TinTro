@@ -108,7 +108,7 @@ export class MessageGateway
   @SubscribeMessage('message-sent-from-client')
   async listenForMessages(
     @ConnectedSocket() socket: Socket,
-    @MessageBody() message: object,
+    @MessageBody() message: string,
   ): Promise<WsResponse<string> | void> {
     try {
       this.logger.log(
@@ -143,6 +143,7 @@ export class MessageGateway
         await this.messageSectionService.getAllMessagesOfSection(
           this.messageSection.id,
         );
+      this.logger.debug(JSON.stringify(allMessagesFromSection, null, 2));
       //* we want to emit to client only
       socket.emit('client-all-past-messages', allMessagesFromSection);
     } catch (err) {
