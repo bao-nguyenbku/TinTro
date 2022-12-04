@@ -100,6 +100,7 @@ const SendMessage = ({ route }) => {
       <Input
         mt="5"
         borderRadius={999}
+        backgroundColor='#fff'
         value={messageText}
         onChangeText={(text) => setMessageText(text)}
         InputRightElement={
