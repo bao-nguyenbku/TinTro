@@ -51,7 +51,6 @@ export class MessageGateway
       this.currentUser = await this.messageService.getUserFromSocket(socket);
       const receiverId = Number(socket.handshake.query.receiverId);
       // Check if section between users already exists, fetch that section
-
       this.messageSection =
         await this.messageSectionService.checkExistSectionBetween2Users(
           this.currentUser.id,
@@ -85,7 +84,7 @@ export class MessageGateway
   // listen for messages
   async listenForMessages(
     @ConnectedSocket() socket: Socket,
-    @MessageBody() message: string,
+    @MessageBody() message: object,
   ) {
     try {
       const receiverId = Number(socket.handshake.query.receiverId);
