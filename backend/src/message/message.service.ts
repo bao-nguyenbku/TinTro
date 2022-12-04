@@ -1,6 +1,6 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { WsException } from '@nestjs/websockets';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { AuthService } from 'src/auth/auth.service';
 import { Socket } from 'socket.io';
@@ -35,6 +35,16 @@ export class MessageService {
         fromId,
         messageSectionId,
         text,
+      },
+      include: {
+        from: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+          },
+        },
       },
     });
     return message;

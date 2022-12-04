@@ -3,7 +3,7 @@ import { API_BASE_URL } from '@env';
 import { getToken } from './token';
 
 const request = axios.create({
-  baseURL: API_BASE_URL || 'http://192.168.100.8:5000',
+  baseURL: API_BASE_URL || 'http://192.168.100.9:5000',
   headers: {
     Accept: '*/*',
     Connection: 'keep-alive',
@@ -16,7 +16,6 @@ const request = axios.create({
     'X-Requested-With': 'XMLHttpRequest',
   },
   timeout: 10000,
-
 });
 
 // Set token int header

@@ -104,7 +104,7 @@ export const userSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(saveUser.fulfilled, (state, action) => {
-      state.currentUser = action.payload;
+      state.currentUser = { ...action.payload, id: action.payload.sub };
       state.loading = false;
     });
     builder.addCase(saveUser.rejected, (state, action) => {

@@ -125,10 +125,6 @@ export class MessageGateway
   @SubscribeMessage('fetch-all-messages')
   async requestAllMessages(@ConnectedSocket() socket: Socket) {
     try {
-      const currentUser =
-        this.currentUser ||
-        (await this.messageService.getUserFromSocket(socket));
-
       const allMessagesFromSection =
         await this.messageSectionService.getAllMessagesOfSection(
           this.messageSection.id,

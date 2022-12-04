@@ -9,7 +9,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 const MessagerList = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
   const { messageSections, loading, error } = useSelector((state) => state.message);
   const navigation = useNavigation();
   const isFocus = useIsFocused();
@@ -33,6 +33,8 @@ const MessagerList = () => {
             const messages = section.messages;
             const from = messages.length && messages[0].from;
             const fromId = messages.length && messages[0].fromId;
+            const otherUser = section.users.find((userInSection) => userInSection.id !== user.currentUser.id);
+
             return !messages.length ? null : (
               <Pressable
                 onPress={() =>
@@ -51,11 +53,11 @@ const MessagerList = () => {
                 {({ isPressed }) => (
                   <VStack borderRadius={12} h="full" alignItems="center" mx="6" space={2} backgroundColor={isPressed ? 'muted.200' : '#fff'} flexDirection="row" px="4">
                     <Flex mr={2} pr={2} w="1/6">
-                      <Avatar size="md" borderRadius="full" source={{ uri: from.avatar }} />
+                      <Avatar size="md" borderRadius="full" source={{ uri: otherUser.avatar }} />
                     </Flex>
                     <VStack w="2/3" space={1.5}>
                       <Heading fontSize="md" color="#000">
-                        {from.name}
+                        {otherUser.name}
                       </Heading>
 
                       <Text isTruncated maxW="300" noOfLines={1} fontSize="xs" color="muted.500">
