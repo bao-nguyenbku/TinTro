@@ -25,4 +25,15 @@ export class MessageService {
     }
     return user;
   }
+
+  async createNewMessage(fromId, messageSectionId, text) {
+    const message = await this.prisma.message.create({
+      data: {
+        fromId,
+        messageSectionId,
+        text,
+      },
+    });
+    return message;
+  }
 }

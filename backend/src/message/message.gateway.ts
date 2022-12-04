@@ -2,6 +2,7 @@ import {
   OnGatewayInit,
   OnGatewayConnection,
   OnGatewayDisconnect,
+  WsResponse,
 } from '@nestjs/websockets/interfaces';
 import {
   WebSocketGateway,
@@ -15,9 +16,7 @@ import { ConnectedSocket, WsException } from '@nestjs/websockets';
 
 import { Server, Socket } from 'socket.io';
 import { UsersService } from 'src/users/users.service';
-import { AuthService } from 'src/auth/auth.service';
 import { MessageSectionService } from 'src/message-section/message-section.service';
-import { MessageEntity } from './entities/message.entity';
 
 @WebSocketGateway({
   namespace: 'message',
@@ -32,65 +31,97 @@ export class MessageGateway
   server: Server;
   private logger: Logger = new Logger('MessageGateway');
 
-  isExistSection = false;
   messageSection = null;
   currentUser = null;
   constructor(
     private readonly messageService: MessageService,
-    private readonly authService: AuthService,
     private readonly userService: UsersService,
     private readonly messageSectionService: MessageSectionService,
   ) {}
 
   afterInit(server: Server) {
-    this.logger.log('----------- Init websocket -----------');
+    this.logger.log(
+      '----------- Init websocket -----------  #',
+      server.eventNames(),
+    );
   }
 
   async handleConnection(socket: Socket) {
     try {
+      // ! Client can pass receiverId if section did not exist, or pass the messageSectionId itself if it has existed
       this.currentUser = await this.messageService.getUserFromSocket(socket);
       const receiverId = Number(socket.handshake.query.receiverId);
-      // Check if section between users already exists, fetch that section
+      const messageSectionId = Number(socket.handshake.query.messageSectionId);
+      // ! Check if section between users already exists, fetch that section
       this.messageSection =
-        await this.messageSectionService.checkExistSectionBetween2Users(
+        (messageSectionId &&
+          (await this.messageSectionService.getMessageSectionById(
+            messageSectionId,
+          ))) ||
+        (await this.messageSectionService.checkExistSectionBetween2Users(
           this.currentUser.id,
           receiverId,
+        ));
+      this.logger.debug(this.messageSection);
+
+      if (
+        receiverId &&
+        !this.messageSection &&
+        Array.isArray(this.messageSection) &&
+        this.messageSection.length === 0
+      ) {
+        this.messageSection = null;
+        const receiver = await this.userService.findById(receiverId);
+        if (!receiver) {
+          throw new WsException('Receiver not found');
+        }
+      }
+
+      if (!this.messageSection) {
+        // *Join the room of the section
+        // *create new section
+        this.messageSection =
+          await this.messageSectionService.createNewSectionBetween2Users(
+            this.currentUser.id,
+            receiverId,
+          );
+        this.logger.debug(
+          'Message section created successfully ',
+          this.messageSection.id,
         );
-
-      if (this.messageSection) {
-        this.isExistSection = true;
       }
-
-      const receiver = await this.userService.findById(receiverId);
-      if (!receiver) {
-        throw new WsException('Receiver not found');
-      }
-
-      this.logger.debug(this.currentUser.id);
+      this.logger.debug('Client joined section  ', this.messageSection.id);
+      this.server.socketsJoin(this.messageSection.id);
     } catch (e) {
       this.logger.error(e);
-      socket.emit('error', e);
-      socket.disconnect(true);
       throw e;
     }
   }
 
-  handleDisconnect(client: Socket) {
-    this.logger.log(`Client disconnected: ${client.id}`);
-    client.disconnect(true);
+  handleDisconnect(@ConnectedSocket() client: Socket) {
+    this.logger.log(
+      `Client disconnected: ${client.id} of user id: ${this.currentUser.id}`,
+    );
+    this.logger.log(`Message section: ${client.rooms}`);
   }
 
-  @SubscribeMessage('send_message')
-  // listen for messages
+  @SubscribeMessage('message-sent-from-client')
   async listenForMessages(
     @ConnectedSocket() socket: Socket,
     @MessageBody() message: object,
-  ) {
+  ): Promise<WsResponse<string> | void> {
     try {
-      const receiverId = Number(socket.handshake.query.receiverId);
-      const sender =
-        this.currentUser ||
-        (await this.messageService.getUserFromSocket(socket));
+      this.logger.log(
+        '---------- - Listen for messages ----------- # ' + message,
+      );
+      const newMessage = await this.messageService.createNewMessage(
+        this.currentUser.id,
+        this.messageSection.id,
+        message,
+      );
+      this.server
+        .to(this.messageSection.id)
+        .emit('client-receive-message', newMessage);
     } catch (err) {
       this.logger.error(err);
       throw err;
@@ -108,7 +139,12 @@ export class MessageGateway
       this.logger.log(
         `----------------------- ALL MESSAGES OF ${currentUser.id} --------------------`,
       );
-      this.logger.debug(JSON.stringify(currentUser, null, 2));
+      const allMessagesFromSection =
+        await this.messageSectionService.getAllMessagesOfSection(
+          this.messageSection.id,
+        );
+      //* we want to emit to client only
+      socket.emit('client-all-past-messages', allMessagesFromSection);
     } catch (err) {
       this.logger.error(err);
       throw err;

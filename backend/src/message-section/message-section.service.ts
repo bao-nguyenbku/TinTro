@@ -1,7 +1,10 @@
+import { MessageSection } from '@prisma/client';
+import { MessageEntity } from './../message/entities/message.entity';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
+import MessageSectionResponse from './dto/message-section-response.dto';
 
 @Injectable()
 export class MessageSectionService {
@@ -18,15 +21,76 @@ export class MessageSectionService {
     return sectionsOfUser;
   }
 
+  async getMessageSectionById(id: number): Promise<MessageSectionResponse> {
+    const section = await this.prisma.messageSection.findUnique({
+      where: {
+        id,
+      },
+    });
+    return section;
+  }
+
   async checkExistSectionBetween2Users(
     currentUserId: number,
     otherUserId: number,
-  ): Promise<UserEntity> {
-    const checkSection =
-      await this.userService.findMessageSectionsBetweenCurrentUserAndTheOther(
-        currentUserId,
-        otherUserId,
-      );
-    return checkSection;
+  ): Promise<MessageSectionResponse> {
+    const section = await this.prisma.messageSection.findFirst({
+      select: {
+        id: true,
+        users: true,
+      },
+      where: {
+        users: {
+          some: {
+            id: currentUserId,
+            messageSections: {
+              some: {
+                users: {
+                  some: {
+                    id: otherUserId,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    return section;
+  }
+
+  async createNewSectionBetween2Users(
+    currentUserId: number,
+    otherUserId: number,
+  ): Promise<MessageSectionResponse | null> {
+    const newSection = await this.prisma.messageSection.create({
+      data: {
+        users: {
+          connect: [
+            {
+              id: currentUserId,
+            },
+            {
+              id: otherUserId,
+            },
+          ],
+        },
+      },
+    });
+    return newSection;
+  }
+
+  async getAllMessagesOfSection(
+    messageSectionId: number,
+  ): Promise<MessageSectionResponse | null> {
+    const allMessagesFromSection = await this.prisma.messageSection.findFirst({
+      where: {
+        id: messageSectionId,
+      },
+      include: {
+        messages: true,
+      },
+    });
+    return allMessagesFromSection;
   }
 }

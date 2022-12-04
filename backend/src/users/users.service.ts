@@ -85,27 +85,4 @@ export class UsersService {
 
     return userWithMessageSections;
   }
-
-  async findMessageSectionsBetweenCurrentUserAndTheOther(
-    currentUserId: number,
-    otherUserId: number,
-  ): Promise<any | null> {
-    const checkSection = await this.prisma.user.findUnique({
-      where: { id: currentUserId },
-      select: {
-        messageSections: {
-          where: {
-            users: {
-              some: {
-                id: otherUserId,
-              },
-            },
-          },
-          take: 1,
-        },
-      },
-    });
-    if (!checkSection) return null;
-    return checkSection;
-  }
 }
