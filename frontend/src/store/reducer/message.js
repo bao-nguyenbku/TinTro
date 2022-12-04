@@ -72,6 +72,7 @@ const messageSlice = createSlice({
     clearMessageSections(state, _action) {
       state.messageSections = [];
       state.messages = [];
+      state.ws.disconnect();
       state.ws = null;
       state.error = null;
       state.loading = false;
