@@ -1,14 +1,7 @@
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Logger, Request, UseGuards } from '@nestjs/common';
 import { MessageSectionService } from './message-section.service';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import MessageSectionResponse from './dto/message-section-response.dto';
 
 @Controller('message-sections')

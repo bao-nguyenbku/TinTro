@@ -1,7 +1,7 @@
 import { MessageSection, Role } from '@prisma/client';
 import { UserEntity } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
@@ -62,6 +62,9 @@ export class UsersService {
     const userWithMessageSections = await this.prisma.user.findUnique({
       where: { id },
       select: {
+        id: true,
+        name: true,
+        email: true,
         messageSections: {
           select: {
             id: true,
@@ -69,7 +72,19 @@ export class UsersService {
               select: {
                 id: true,
                 text: true,
+                fromId: true,
+                from: {
+                  select: {
+                    name: true,
+                    avatar: true,
+                    createdAt: true,
+                  },
+                },
               },
+              orderBy: {
+                createdAt: 'desc',
+              },
+              take: 1,
             },
             users: {
               select: {

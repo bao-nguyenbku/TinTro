@@ -10,10 +10,10 @@ const initialState = {
 
 export const fetchMessageSections = createAsyncThunk('messages/fetchMessageSections', async ({ done }, { rejectWithValue, fulfillWithValue }) => {
   try {
-    const response = await request.get('/users/messages/past-messagers');
+    const response = await request.get('/message-sections');
     const { data } = response;
     if (done) done();
-    return fulfillWithValue(data);
+    return fulfillWithValue({ messageSections: data.messageSections });
   } catch (e) {
     if (e.response) return rejectWithValue({ statusCode: e.response.data.statusCode, message: e.response.data.message });
     return rejectWithValue({ statusCode: 500, message: 'Internal server error' });
@@ -25,10 +25,11 @@ const messageSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchMessageSections.fulfilled, (state, _action) => {
+    builder.addCase(fetchMessageSections.fulfilled, (state, action) => {
       state.loading = false;
       state.error = null;
-      // TODO store the sections in state
+      // store the sections in state
+      state.messageSections = action.payload.messageSections;
     });
     builder.addCase(fetchMessageSections.rejected, (state, action) => {
       state.error = action.message;

@@ -1,20 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { ActivityIndicator } from 'react-native';
+import { Box } from 'native-base';
 
-const Loading = () => 
-  // TODO: Implement loading component here
-   (
-    <View style={styles.container}>
-      <Text>Loading...</Text>
-    </View>
-  )
+const Loading = () => (
+  <Box flex={1} justifyContent="center" flexDirection="row" padding="10px">
+    <ActivityIndicator size="large" color="#059669" />
+  </Box>
+);
 
-
-export default Loading
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center'
-  }
-})
+export default Loading;
