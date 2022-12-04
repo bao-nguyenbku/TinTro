@@ -1,5 +1,6 @@
 import AccommodationList from "screens/explore/AccommodationList";
 import AccommodationDetailsScreen from "screens/explore/accommodation-details";
+import SearchScreen from "screens/search";
 
 export const ROUTES = {
   explore: {
@@ -8,13 +9,18 @@ export const ROUTES = {
     stack: {
       allAccommodations: {
         title: 'AllAccommodations',
-        label: 'Tìm năng',
+        label: 'Tiềm năng',
         component: AccommodationList
       },
       accommodationDetails: {
         title: 'AccommodationDetails',
         label: 'Chi tiết',
         component: AccommodationDetailsScreen
+      },
+      searchAccommodation: {
+        title: 'SearchAccommodation',
+        label: 'Tìm kiếm',
+        component: SearchScreen
       }
     }
   },

@@ -7,27 +7,21 @@ import CommonInfo from './CommonInfo';
 import OwnerContact from './OwnerContact';
 import Description from './Description';
 import RequestRentalButton from './RequestRentalButton';
-import { Text, View } from 'react-native';
+import { disableBottomTabBar } from 'utils/utils';
 
 const AccommodationDetailsScreen = (props) => {
   const { navigation, route } = props;
   const { item } = route.params;
   useEffect(() => {
-    navigation.getParent()?.setOptions({
-      tabBarStyle: {
-        display: 'none'
-      },
-    });
-    return () =>
-      navigation.getParent()?.setOptions({
-        tabBarStyle: undefined,
-      });
+    disableBottomTabBar(props);
+    return () => disableBottomTabBar(props, {
+      action: 'clean'
+    })
   }, [navigation]);
   if (!item) {
     return <Loading />
   }
   return (
-
     <SafeAreaView
       style={{
         flex: 1,

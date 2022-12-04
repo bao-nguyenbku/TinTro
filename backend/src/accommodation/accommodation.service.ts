@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Owner, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
@@ -14,11 +14,10 @@ export class AccommodationService {
         include: {
           owner: true,
           rooms: true,
-          rentRequest: true
-        }
-      })
-    }
-    catch(error) {
+          rentRequest: true,
+        },
+      });
+    } catch (error) {
       throw new Error(error);
     }
   }
@@ -26,20 +25,23 @@ export class AccommodationService {
     try {
       const result = await this.prismaService.accommodation.findUnique({
         where: {
-          id
+          id,
         },
         include: {
           owner: true,
           rooms: true,
-          rentRequest: true
-        }
-      })
+          rentRequest: true,
+        },
+      });
       if (!result) {
-        throw new HttpException('Can not find this accommodation', HttpStatus.NOT_FOUND);
+        throw new HttpException(
+          'Can not find this accommodation',
+          HttpStatus.NOT_FOUND,
+        );
       }
       return result;
     } catch (error) {
-      throw new HttpException(error.message, error.status)
+      throw new HttpException(error.message, error.status);
     }
   }
 
@@ -51,52 +53,42 @@ export class AccommodationService {
           status: 'WAITING',
           owner: {
             connect: {
-              userId: ownerId
-            }
+              userId: ownerId,
+            },
           },
           accommodation: {
             connect: {
-              id: accommodationId
-            }
+              id: accommodationId,
+            },
           },
           renter: {
             connect: {
-              userId: renterId
-            }
-          }
+              userId: renterId,
+            },
+          },
         },
         include: {
           owner: true,
           accommodation: true,
-          renter: true
-        }
-      })
+          renter: true,
+        },
+      });
       return result;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
-          throw new HttpException('Can not request rent to an accommodation with the same renter', HttpStatus.BAD_REQUEST);
+          throw new HttpException(
+            'Can not request rent to an accommodation with the same renter',
+            HttpStatus.BAD_REQUEST,
+          );
         }
         if (error.code === 'P2025') {
-          throw new HttpException('Can not find this renter to make a request', HttpStatus.NOT_FOUND);
+          throw new HttpException(
+            'Can not find this renter to make a request',
+            HttpStatus.NOT_FOUND,
+          );
         }
       }
     }
-    
   }
-  // async findOwnerByAccommodationId(id: number): Promise<Owner> {
-  //   try {
-  //     const owner = await this.prismaService.owner.findUnique({
-  //       where: {
-          
-  //       }
-  //     })
-  //     if (!owner) {
-  //       throw new HttpException('This accommodation is not belong to any owner', HttpStatus.NOT_FOUND);
-  //     }
-  //     return owner;
-  //   } catch (error) {
-  //     throw new HttpException(error.message, error.status);
-  //   }
-  // }
 }

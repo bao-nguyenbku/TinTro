@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { ScrollView, Box } from "native-base";
 import { RefreshControl, TouchableOpacity } from 'react-native';
 import { getAllAccommodations, selectAccommodationState } from "store/reducer/accommodation";
 import { useDispatch, useSelector } from "react-redux";
 import SingleItem from "./SingleItem";
+
 const AccommodationList = (props) => {
-  const { navigation, route } = props;
-  const { accommodationDetails } = props.stack;
+  const { navigation, stack } = props;
+  const { accommodationDetails } = stack;
   const dispatch = useDispatch();
   async function fetchAllAccommodationData() {
     dispatch(getAllAccommodations());
@@ -15,12 +16,20 @@ const AccommodationList = (props) => {
   useEffect(() => {
     fetchAllAccommodationData();
   }, [])
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerSearchBarOptions: {
+        placeholder: 'Search',
+        inputType: 'text'
+      }
+    })
+  }, [navigation])
   return (
     <ScrollView
       refreshControl={
         <RefreshControl
           refreshing={loading}
-          onRefresh={fetchAllAccommodationData}
+          onRefresh={() => fetchAllAccommodationData()}
         />
       }
     >
@@ -42,7 +51,7 @@ const AccommodationList = (props) => {
           )
         })}
       </Box>
-    </ScrollView >
+    </ScrollView>
   )
 }
 

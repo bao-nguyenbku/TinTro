@@ -1,14 +1,18 @@
-import React from 'react'
-import { Box, Text } from 'native-base';
+import React from 'react';
+import { Box, Input, Text } from 'native-base';
+import { TouchableOpacity } from 'react-native';
 import { getHeaderTitle } from '@react-navigation/elements';
 import BackButton from 'components/back-button';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { ROUTES } from 'navigation';
 
 const ExploreHeader = (props) => {
   const { navigation, route, options, back } = props;
+  const { headerSearchBarOptions } = options;
   const title = getHeaderTitle(options, route.name);
   return (
     <Box  
-      bg="coolGray.100" 
+      bg="tertiary.600" 
       height='90px'
       flexDirection='row'
       justifyContent='center'
@@ -27,21 +31,28 @@ const ExploreHeader = (props) => {
           <Box
             marginLeft={0}
             marginRight='auto'
-            bgColor='white'
             width='10'
             height='10'
             alignItems='center'
             justifyContent='center'
-            borderRadius='lg'
           >
           <BackButton {...props} />
         </Box>
         )}
         <Text
           fontSize='lg'
-          color='muted.500'
+          color='white'
           position='absolute'
         >{title}</Text>
+        {headerSearchBarOptions && (
+          <Box marginLeft='auto' marginRight={0}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ROUTES.explore.stack.searchAccommodation.title)}
+            >
+              <Ionicons name='search-outline' size={32} color='white'/>
+            </TouchableOpacity>
+          </Box>
+        )}
       </Box>
     </Box>
     

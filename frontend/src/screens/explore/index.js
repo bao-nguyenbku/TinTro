@@ -1,10 +1,12 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ExploreHeader from 'components/header/ExploreHeader';
+
 const Stack = createNativeStackNavigator();
 
 const ExploreScreen = (props) => {
-  const { allAccommodations } = props.stack;
+  const { stack } = props;
+  const { allAccommodations } = stack;
   
   return (
     <Stack.Navigator
@@ -12,16 +14,16 @@ const ExploreScreen = (props) => {
       screenOptions={{
         header: (stackProps) => <ExploreHeader {...stackProps} />,
         headerBackTitleVisible: false,
-        headerTitleAlign: 'center',
+        headerTitleAlign: 'center'
       }}
     >
-      {Object.keys(props.stack).map(stackScreen => {
-        const StackComponent = props.stack[stackScreen].component;
+      {Object.keys(stack).map(stackScreen => {
+        const StackComponent = stack[stackScreen].component;
         return (
           <Stack.Screen 
-            name={props.stack[stackScreen].title}
+            name={stack[stackScreen].title}
             options={{
-              title: props.stack[stackScreen].label
+              title: stack[stackScreen].label
             }}
             key={stackScreen}
             children={(stackProps) => <StackComponent {...stackProps } {...props} />}
