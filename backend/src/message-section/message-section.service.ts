@@ -88,7 +88,20 @@ export class MessageSectionService {
         id: messageSectionId,
       },
       include: {
-        messages: true,
+        messages: {
+          include: {
+            from: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
       },
     });
     return allMessagesFromSection;

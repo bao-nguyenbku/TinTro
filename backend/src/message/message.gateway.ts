@@ -62,7 +62,6 @@ export class MessageGateway
           this.currentUser.id,
           receiverId,
         ));
-      this.logger.debug(this.messageSection);
 
       if (
         receiverId &&
@@ -90,7 +89,6 @@ export class MessageGateway
           this.messageSection.id,
         );
       }
-      this.logger.debug('Client joined section  ', this.messageSection.id);
       this.server.socketsJoin(this.messageSection.id);
     } catch (e) {
       this.logger.error(e);
@@ -102,7 +100,6 @@ export class MessageGateway
     this.logger.log(
       `Client disconnected: ${client.id} of user id: ${this.currentUser.id}`,
     );
-    this.logger.log(`Message section: ${client.rooms}`);
   }
 
   @SubscribeMessage('message-sent-from-client')
@@ -111,9 +108,6 @@ export class MessageGateway
     @MessageBody() message: string,
   ): Promise<WsResponse<string> | void> {
     try {
-      this.logger.log(
-        '---------- - Listen for messages ----------- # ' + message,
-      );
       const newMessage = await this.messageService.createNewMessage(
         this.currentUser.id,
         this.messageSection.id,
@@ -131,19 +125,14 @@ export class MessageGateway
   @SubscribeMessage('fetch-all-messages')
   async requestAllMessages(@ConnectedSocket() socket: Socket) {
     try {
-      this.logger.log('----------- Request all messages -----------');
       const currentUser =
         this.currentUser ||
         (await this.messageService.getUserFromSocket(socket));
 
-      this.logger.log(
-        `----------------------- ALL MESSAGES OF ${currentUser.id} --------------------`,
-      );
       const allMessagesFromSection =
         await this.messageSectionService.getAllMessagesOfSection(
           this.messageSection.id,
         );
-      this.logger.debug(JSON.stringify(allMessagesFromSection, null, 2));
       //* we want to emit to client only
       socket.emit('client-all-past-messages', allMessagesFromSection);
     } catch (err) {
