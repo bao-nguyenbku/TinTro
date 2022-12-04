@@ -5,13 +5,13 @@ import Loading from 'components/loading';
 import Error from 'components/error';
 import { Avatar, Flex, Heading, Pressable, ScrollView, Text, VStack } from 'native-base';
 import { formatDate } from 'utils/formatDate';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 const MessagerList = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { messageSections, loading, error } = useSelector((state) => state.message);
-
+  const navigation = useNavigation();
   const isFocus = useIsFocused();
 
   useEffect(() => {
@@ -34,7 +34,20 @@ const MessagerList = () => {
             const from = messages.length && messages[0].from;
             const fromId = messages.length && messages[0].fromId;
             return !messages.length ? null : (
-              <Pressable my="2" h="100px" key={section.id} w="full">
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('SendMessage', {
+                    messageSectionId: section.id,
+                    fromId,
+                    avatar: from.avatar,
+                    name: from.name,
+                  })
+                }
+                my="2"
+                h="100px"
+                key={section.id}
+                w="full"
+              >
                 {({ isPressed }) => (
                   <VStack borderRadius={12} h="full" alignItems="center" mx="6" space={2} backgroundColor={isPressed ? 'muted.200' : '#fff'} flexDirection="row" px="4">
                     <Flex mr={2} pr={2} w="1/6">
