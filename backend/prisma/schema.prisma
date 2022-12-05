@@ -21,6 +21,7 @@ model User {
   avatar          String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
   messages        Message[]
   messageSections MessageSection[] @relation("users_in_message_section")
+  Review          Review[]
 
   @@index([id])
 }
@@ -75,6 +76,7 @@ model Renter {
   rentRoom    Room?         @relation(fields: [rentRoomId], references: [id])
   rentRoomId  Int?
 
+
   @@index(userId)
 }
 
@@ -100,6 +102,7 @@ model Accommodation {
   images          String[]      @default([])
   utilities       String[]
   rentRequest     RentRequest[]
+  review          Review[]
 }
 
 model RentRequest {
@@ -119,6 +122,15 @@ model Room {
   accommodationId Int
   renter          Renter[]
   status          RoomStatus
+}
+
+model Review {
+  id              Int           @id @default(autoincrement())
+  userId          Int
+  user            User          @relation(fields: [userId], references: [id])
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId Int
+  rating          Int
 }
 
 enum RequestStatus {
