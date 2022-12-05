@@ -3,7 +3,7 @@ import {
   Controller,
   Get,
   Post,
-  // UseGuards,
+  UseGuards,
   Param,
   Query,
   Logger,
@@ -13,10 +13,13 @@ import { Review } from '@prisma/client';
 import { UsersService } from '~/users/users.service';
 import { UtilsService } from '~/utils/utils.service';
 // import { Roles } from '~/auth/role.decorator';
-// import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { AccommodationService } from './accommodation.service';
+
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
+// import { RequestRentRoomDto } from './dto/request-rent-room.dto';
+
 
 @Controller('accommodations')
 export class AccommodationController {
@@ -26,7 +29,7 @@ export class AccommodationController {
     private readonly usersService: UsersService,
   ) {}
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOkResponse({ type: AccommodationResponseDto, isArray: true })
   async searchAccommodationByKeyword(@Query('search') keyword: string) {
@@ -49,6 +52,7 @@ export class AccommodationController {
     return filterdAccommodations;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/all')
   @ApiOkResponse({ type: AccommodationResponseDto, isArray: true })
   async getAllAccommodation() {
