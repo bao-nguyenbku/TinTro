@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TouchableOpacity } from 'react-native';
-import { Button , useDisclose, isEmptyObj } from 'native-base';
+import { Button , useDisclose, isEmptyObj, useToast } from 'native-base';
 import ConfirmModal from 'components/confirm-modal';
 import { requestRentRoom, selectAccommodationState } from 'store/reducer/accommodation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 const RequestRentalButton = (props) => {
   const { item } = props;
   const { isOpen, onOpen, onClose } = useDisclose();
-  const { rentRequest } = useSelector(selectAccommodationState);
+  const toast = useToast();
+  const { rentRequest, error } = useSelector(selectAccommodationState);
   const rentRequestData = rentRequest.data;
   const rentRequestLoading = rentRequest.loading;
   const [buttonProps, setButtonProps] = useState({
@@ -24,7 +25,12 @@ const RequestRentalButton = (props) => {
       })
     }
   }, [rentRequest])
-  
+  useEffect(() => {
+    if (isEmptyObj(error)) return;
+    toast.show({
+      description: error.message
+    })
+  }, [error])
   const dispatch = useDispatch();
   const onConfirm = () => {
     dispatch(requestRentRoom(item));

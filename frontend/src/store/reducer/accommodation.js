@@ -62,7 +62,7 @@ export const accommodationSlice = createSlice({
                 state.rentRequest = action.payload;
             })
             .addCase(requestRentRoom.rejected, (state, action) => {
-                console.log("🚀 ~ file: accommodation.js:63 ~ ).addCase ~ action", action);
+                state.error = action.payload;
             })
             .addCase(getRentRequestByRenter.pending, (state) => {
                 state.rentRequest.loading = true;
@@ -138,7 +138,6 @@ export const getRentRequestByRenter = createAsyncThunk(
     async (accommodationId, { rejectWithValue }) => {
         try {
             const response = await getRequestByRenterService({ accommodationId });
-            console.log(response.data);
             return response.data;
         } catch (error) {
             return rejectWithValue({
