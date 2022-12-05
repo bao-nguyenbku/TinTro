@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, RequestStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
@@ -10,7 +10,7 @@ export class AccommodationService {
 
   async getAllAccommodation(): Promise<AccommodationResponseDto[]> {
     try {
-      return await this.prismaService.accommodation.findMany({
+      const prismaResults = await this.prismaService.accommodation.findMany({
         include: {
           review: true,
           owner: {
@@ -21,6 +21,12 @@ export class AccommodationService {
           rooms: true,
           rentRequest: true,
         },
+      });
+      return prismaResults.map((result) => {
+        return {
+          ...result,
+          owner: result.owner.user,
+        };
       });
     } catch (error) {
       throw new Error(error);
@@ -49,7 +55,10 @@ export class AccommodationService {
           HttpStatus.NOT_FOUND,
         );
       }
-      return result;
+      return {
+        ...result,
+        owner: result.owner.user,
+      };
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
@@ -60,7 +69,7 @@ export class AccommodationService {
     try {
       const result = await this.prismaService.rentRequest.create({
         data: {
-          status: 'WAITING',
+          status: RequestStatus.WAITING,
           owner: {
             connect: {
               userId: ownerId,

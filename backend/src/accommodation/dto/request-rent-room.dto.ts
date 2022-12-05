@@ -1,13 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-// import { UserEntity as Renter } from "~/users/entities/user.entity";
+import { RequestRentRoomEntity } from '../entities/request-rent-room.entity';
 
-export class RequestRentRoomDto {
-  @ApiProperty()
-  renterId: number;
-
-  @ApiProperty()
-  ownerId: number;
-
-  @ApiProperty()
-  accommodationId: number;
-}
+export class RequestRentRoomDto extends RequestRentRoomEntity {}
