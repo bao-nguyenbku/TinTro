@@ -4,6 +4,7 @@ import { RefreshControl, TouchableOpacity } from 'react-native';
 import { getAllAccommodations, selectAccommodationState } from "store/reducer/accommodation";
 import { useDispatch, useSelector } from "react-redux";
 import SingleItem from "./SingleItem";
+import Loading from "components/loading";
 
 const AccommodationList = (props) => {
   const { navigation, stack } = props;
@@ -19,8 +20,7 @@ const AccommodationList = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerSearchBarOptions: {
-        placeholder: 'Search',
-        inputType: 'text'
+        enable: true
       }
     })
   }, [navigation])

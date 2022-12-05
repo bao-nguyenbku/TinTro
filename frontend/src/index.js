@@ -20,7 +20,7 @@ const Index = () => {
           headerShown: false,
         }}
       >
-        {/* {isEmptyObj(user.currentUser) && <Stack.Screen name="Authentication" component={LoginNav} />} */}
+        {isEmptyObj(user.currentUser) && <Stack.Screen name="Authentication" component={LoginNav} />}
         <Stack.Screen name="Home" component={HomeNav} />
       </Stack.Navigator>
     </>

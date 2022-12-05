@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { SafeAreaView } from 'react-native';
 import { Box, Text, Image, ScrollView, Divider } from 'native-base';
 import Loading from 'components/loading';
@@ -29,8 +29,7 @@ const AccommodationDetailsScreen = (props) => {
     >
       <Box
         flex={1}
-        paddingX='5'
-        paddingBottom='2'
+        padding='5'
       >
         <ScrollView>
           <Box
@@ -58,7 +57,7 @@ const AccommodationDetailsScreen = (props) => {
             <Description item={item} />
           </Box>
         </ScrollView>
-        <RequestRentalButton />
+        <RequestRentalButton item={item} />
       </Box>
     </SafeAreaView>
   )
