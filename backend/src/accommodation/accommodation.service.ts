@@ -12,6 +12,7 @@ export class AccommodationService {
     try {
       return await this.prismaService.accommodation.findMany({
         include: {
+          review: true,
           owner: true,
           rooms: true,
           rentRequest: true,
@@ -31,6 +32,7 @@ export class AccommodationService {
           owner: true,
           rooms: true,
           rentRequest: true,
+          review: true,
         },
       });
       if (!result) {

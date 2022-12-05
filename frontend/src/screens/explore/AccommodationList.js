@@ -3,8 +3,8 @@ import { ScrollView, Box } from "native-base";
 import { RefreshControl, TouchableOpacity } from 'react-native';
 import { getAllAccommodations, selectAccommodationState } from "store/reducer/accommodation";
 import { useDispatch, useSelector } from "react-redux";
-import SingleItem from "./SingleItem";
 import Loading from "components/loading";
+import SingleItem from "./SingleItem";
 
 const AccommodationList = (props) => {
   const { navigation, stack } = props;

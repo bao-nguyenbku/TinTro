@@ -1,51 +1,58 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Owner, Room, RentRequest } from "@prisma/client";
+import { ApiProperty } from '@nestjs/swagger';
+import { Owner, Room, RentRequest } from '@prisma/client';
+import { ReviewEntity } from '~/review/entities/review.entity';
 export class AccommodationResponseDto {
   @ApiProperty()
-  id: number
+  id: number;
 
   @ApiProperty()
-  name: string
+  name: string;
 
   @ApiProperty()
-  addressNumber: string
-  
-  @ApiProperty()
-  addressStreet: string
+  addressNumber: string;
 
   @ApiProperty()
-  addressDistrict: string
+  addressStreet: string;
 
   @ApiProperty()
-  addressCity: string
+  addressDistrict: string;
 
   @ApiProperty()
-  area: number
+  addressCity: string;
 
   @ApiProperty()
-  rooms: Room[]
+  area: number;
 
   @ApiProperty()
-  price: number
+  rooms: Room[];
 
   @ApiProperty()
-  owner: Owner 
+  price: number;
 
   @ApiProperty()
-  ownerId: number
+  owner: Owner;
 
   @ApiProperty()
-  description: string
-  
-  @ApiProperty()
-  thumbnail: string
+  ownerId: number;
 
   @ApiProperty()
-  images: string[]
+  description: string;
 
   @ApiProperty()
-  utilities: string[]
+  thumbnail: string;
 
   @ApiProperty()
-  rentRequest: RentRequest[]
+  images: string[];
+
+  @ApiProperty()
+  utilities: string[];
+
+  @ApiProperty()
+  rentRequest: RentRequest[];
+
+  @ApiProperty()
+  review: ReviewEntity[];
+
+  @ApiProperty()
+  reviewStar?: number;
 }
