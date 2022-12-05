@@ -12,7 +12,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "react-native"],
+  "plugins": ["react", "react-native", "react-hooks"],
   "rules": {
     // allow .js files to contain JSX code
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
@@ -34,6 +34,13 @@
       }
     ],
     "react/no-children-prop": "off",
-    "arrow-body-style": "off"
+    "arrow-body-style": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/style-prop-object": [
+      "off",
+      {
+        "allow": ["string"]
+      }
+    ]
   }
 }

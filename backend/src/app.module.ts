@@ -8,6 +8,9 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AccommodationModule } from './accommodation/accommodation.module';
+import { UtilsController } from './utils/utils.controller';
+import { UtilsModule } from './utils/utils.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
@@ -22,8 +25,10 @@ import { AccommodationModule } from './accommodation/accommodation.module';
       limit: 10,
     }),
     AccommodationModule,
+    UtilsModule,
+    ReviewModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, UtilsController],
   providers: [AppService, PrismaService],
 })
 export class AppModule {}
