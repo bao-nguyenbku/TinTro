@@ -9,13 +9,15 @@ const AccommodationList = (props) => {
   const { navigation, stack } = props;
   const { accommodationDetails } = stack;
   const dispatch = useDispatch();
+
   async function fetchAllAccommodationData() {
     dispatch(getAllAccommodations());
   }
+
   const { accommodations, loading } = useSelector(selectAccommodationState);
   useEffect(() => {
-    fetchAllAccommodationData();
-  }, [fetchAllAccommodationData]);
+    dispatch(getAllAccommodations());
+  }, [dispatch]);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerSearchBarOptions: {
