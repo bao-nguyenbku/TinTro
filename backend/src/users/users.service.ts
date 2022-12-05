@@ -3,6 +3,7 @@ import { UserEntity } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserResponseDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -97,7 +98,19 @@ export class UsersService {
         },
       },
     });
-
     return userWithMessageSections;
+  }
+
+  async saveToRenter(user: UserResponseDto) {
+    const renter = await this.prisma.renter.create({
+      data: {
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+    });
+    return renter;
   }
 }

@@ -8,6 +8,9 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AccommodationModule } from './accommodation/accommodation.module';
+import { UtilsController } from './utils/utils.controller';
+import { UtilsModule } from './utils/utils.module';
+import { ReviewModule } from './review/review.module';
 
 import { MessageSectionModule } from './message-section/message-section.module';
 import { MessageModule } from './message/message.module';
@@ -27,8 +30,10 @@ import { MessageModule } from './message/message.module';
     MessageSectionModule,
     MessageModule,
     AccommodationModule,
+    UtilsModule,
+    ReviewModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, UtilsController],
   providers: [AppService, PrismaService],
 })
 export class AppModule {}

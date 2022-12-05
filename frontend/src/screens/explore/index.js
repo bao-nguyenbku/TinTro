@@ -7,31 +7,31 @@ const Stack = createNativeStackNavigator();
 const ExploreScreen = (props) => {
   const { stack } = props;
   const { allAccommodations } = stack;
-
+  
   return (
     <Stack.Navigator
       initialRouteName={allAccommodations.title}
       screenOptions={{
         header: (stackProps) => <ExploreHeader {...stackProps} />,
         headerBackTitleVisible: false,
-        headerTitleAlign: 'center',
+        headerTitleAlign: 'center'
       }}
     >
-      {Object.keys(stack).map((stackScreen) => {
+      {Object.keys(stack).map(stackScreen => {
         const StackComponent = stack[stackScreen].component;
         return (
-          <Stack.Screen
+          <Stack.Screen 
             name={stack[stackScreen].title}
             options={{
-              title: stack[stackScreen].label,
+              title: stack[stackScreen].label
             }}
             key={stackScreen}
-            children={(stackProps) => <StackComponent {...stackProps} {...props} />}
+            children={(stackProps) => <StackComponent {...stackProps } {...props} />}
           />
-        );
+        )
       })}
     </Stack.Navigator>
-  );
-};
+  )
+}
 
 export default ExploreScreen;

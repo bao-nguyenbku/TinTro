@@ -24,14 +24,11 @@ function LoginScreen() {
 
   const handleSubmitLogin = ({ email, password }) => {
     // done: navigate to home screen
-
     dispatch(
       logIn({
         email,
         password,
-        done: () => {
-          // rootNavigation.navigate('Home');
-        },
+        done: () => {},
       })
     );
   };
@@ -111,7 +108,7 @@ function LoginScreen() {
       <Flex h="2/3" pb={4}>
         <Text fontSize="lg" color="text.500">
           Chưa có tài khoản?{' '}
-          <Text onPress={() => navigation.navigate('Register')} color="tertiary.600">
+          <Text color="tertiary.600" onPress={() => navigation.navigate('Register')}>
             Tạo ngay
           </Text>
         </Text>

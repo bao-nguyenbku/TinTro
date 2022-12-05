@@ -1,0 +1,33 @@
+[
+  {
+      "id": 1,
+      "name": "Nhà Trọ Phát Lộc",
+      "addressNumber": "123",
+      "addressStreet": "Trần Não",
+      "addressDistrict": "Quận 2",
+      "addressCity": "Hồ Chí Minh",
+      "area": 23.5,
+      "price": 1200000,
+      "ownerId": 1,
+      "description": "Đây là mô tả cho nhà trọ này",
+      "thumbnail": "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg",
+      "images": [
+          "https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg",
+          "https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2013-7.jpg"
+      ],
+      "utilities": [],
+      "owner": {
+          "userId": 1,
+          "role": "USER",
+          "email": "baonguyen@gmail.com",
+          "phone": "012345678",
+          "password": "12345678",
+          "name": "",
+          "createdAt": "2022-12-02T15:17:54.287Z",
+          "updatedAt": "2022-12-02T15:18:25.823Z"
+      },
+      "rooms": [],
+      "rentRequest": [],
+      "reviewStar": 4
+  }
+]

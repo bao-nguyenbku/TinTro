@@ -1,12 +1,12 @@
 import { Text, View } from 'react-native';
 import React from 'react';
 
-function User() {
+const CustomToast = () => {
   return (
     <View>
-      <Text>User</Text>
+      <Text>CustomToast</Text>
     </View>
   );
-}
+};
 
-export default User;
+export default CustomToast;

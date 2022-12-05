@@ -32,6 +32,7 @@ export class AuthController {
   async register(@Body() user: RegisterUserDtos): Promise<UserResponseDto> {
     try {
       const newUser = await this.authService.register(user);
+      await this.authService.saveUserToRenter(newUser);
       return newUser;
     } catch (err) {
       if (

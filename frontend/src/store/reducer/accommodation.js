@@ -1,10 +1,12 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllAccommodationsService } from 'services/accommodation';
+import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService } from 'services/accommodation';
+// import store from 'store';
 
 const initialState = {
   accommodations: [],
   loading: false,
   error: undefined,
+  searchAccommodations: [],
   accommodationDetails: {
     id: 0,
     name: '',
@@ -21,6 +23,10 @@ const initialState = {
     images: [],
     description: '',
     utilities: [],
+  },
+  rentRequest: {
+    loading: false,
+    data: {},
   },
 };
 
@@ -42,6 +48,31 @@ export const accommodationSlice = createSlice({
         const error = action.payload;
         state.loading = false;
         state.error = error;
+      })
+      .addCase(searchAccommodationByKeyword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(searchAccommodationByKeyword.fulfilled, (state, action) => {
+        const searchAccommodationList = action.payload;
+        state.loading = false;
+        state.searchAccommodations = searchAccommodationList;
+      })
+      .addCase(requestRentRoom.fulfilled, (state, action) => {
+        state.loading = false;
+        state.rentRequest = action.payload;
+      })
+      .addCase(requestRentRoom.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      .addCase(getRentRequestByRenter.pending, (state) => {
+        state.rentRequest.loading = true;
+      })
+      .addCase(getRentRequestByRenter.fulfilled, (state, action) => {
+        // TODO: Use A renter may request multiple accommodation but for now,
+        // one renter can only request to an accommodation
+        const rentRequest = Array.isArray(action.payload) ? action.payload[0] : action.payload;
+        state.rentRequest.loading = false;
+        state.rentRequest.data = rentRequest;
       });
   },
 });
@@ -52,10 +83,49 @@ export const getAllAccommodations = createAsyncThunk('accommodation/getAllAccomm
     const response = await getAllAccommodationsService();
     return response.data;
   } catch (error) {
-    console.error(error);
     return rejectWithValue({
-      error: error.message,
-      statusCode: error.status,
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
+  }
+});
+
+export const searchAccommodationByKeyword = createAsyncThunk('accommodation/searchAccommodationByKeyword', async (keyword, { rejectWithValue }) => {
+  try {
+    const response = await searchAccommodationByKeywordService(keyword);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
+  }
+});
+
+export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom', async (accommodation, { rejectWithValue, getState }) => {
+  const renterEmail = getState()?.user?.currentUser?.email || 'test1@gmail.com';
+  try {
+    const response = await requestRentRoomService({
+      accommodationId: accommodation.id,
+      email: renterEmail,
+    });
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.data.message,
+    });
+  }
+});
+
+export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentRequestByRenter', async (accommodationId, { rejectWithValue }) => {
+  try {
+    const response = await getRequestByRenterService({ accommodationId });
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
     });
   }
 });
