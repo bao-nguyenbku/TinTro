@@ -11,4 +11,7 @@ const searchAccommodationByKeywordService = (keyword) => {
 const requestRentRoomService = ({ accommodationId, email }) => {
   return request.post(`${prefix}/${accommodationId}/request-rent`, { email });
 }
-export { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService };
+const getRequestByRenterService = ({ accommodationId }) => {
+  return request.get(`${prefix}/${accommodationId}/request-rent`);
+}
+export { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService };

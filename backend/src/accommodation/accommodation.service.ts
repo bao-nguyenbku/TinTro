@@ -13,7 +13,11 @@ export class AccommodationService {
       return await this.prismaService.accommodation.findMany({
         include: {
           review: true,
-          owner: true,
+          owner: {
+            include: {
+              user: true,
+            },
+          },
           rooms: true,
           rentRequest: true,
         },
@@ -29,7 +33,11 @@ export class AccommodationService {
           id,
         },
         include: {
-          owner: true,
+          owner: {
+            include: {
+              user: true,
+            },
+          },
           rooms: true,
           rentRequest: true,
           review: true,
@@ -90,6 +98,21 @@ export class AccommodationService {
             HttpStatus.NOT_FOUND,
           );
         }
+      }
+    }
+  }
+
+  async getRentRequestByRenter(renterId: number) {
+    try {
+      const result = await this.prismaService.rentRequest.findMany({
+        where: {
+          renterId,
+        },
+      });
+      return result;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
     }
   }

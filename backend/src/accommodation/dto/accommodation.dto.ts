@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Owner, Room, RentRequest } from '@prisma/client';
 import { ReviewEntity } from '~/review/entities/review.entity';
+import { UserResponseDto } from '~/users/dto/user.dto';
+
 export class AccommodationResponseDto {
   @ApiProperty()
   id: number;
@@ -30,7 +32,9 @@ export class AccommodationResponseDto {
   price: number;
 
   @ApiProperty()
-  owner: Owner;
+  owner: {
+    user: UserResponseDto;
+  };
 
   @ApiProperty()
   ownerId: number;

@@ -1,13 +1,30 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { TouchableOpacity } from 'react-native';
-import { Button , useDisclose } from 'native-base';
+import { Button , useDisclose, isEmptyObj } from 'native-base';
 import ConfirmModal from 'components/confirm-modal';
-import { requestRentRoom } from 'store/reducer/accommodation';
-import { useDispatch } from 'react-redux';
+import { requestRentRoom, selectAccommodationState } from 'store/reducer/accommodation';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const RequestRentalButton = (props) => {
   const { item } = props;
   const { isOpen, onOpen, onClose } = useDisclose();
+  const { rentRequest } = useSelector(selectAccommodationState);
+  const rentRequestData = rentRequest.data;
+  const rentRequestLoading = rentRequest.loading;
+  const [buttonProps, setButtonProps] = useState({
+    title: 'Yêu cầu thuê phòng',
+    disable: false
+  });
+  useEffect(() => {
+    if (!isEmptyObj(rentRequestData) && rentRequestData.accommodationId === item.id) {
+      setButtonProps({
+        title: 'Đã gửi yêu cầu thuê phòng',
+        disable: true
+      })
+    }
+  }, [rentRequest])
+  
   const dispatch = useDispatch();
   const onConfirm = () => {
     dispatch(requestRentRoom(item));
@@ -23,11 +40,18 @@ const RequestRentalButton = (props) => {
             fontSize: 'xl',
             fontWeight: 'bold'
           }}
+          isDisabled={buttonProps.disable}
+          _disabled={{
+            opacity: 0.4
+          }}
+          isLoading={rentRequestLoading}
           onPress={onOpen}
           _pressed={{
             opacity: 0.8
           }}
-        >Yêu cầu thuê phòng</Button>
+        >
+          {buttonProps.title}
+        </Button>
       </TouchableOpacity>
       <ConfirmModal
         isOpen={isOpen}

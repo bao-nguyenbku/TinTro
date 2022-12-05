@@ -1,8 +1,11 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect} from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native';
-import { Box, Text, Image, ScrollView, Divider } from 'native-base';
+import { Box, Text, Image, ScrollView } from 'native-base';
 import Loading from 'components/loading';
-import Ionicons from '@expo/vector-icons/Ionicons';
+// import Ionicons from '@expo/vector-icons/Ionicons';
+import { useDispatch } from 'react-redux';
+import { getRentRequestByRenter } from 'store/reducer/accommodation';
 import { disableBottomTabBar } from 'utils/utils';
 import CommonInfo from './CommonInfo';
 import OwnerContact from './OwnerContact';
@@ -12,12 +15,16 @@ import RequestRentalButton from './RequestRentalButton';
 const AccommodationDetailsScreen = (props) => {
   const { navigation, route } = props;
   const { item } = route.params;
+  const dispatch = useDispatch();
   useEffect(() => {
     disableBottomTabBar(props);
     return () => disableBottomTabBar(props, {
       action: 'clean'
     })
   }, [navigation]);
+  useEffect(() => {
+    dispatch(getRentRequestByRenter(item.id));
+  }, [])
   if (!item) {
     return <Loading />
   }

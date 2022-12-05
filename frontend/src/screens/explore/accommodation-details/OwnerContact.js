@@ -21,8 +21,8 @@ const OwnerContact = (props) => {
         marginLeft='2'
       >
         <Box>
-          <Text fontWeight='700' fontSize='md'>{item?.owner?.name}</Text>
-          <Text>{item?.owner?.phone}</Text>
+          <Text fontWeight='700' fontSize='md'>{item?.owner?.user?.name}</Text>
+          <Text>{item?.owner?.user?.phone}</Text>
         </Box>
         <Box marginLeft='auto' marginRight={0} flexDirection='row' justifyContent='center' alignItems='center'>
           <Box

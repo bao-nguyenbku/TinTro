@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   Logger,
+  Request,
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { Review } from '@prisma/client';
@@ -17,9 +18,7 @@ import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { AccommodationService } from './accommodation.service';
 
 import { AccommodationResponseDto } from './dto/accommodation.dto';
-import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 // import { RequestRentRoomDto } from './dto/request-rent-room.dto';
-
 
 @Controller('accommodations')
 export class AccommodationController {
@@ -73,21 +72,34 @@ export class AccommodationController {
 
   @Get('/:id')
   @ApiOkResponse({ type: AccommodationResponseDto })
-  async findAccommodationById(
-    @Param('id') id: string,
-  ): Promise<AccommodationResponseDto> {
+  async findAccommodationById(@Param('id') id: string) {
     const result = await this.accommodationService.findAccommodationById(
       parseInt(id),
     );
-    result.reviewStar = result.review?.length
+    const newResult = {
+      ...result,
+      reviewStar: 0,
+    };
+    newResult.reviewStar = result.review?.length
       ? result.review.reduce(
           (acc: number, cur: Review) => acc + cur.rating,
           0,
         ) / result.review.length
       : 0;
-    return result;
+    return newResult;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('/:id/request-rent')
+  async getRequestRentByRenter(
+    @Param('id') accommodationId: string,
+    @Request() req,
+  ) {
+    const userId = req.user.id;
+    return await this.accommodationService.getRentRequestByRenter(
+      parseInt(userId),
+    );
+  }
   @Post('/:id/request-rent')
   async requestRentRoom(
     @Param('id') accommodationId: string,
@@ -100,7 +112,6 @@ export class AccommodationController {
         parseInt(accommodationId),
       );
     const existedRenter = await this.usersService.findByEmail(email);
-    console.log(existedRenter);
     const { ownerId, id } = existedAccommodaiton;
     const result = await this.accommodationService.createRequestRentRoom({
       ownerId,
