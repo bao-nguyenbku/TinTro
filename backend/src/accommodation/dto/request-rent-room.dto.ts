@@ -1,13 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 // import { UserEntity as Renter } from "~/users/entities/user.entity";
 
 export class RequestRentRoomDto {
   @ApiProperty()
-  renterId: number
+  renterId: number;
 
   @ApiProperty()
-  ownerId: number
+  ownerId: number;
 
   @ApiProperty()
-  accommodationId: number
+  accommodationId: number;
 }

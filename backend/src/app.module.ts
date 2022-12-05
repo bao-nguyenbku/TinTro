@@ -10,6 +10,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { AccommodationModule } from './accommodation/accommodation.module';
 import { UtilsController } from './utils/utils.controller';
 import { UtilsModule } from './utils/utils.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UtilsModule } from './utils/utils.module';
     }),
     AccommodationModule,
     UtilsModule,
+    ReviewModule,
   ],
   controllers: [AppController, UtilsController],
   providers: [AppService, PrismaService],

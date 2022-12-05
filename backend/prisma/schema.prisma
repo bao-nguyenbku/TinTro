@@ -21,7 +21,7 @@ model User {
   avatar          String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
   messages        Message[]
   messageSections MessageSection[] @relation("users_in_message_section")
-  Review          Review[]
+  reviews         Review[]
 
   @@index([id])
 }
@@ -75,7 +75,6 @@ model Renter {
   rentRequest RentRequest[]
   rentRoom    Room?         @relation(fields: [rentRoomId], references: [id])
   rentRoomId  Int?
-
 
   @@index(userId)
 }

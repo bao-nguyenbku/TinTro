@@ -36,8 +36,11 @@
     "react/no-children-prop": "off",
     "arrow-body-style": "off",
     "react-hooks/exhaustive-deps": "warn",
-    "react/style-prop-object": ["enable", {
-      "allow": ["string"]
-    }]
+    "react/style-prop-object": [
+      "off",
+      {
+        "allow": ["string"]
+      }
+    ]
   }
 }

@@ -6,11 +6,15 @@ import {
   // UseGuards,
   Param,
   Query,
+  Logger,
 } from '@nestjs/common';
+import { ApiOkResponse } from '@nestjs/swagger';
+import { Review } from '@prisma/client';
 import { UtilsService } from '~/utils/utils.service';
 // import { Roles } from '~/auth/role.decorator';
 // import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { AccommodationService } from './accommodation.service';
+import { AccommodationResponseDto } from './dto/accommodation.dto';
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 
 @Controller('accommodations')
@@ -44,19 +48,37 @@ export class AccommodationController {
   }
 
   @Get('/all')
+  @ApiOkResponse({ type: AccommodationResponseDto, isArray: true })
   async getAllAccommodation() {
-    const result = await this.accommodationService.getAllAccommodation();
-    return result.map((item) => ({
-      ...item,
-      reviewStar: Math.round(Math.random() * 5),
-    }));
+    try {
+      const result = await this.accommodationService.getAllAccommodation();
+      return result.map((item) => ({
+        ...item,
+        reviewStar: item?.review?.length
+          ? item.review.reduce((acc, cur) => acc + cur.rating, 0) /
+            item.review.length
+          : 0,
+      }));
+    } catch (err) {
+      Logger.error(err);
+      throw err;
+    }
   }
 
   @Get('/:id')
-  async findAccommodationById(@Param('id') id: string) {
+  @ApiOkResponse({ type: AccommodationResponseDto })
+  async findAccommodationById(
+    @Param('id') id: string,
+  ): Promise<AccommodationResponseDto> {
     const result = await this.accommodationService.findAccommodationById(
       parseInt(id),
     );
+    result.reviewStar = result.review?.length
+      ? result.review.reduce(
+          (acc: number, cur: Review) => acc + cur.rating,
+          0,
+        ) / result.review.length
+      : 0;
     return result;
   }
 
