@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserResponseDto } from 'src/users/dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { HttpException } from '@nestjs/common/exceptions';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -35,6 +36,10 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async saveUserToRenter(user: UserResponseDto) {
+    this.usersService.saveToRenter(user);
   }
 
   async register(user: RegisterUserDtos): Promise<UserResponseDto> {

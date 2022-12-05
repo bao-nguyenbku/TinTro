@@ -35,7 +35,6 @@ export class AccommodationController {
           item.addressNumber,
           item.addressStreet,
           item.name,
-          item.owner.name,
           item.description,
         ])
       ) {
