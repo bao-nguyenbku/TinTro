@@ -22,7 +22,7 @@ export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Post()
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ type: ReviewEntity })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async createNewReview(

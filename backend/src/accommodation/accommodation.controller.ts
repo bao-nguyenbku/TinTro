@@ -26,6 +26,7 @@ export class AccommodationController {
 
   // @UseGuards(JwtAuthGuard)
   @Get()
+  @ApiOkResponse({ type: AccommodationResponseDto, isArray: true })
   async searchAccommodationByKeyword(@Query('search') keyword: string) {
     const accommodations =
       await this.accommodationService.getAllAccommodation();
