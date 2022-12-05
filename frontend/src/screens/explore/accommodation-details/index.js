@@ -3,11 +3,11 @@ import { SafeAreaView } from 'react-native';
 import { Box, Text, Image, ScrollView, Divider } from 'native-base';
 import Loading from 'components/loading';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { disableBottomTabBar } from 'utils/utils';
 import CommonInfo from './CommonInfo';
 import OwnerContact from './OwnerContact';
 import Description from './Description';
 import RequestRentalButton from './RequestRentalButton';
-import { disableBottomTabBar } from 'utils/utils';
 
 const AccommodationDetailsScreen = (props) => {
   const { navigation, route } = props;

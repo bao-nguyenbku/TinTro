@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { Review } from '@prisma/client';
+import { UsersService } from '~/users/users.service';
 import { UtilsService } from '~/utils/utils.service';
 // import { Roles } from '~/auth/role.decorator';
 // import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
@@ -22,6 +23,7 @@ export class AccommodationController {
   constructor(
     private readonly accommodationService: AccommodationService,
     private readonly utilsService: UtilsService,
+    private readonly usersService: UsersService,
   ) {}
 
   // @UseGuards(JwtAuthGuard)
@@ -38,7 +40,6 @@ export class AccommodationController {
           item.addressNumber,
           item.addressStreet,
           item.name,
-          item.owner.name,
           item.description,
         ])
       ) {
@@ -86,17 +87,20 @@ export class AccommodationController {
   @Post('/:id/request-rent')
   async requestRentRoom(
     @Param('id') accommodationId: string,
-    @Body() requestRentRoomDto: RequestRentRoomDto,
+    @Body() requestRentRoom: { email: string },
   ) {
-    const { renterId } = requestRentRoomDto;
-    const existedAccommodaitonPromise =
+    const { email } = requestRentRoom;
+
+    const existedAccommodaiton =
       await this.accommodationService.findAccommodationById(
         parseInt(accommodationId),
       );
-    const { ownerId, id } = existedAccommodaitonPromise;
+    const existedRenter = await this.usersService.findByEmail(email);
+    console.log(existedRenter);
+    const { ownerId, id } = existedAccommodaiton;
     const result = await this.accommodationService.createRequestRentRoom({
       ownerId,
-      renterId,
+      renterId: existedRenter.id,
       accommodationId: id,
     });
     return result;

@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Box, Text, Input, ScrollView } from 'native-base';
 import { TouchableWithoutFeedback, Keyboard, TextInput } from 'react-native';
 import { disableBottomTabBar } from 'utils/utils';
-import { selectAccommodationState } from 'store/reducer/accommodation';
+import { selectAccommodationState , searchAccommodationByKeyword } from 'store/reducer/accommodation';
 import { useDispatch, useSelector } from 'react-redux';
 import SingleItem from 'screens/explore/SingleItem';
-import { searchAccommodationByKeyword } from 'store/reducer/accommodation';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Loading from 'components/loading';
 

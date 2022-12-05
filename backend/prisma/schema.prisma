@@ -47,13 +47,6 @@ model MessageSection {
 model Owner {
   user      User     @relation(fields: [userId], references: [id])
   userId    Int      @unique
-  role      Role     @default(USER)
-  email     String   @unique
-  phone     String   @unique
-  password  String
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   accommodation Accommodation?
   rentRequest   RentRequest[]
@@ -64,14 +57,7 @@ model Owner {
 model Renter {
   user      User     @relation(fields: [userId], references: [id])
   userId    Int      @unique
-  role      Role     @default(USER)
-  email     String   @unique
-  phone     String   @unique
-  password  String
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  
   rentRequest RentRequest[]
   rentRoom    Room?         @relation(fields: [rentRoomId], references: [id])
   rentRoomId  Int?

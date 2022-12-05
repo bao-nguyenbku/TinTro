@@ -1,8 +1,7 @@
 import React from 'react'
 import { TouchableOpacity } from 'react-native';
-import { Button } from 'native-base';
+import { Button , useDisclose } from 'native-base';
 import ConfirmModal from 'components/confirm-modal';
-import { useDisclose } from 'native-base';
 import { requestRentRoom } from 'store/reducer/accommodation';
 import { useDispatch } from 'react-redux';
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { HStack, Spinner } from "native-base";
+
 const Loading = () => (
   <HStack 
     space={8} 

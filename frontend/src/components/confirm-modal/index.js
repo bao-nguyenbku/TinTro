@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Stack, Button, Modal, Text } from 'native-base';
-//@ts-nocheck
+// @ts-nocheck
 const ConfirmModal = (props) => {
   const { isOpen, onOpen, onClose, onConfirm, headerTitle = 'Header title', content = 'body', cancelTitle = 'Cancel', saveTitle = 'Save' } = props;
 
@@ -8,9 +8,8 @@ const ConfirmModal = (props) => {
     <Stack direction={{
       base: "column",
       md: "row"
-    }} space={2}>
-    </Stack>
-    <Modal isOpen={isOpen} onClose={onClose} safeAreaTop={true} size='full'>
+    }} space={2} />
+    <Modal isOpen={isOpen} onClose={onClose} safeAreaTop size='full'>
       <Modal.Content maxWidth="400" center={{}}>
         <Modal.CloseButton />
         <Modal.Header>{headerTitle}</Modal.Header>
