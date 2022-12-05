@@ -3,16 +3,16 @@ import {
   Controller,
   Get,
   Post,
-  // UseGuards,
+  UseGuards,
   Param,
   Query,
 } from '@nestjs/common';
 import { UsersService } from '~/users/users.service';
 import { UtilsService } from '~/utils/utils.service';
 // import { Roles } from '~/auth/role.decorator';
-// import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { AccommodationService } from './accommodation.service';
-import { RequestRentRoomDto } from './dto/request-rent-room.dto';
+// import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 
 @Controller('accommodations')
 export class AccommodationController {
@@ -22,7 +22,7 @@ export class AccommodationController {
     private readonly usersService: UsersService,
   ) {}
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async searchAccommodationByKeyword(@Query('search') keyword: string) {
     const accommodations =
@@ -44,6 +44,7 @@ export class AccommodationController {
     return filterdAccommodations;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/all')
   async getAllAccommodation() {
     const result = await this.accommodationService.getAllAccommodation();

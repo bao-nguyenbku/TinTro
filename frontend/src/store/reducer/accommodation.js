@@ -59,7 +59,9 @@ export const accommodationSlice = createSlice({
                     state.loading = false;
                     state.searchAccommodations = searchAccommodationList;
                 }
-            )
+            ).addCase(requestRentRoom.rejected, (state, action) => {
+                console.log("🚀 ~ file: accommodation.js:63 ~ ).addCase ~ action", action);
+            })
     }
 
 })
@@ -76,7 +78,8 @@ export const getAllAccommodations = createAsyncThunk(
             return response.data;
         } catch (error) {
             return rejectWithValue({
-                ...error
+                statusCode: error.response.status,
+                message: error.response.message
             })
         }
     }
@@ -90,7 +93,8 @@ export const searchAccommodationByKeyword = createAsyncThunk(
             return response.data;
         } catch (error) {
             return rejectWithValue({
-                ...error
+                statusCode: error.response.status,
+                message: error.response.message
             })
         }
     }
@@ -99,17 +103,23 @@ export const searchAccommodationByKeyword = createAsyncThunk(
 export const requestRentRoom = createAsyncThunk(
     'accommodation/requestRentRoom',
     async (accommodation, { rejectWithValue, getState }) => {
-        const renterEmail = getState()?.user?.currentUser?.email;
+
+        const renterEmail = getState()?.user?.currentUser?.email || 'test1@gmail.com';
         try {
             const response = await requestRentRoomService({
                 accommodationId: accommodation.id,
                 email: renterEmail
             })
+            return response.data;
         } catch (error) {
+          
             return rejectWithValue({
-                ...error
+                statusCode: error.response.status,
+                message: error.response.data.message
             })
         }
     }
 )
+       
+       
 export default accommodationSlice.reducer
