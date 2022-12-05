@@ -7,6 +7,8 @@ import { pushMessage, sendMessage, setMessages } from 'store/reducer/message';
 import { getToken } from 'utils/token';
 import { WS_BASE_URL } from '@env';
 import { io } from 'socket.io-client';
+import { disableBottomTabBar } from 'utils/utils';
+import { RefreshControl } from 'react-native';
 
 const socketUrl = `${WS_BASE_URL}/message`;
 
@@ -29,11 +31,7 @@ const SendMessage = ({ route }) => {
       // get user token and then init websocket
       getToken().then((token) => {
         // hide bottom bar
-        navigation.getParent()?.setOptions({
-          tabBarStyle: {
-            display: 'none',
-          },
-        });
+        disableBottomTabBar(navigation);
 
         const socket = io(socketUrl, {
           auth: {
@@ -60,9 +58,7 @@ const SendMessage = ({ route }) => {
     }
     // !xu ly disconnect socket
     return () => {
-      navigation.getParent()?.setOptions({
-        tabBarStyle: undefined,
-      });
+      disableBottomTabBar(navigation, { action: 'clean' });
       socketRef.current?.disconnect();
     };
   }, [isFocus, dispatch, fromId, messageSectionId, navigation]);
@@ -76,7 +72,7 @@ const SendMessage = ({ route }) => {
   let pos = 'row-reverse';
   return (
     <VStack py={4} px={4}>
-      <ScrollView py={4} h="90%">
+      <ScrollView refreshControl={<RefreshControl refreshing={message.loading} onRefresh={() => socketRef.emit('fetch-all-messages')} />} py={4} h="90%">
         {allMessagesFromSection?.map((messageInSection) => {
           if (currentUser.id === messageInSection.fromId) {
             pos = 'row-reverse';
@@ -100,7 +96,7 @@ const SendMessage = ({ route }) => {
       <Input
         mt="5"
         borderRadius={999}
-        backgroundColor='#fff'
+        backgroundColor="#fff"
         value={messageText}
         onChangeText={(text) => setMessageText(text)}
         InputRightElement={

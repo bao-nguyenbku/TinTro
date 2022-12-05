@@ -13,16 +13,16 @@ import Description from './Description';
 import RequestRentalButton from './RequestRentalButton';
 
 const AccommodationDetailsScreen = (props) => {
-  const { route } = props;
+  const { route, navigation } = props;
   const { item } = route.params;
   const dispatch = useDispatch();
   useEffect(() => {
-    disableBottomTabBar(props);
+    disableBottomTabBar(navigation);
     return () =>
-      disableBottomTabBar(props, {
+      disableBottomTabBar(navigation, {
         action: 'clean',
       });
-  }, [props]);
+  }, [navigation]);
 
   useEffect(() => {
     dispatch(getRentRequestByRenter(item.id));

@@ -6,6 +6,7 @@ import Error from 'components/error';
 import { Avatar, Flex, Heading, Pressable, ScrollView, Text, VStack } from 'native-base';
 import { formatDate } from 'utils/formatDate';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { RefreshControl } from 'react-native';
 
 const MessagerList = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const MessagerList = () => {
   if (error) return <Error message={error} />;
 
   return (
-    <ScrollView h="100%" backgroundColor="coolGray.100">
+    <ScrollView refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(fetchMessageSections())} />} h="100%" backgroundColor="coolGray.100">
       {!messageSections.length ? (
         <Flex justifyContent="center" alignItems="center" h="100%">
           <Text color="coolGray.500">Bạn không có tin nhắn nào</Text>

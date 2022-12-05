@@ -7,8 +7,7 @@ const formatCurrency = Intl.NumberFormat('it-IT', {
 });
 
 // eslint-disable-next-line consistent-return
-const disableBottomTabBar = (props, options = {}) => {
-  const { navigation } = props;
+const disableBottomTabBar = (navigation, options = {}) => {
   const { action = 'disable' } = options;
   if (action === 'disable') {
     return navigation.getParent()?.setOptions({
@@ -16,7 +15,7 @@ const disableBottomTabBar = (props, options = {}) => {
         display: 'none',
       },
     });
-  }
+  } 
   if (action === 'clean') {
     return navigation.getParent()?.setOptions({
       tabBarStyle: undefined,

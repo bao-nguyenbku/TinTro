@@ -18,12 +18,12 @@ const SearchScreen = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    disableBottomTabBar(props);
+    disableBottomTabBar(navigation);
     return () =>
-      disableBottomTabBar(props, {
+      disableBottomTabBar(navigation, {
         action: 'clean',
       });
-  }, [navigation, props]);
+  }, [navigation]);
 
   const submitSearchText = ({ nativeEvent }) => {
     dispatch(searchAccommodationByKeyword(nativeEvent.text)).then(() => setSearchText(nativeEvent.text));
