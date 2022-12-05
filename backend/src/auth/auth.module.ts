@@ -28,6 +28,7 @@ import { APP_GUARD } from '@nestjs/core';
       signOptions: { expiresIn: process.env.JWT_EXPIRATION_TIME || '7d' },
     }),
   ],
+  exports: [AuthService],
   controllers: [AuthController],
 })
 export class AuthModule {}

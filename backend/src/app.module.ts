@@ -12,6 +12,9 @@ import { UtilsController } from './utils/utils.controller';
 import { UtilsModule } from './utils/utils.module';
 import { ReviewModule } from './review/review.module';
 
+import { MessageSectionModule } from './message-section/message-section.module';
+import { MessageModule } from './message/message.module';
+
 @Module({
   imports: [
     PrismaModule,
@@ -24,6 +27,8 @@ import { ReviewModule } from './review/review.module';
       ttl: 60,
       limit: 10,
     }),
+    MessageSectionModule,
+    MessageModule,
     AccommodationModule,
     UtilsModule,
     ReviewModule,

@@ -1,7 +1,7 @@
-import { Role } from '@prisma/client';
+import { MessageSection, Role } from '@prisma/client';
 import { UserEntity } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserResponseDto } from './dto/user.dto';
 
@@ -36,7 +36,19 @@ export class UsersService {
       throw e;
     }
   }
-  // ------------------------------ find username and password --------------------------------
+
+  async findById(id: number): Promise<UserEntity> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id },
+      });
+      delete user.password;
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findByEmail(username: string) {
     // user name must be email
     const user = await this.prisma.user.findUnique({
@@ -45,6 +57,48 @@ export class UsersService {
       },
     });
     return user;
+  }
+
+  async findMessageSectionsByUserId(id: number): Promise<UserEntity | any> {
+    const userWithMessageSections = await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        messageSections: {
+          select: {
+            id: true,
+            messages: {
+              select: {
+                id: true,
+                text: true,
+                fromId: true,
+                from: {
+                  select: {
+                    name: true,
+                    avatar: true,
+                    createdAt: true,
+                  },
+                },
+              },
+              orderBy: {
+                createdAt: 'desc',
+              },
+              take: 1,
+            },
+            users: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return userWithMessageSections;
   }
 
   async saveToRenter(user: UserResponseDto) {

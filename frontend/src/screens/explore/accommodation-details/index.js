@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native';
 import { Box, Text, Image, ScrollView } from 'native-base';
@@ -13,20 +13,23 @@ import Description from './Description';
 import RequestRentalButton from './RequestRentalButton';
 
 const AccommodationDetailsScreen = (props) => {
-  const { navigation, route } = props;
+  const { route, navigation } = props;
   const { item } = route.params;
   const dispatch = useDispatch();
   useEffect(() => {
-    disableBottomTabBar(props);
-    return () => disableBottomTabBar(props, {
-      action: 'clean'
-    })
+    disableBottomTabBar(navigation);
+    return () =>
+      disableBottomTabBar(navigation, {
+        action: 'clean',
+      });
   }, [navigation]);
+
   useEffect(() => {
     dispatch(getRentRequestByRenter(item.id));
-  }, [])
+  }, [item.id, dispatch]);
+
   if (!item) {
-    return <Loading />
+    return <Loading />;
   }
   return (
     <SafeAreaView
@@ -34,31 +37,22 @@ const AccommodationDetailsScreen = (props) => {
         flex: 1,
       }}
     >
-      <Box
-        flex={1}
-        padding='5'
-      >
+      <Box flex={1} padding="5">
         <ScrollView>
-          <Box
-            bgColor='transparent'
-          >
-            <Box
-              height='222px'
-            >
+          <Box bgColor="transparent">
+            <Box height="222px">
               <Image
                 source={{
-                  uri: item.thumbnail
+                  uri: item.thumbnail,
                 }}
-                alt='thumbnail'
-                size='full'
-                rounded='12'
+                alt="thumbnail"
+                size="full"
+                rounded="12"
               />
             </Box>
-            <Text
-              fontSize='2xl'
-              fontWeight='700'
-              marginTop='2'
-            >{item.name}</Text>
+            <Text fontSize="2xl" fontWeight="700" marginTop="2">
+              {item.name}
+            </Text>
             <CommonInfo item={item} />
             <OwnerContact item={item} />
             <Description item={item} />
@@ -67,7 +61,7 @@ const AccommodationDetailsScreen = (props) => {
         <RequestRentalButton item={item} />
       </Box>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 export default AccommodationDetailsScreen;

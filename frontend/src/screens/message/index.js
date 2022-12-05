@@ -1,10 +1,6 @@
-import { Text, View } from 'react-native';
-import React from 'react';
+import MessageNav from 'navigation/message';
 
-const MessageScreen = () => (
-    <View>
-      <Text>MessageScreen</Text>
-    </View>
-  )
+export { default as MessagerList } from './MessagerList';
+export { default as SendMessage } from './SendMessage';
 
-export default MessageScreen;
+export default MessageNav;

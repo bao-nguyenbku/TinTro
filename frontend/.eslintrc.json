@@ -33,6 +33,7 @@
         "allowAsProps": true
       }
     ],
+    "prefer-destructuring": "off",
     "react/no-children-prop": "off",
     "arrow-body-style": "off",
     "react-hooks/exhaustive-deps": "warn",

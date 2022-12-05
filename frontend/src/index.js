@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginNav from 'navigation/authentication';
 import HomeNav from 'navigation/home';
 

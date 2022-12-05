@@ -61,4 +61,13 @@ export class AuthService {
     delete createUser.password;
     return createUser;
   }
+
+  async verifyTokenWs(token: string) {
+    const payload = this.jwtService.verify(token);
+    if (payload.sub) {
+      const user = await this.usersService.findById(payload.sub);
+      return user;
+    }
+    return null;
+  }
 }

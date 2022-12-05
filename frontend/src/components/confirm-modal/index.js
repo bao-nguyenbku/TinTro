@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Stack, Button, Modal, Text } from 'native-base';
 // @ts-nocheck
 const ConfirmModal = (props) => {
-  const { isOpen, onOpen, onClose, onConfirm, headerTitle = 'Header title', content = 'body', cancelTitle = 'Cancel', saveTitle = 'Save' } = props;
+  const { isOpen, onClose, onConfirm, headerTitle = 'Header title', content = 'body', cancelTitle = 'Cancel', saveTitle = 'Save' } = props;
 
   return <>
     <Stack direction={{

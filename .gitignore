@@ -57,3 +57,6 @@ frontend/.idea/
 # macOS
 frontend/.DS_Store
 frontend/package-lock.json
+
+.idea/
+.vscode/

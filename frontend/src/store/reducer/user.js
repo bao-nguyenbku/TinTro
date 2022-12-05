@@ -8,6 +8,7 @@ const initialState = {
   currentUser: {},
   token: null,
   loading: false,
+  messagedUsers: [],
   error: null,
 };
 
@@ -34,7 +35,6 @@ export const register = createAsyncThunk('users/register', async ({ name, email,
 
 export const saveUser = createAsyncThunk('users/saveUser', async ({ token }, { rejectWithValue }) => {
   try {
-    console.log(token);
     const user = jwtParse(token);
     await setToken(token);
     return user;
@@ -104,7 +104,7 @@ export const userSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(saveUser.fulfilled, (state, action) => {
-      state.currentUser = action.payload;
+      state.currentUser = { ...action.payload, id: action.payload.sub };
       state.loading = false;
     });
     builder.addCase(saveUser.rejected, (state, action) => {
