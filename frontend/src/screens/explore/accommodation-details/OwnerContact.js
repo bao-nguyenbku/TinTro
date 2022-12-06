@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Image, Pressable, Text } from 'native-base';
+import { Avatar, Box, Pressable, Text } from 'native-base';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const OwnerContact = (props) => {
@@ -8,7 +8,7 @@ const OwnerContact = (props) => {
 
   return (
     <Box bgColor="white" p="3" rounded="full" flexDirection="row" alignItems="center">
-      <Image
+      <Avatar
         source={{
           uri: owner.avatar,
         }}
@@ -17,7 +17,7 @@ const OwnerContact = (props) => {
         rounded="full"
       />
       <Box flexDirection="row" flexGrow={1} marginLeft="2">
-        <Box> 
+        <Box>
           <Text fontWeight="700" fontSize="md">
             {owner?.name}
           </Text>
