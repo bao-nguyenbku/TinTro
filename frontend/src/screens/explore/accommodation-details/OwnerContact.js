@@ -10,7 +10,7 @@ const OwnerContact = (props) => {
     <Box bgColor="white" p="3" rounded="full" flexDirection="row" alignItems="center">
       <Avatar
         source={{
-          uri: owner.avatar,
+          uri: owner?.avatar,
         }}
         alt="avatar"
         size={42}
