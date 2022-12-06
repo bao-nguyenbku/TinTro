@@ -7,13 +7,15 @@ import Loading from 'components/loading';
 import { useDispatch } from 'react-redux';
 import { getRentRequestByRenter } from 'store/reducer/accommodation';
 import { disableBottomTabBar } from 'utils/utils';
+import { useNavigation } from '@react-navigation/native';
 import CommonInfo from './CommonInfo';
 import OwnerContact from './OwnerContact';
 import Description from './Description';
 import RequestRentalButton from './RequestRentalButton';
 
 const AccommodationDetailsScreen = (props) => {
-  const { route, navigation } = props;
+  const { route } = props;
+  const navigation = useNavigation();
   const { item } = route.params;
   const dispatch = useDispatch();
   useEffect(() => {
@@ -34,12 +36,14 @@ const AccommodationDetailsScreen = (props) => {
 
   const handlePressMessageIcon = () => {
     const owner = item?.owner;
+
     navigation.getParent().navigate('Message', {
       screen: 'SendMessage',
       params: {
         fromId: owner?.id,
         avatar: owner?.avatar,
         name: owner?.name,
+        initial: false,
       },
     });
   };

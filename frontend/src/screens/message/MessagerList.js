@@ -44,9 +44,9 @@ const MessagerList = () => {
               onPress={() =>
                 navigation.navigate('SendMessage', {
                   messageSectionId: section.id,
-                  fromId,
-                  avatar: from.avatar,
-                  name: from.name,
+                  fromId: user.currentUser.id === fromId ? otherUser.id : fromId,
+                  avatar: user.currentUser.id === fromId ? otherUser.avatar : from.avatar,
+                  name: user.currentUser.id === fromId ? otherUser.name : from.name,
                 })
               }
               my="2"

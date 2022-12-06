@@ -2,24 +2,17 @@ import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Avatar, Box, HStack, Text } from 'native-base';
-import { useDispatch } from 'react-redux';
+
 import { MessagerList, SendMessage } from 'screens/message';
-import { clearMessageSections } from 'store/reducer/message';
 import ExploreHeader from 'components/header/ExploreHeader';
 
 const Stack = createNativeStackNavigator();
 
 const TitleHeaderOfMessageScreen = ({ name, avatar, navigation }) => {
-  const dispatch = useDispatch();
   return (
     <Box bg="tertiary.600" height="90px" flexDirection="row" justifyContent="flex-start" alignItems="center" paddingTop="40px" paddingX="5">
       <HStack pr="8" space={2} alignItems="center">
-        <Ionicons
-          onPress={() => dispatch(clearMessageSections()) && navigation.navigate('MessagerList')}
-          name="chevron-back-sharp"
-          size={24}
-          color="white"
-        />
+        <Ionicons onPress={() => navigation.goBack()} name="chevron-back-sharp" size={24} color="white" />
         <Avatar mr="2" w={42} h={42} source={{ uri: avatar }} />
         <Text fontSize="lg" color="#fff">
           {name}
@@ -31,7 +24,7 @@ const TitleHeaderOfMessageScreen = ({ name, avatar, navigation }) => {
 
 const MessageNav = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="MessagerList">
       <Stack.Screen
         options={{
           header: (stackProps) => <ExploreHeader {...stackProps} />,
@@ -45,8 +38,8 @@ const MessageNav = () => {
       <Stack.Screen
         name="SendMessage"
         component={SendMessage}
-        options={({ route }) => ({
-          header: (stackProps) => <TitleHeaderOfMessageScreen name={route.params.name} avatar={route.params.avatar} {...stackProps} />,
+        options={({ route, navigation }) => ({
+          header: () => <TitleHeaderOfMessageScreen navigation={navigation} name={route.params.name} avatar={route.params.avatar} />,
 
           headerTitleAlign: 'left',
         })}
