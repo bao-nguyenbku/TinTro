@@ -4,7 +4,7 @@ import 'intl/locale-data/jsonp/it-IT';
 const formatCurrency = Intl.NumberFormat('it-IT', {
   style: 'currency',
   currency: 'VND',
-});
+}).format;
 
 // eslint-disable-next-line consistent-return
 const disableBottomTabBar = (navigation, options = {}) => {
@@ -15,7 +15,7 @@ const disableBottomTabBar = (navigation, options = {}) => {
         display: 'none',
       },
     });
-  } 
+  }
   if (action === 'clean') {
     return navigation.getParent()?.setOptions({
       tabBarStyle: undefined,

@@ -38,6 +38,7 @@ const SendMessage = ({ route }) => {
             token,
           },
           query: {
+            // only one is sent, the other one is gonna be null
             messageSectionId,
             receiverId: fromId,
           },
