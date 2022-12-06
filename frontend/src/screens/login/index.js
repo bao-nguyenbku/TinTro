@@ -34,9 +34,9 @@ function LoginScreen() {
   };
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView flex={1}>
       <VStack w="100%" space={3} alignItems="center">
-        <Center w="100%" h="1/4">
+        <Center w="100%" h="1/3">
           <Heading size="xl" color="tertiary.500">
             {' '}
             Chào mừng trở lại{' '}
@@ -69,7 +69,7 @@ function LoginScreen() {
                     keyboardType="email-address"
                   />
                 </Box>
-                <Box mb="3.5">
+                <Box>
                   <Input
                     px="3"
                     w="100%"
@@ -94,7 +94,7 @@ function LoginScreen() {
                     placeholder="Password"
                   />
                 </Box>
-                <Flex h="1/4" mt={12} w="100%">
+                <Flex h="auto" mt={12} w="100%">
                   <Button
                     isLoading={user.loading}
                     disabled={!isValid}
@@ -114,7 +114,7 @@ function LoginScreen() {
           </Formik>
         </Center>
 
-        <Flex h="2/3" pb={4}>
+        <Flex pt="12" h="1/3">
           <Text fontSize="lg" color="text.500">
             Chưa có tài khoản?{' '}
             <Text color="tertiary.600" onPress={() => navigation.navigate('Register')}>

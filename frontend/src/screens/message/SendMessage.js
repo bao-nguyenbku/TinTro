@@ -8,7 +8,7 @@ import { getToken } from 'utils/token';
 import { WS_BASE_URL } from '@env';
 import { io } from 'socket.io-client';
 import { disableBottomTabBar } from 'utils/utils';
-import { RefreshControl } from 'react-native';
+import { RefreshControl, SafeAreaView } from 'react-native';
 
 const socketUrl = `${WS_BASE_URL}/message`;
 
@@ -72,39 +72,42 @@ const SendMessage = ({ route }) => {
 
   let pos = 'row-reverse';
   return (
-    <KeyboardAvoidingView behavior="padding" flex={1}>
-      <VStack py={4} px={4}>
-        <ScrollView
-          automaticallyAdjustContentInsets
-          refreshControl={<RefreshControl refreshing={message.loading} onRefresh={() => socketRef.emit('fetch-all-messages')} />}
-          py={4}
-          h="95%"
-        >
-          {allMessagesFromSection?.map((messageInSection) => {
-            if (currentUser.id === messageInSection.fromId) {
-              pos = 'row-reverse';
-            } else {
-              pos = 'row';
-            }
-            return (
-              <Flex my="4" key={messageInSection.id} w="100%">
-                <Flex alignItems="flex-end" direction={pos}>
-                  <Avatar mx={2} size="sm" source={{ uri: messageInSection.from.avatar }} />
-                  <Box
-                    alignItems="center"
-                    p={3}
-                    borderRadius="2xl"
-                    backgroundColor={messageInSection.fromId === currentUser.id ? 'tertiary.600' : '#fff'}
-                  >
-                    <Text color={messageInSection.fromId === currentUser.id ? '#fff' : '#000'} fontSize={16}>
-                      {messageInSection.text}
-                    </Text>
-                  </Box>
+    <SafeAreaView>
+      <KeyboardAvoidingView flex={1}>
+        <VStack py={3.5} px={3.5}>
+          <ScrollView
+            automaticallyAdjustContentInsets
+            refreshControl={<RefreshControl refreshing={message.loading} onRefresh={() => socketRef.emit('fetch-all-messages')} />}
+            py={4}
+            h="95%"
+          >
+            {allMessagesFromSection?.map((messageInSection) => {
+              if (currentUser.id === messageInSection.fromId) {
+                pos = 'row-reverse';
+              } else {
+                pos = 'row';
+              }
+              return (
+                <Flex my="4" key={messageInSection.id} w="100%">
+                  <Flex alignItems="flex-end" direction={pos}>
+                    <Avatar mx={2} size="sm" source={{ uri: messageInSection.from.avatar }} />
+                    <Box
+                      alignItems="center"
+                      p={3}
+                      borderRadius="2xl"
+                      backgroundColor={messageInSection.fromId === currentUser.id ? 'tertiary.600' : '#fff'}
+                    >
+                      <Text color={messageInSection.fromId === currentUser.id ? '#fff' : '#000'} fontSize={16}>
+                        {messageInSection.text}
+                      </Text>
+                    </Box>
+                  </Flex>
                 </Flex>
-              </Flex>
-            );
-          })}
+              );
+            })}
+          </ScrollView>
           <Input
+            bottom={5}
             borderRadius={999}
             backgroundColor="#fff"
             value={messageText}
@@ -124,9 +127,9 @@ const SendMessage = ({ route }) => {
               }
             }}
           />
-        </ScrollView>
-      </VStack>
-    </KeyboardAvoidingView>
+        </VStack>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

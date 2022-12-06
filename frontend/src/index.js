@@ -7,6 +7,7 @@ import HomeNav from 'navigation/home';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmptyObj } from 'native-base';
 import { authMe } from 'store/reducer/user';
+import Loading from 'components/loading';
 
 const Stack = createNativeStackNavigator();
 const Index = () => {
@@ -20,14 +21,18 @@ const Index = () => {
   return (
     <>
       <StatusBar style="auto" />
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        {isEmptyObj(user.currentUser) && <Stack.Screen name="Authentication" component={LoginNav} />}
-        <Stack.Screen name="Home" component={HomeNav} />
-      </Stack.Navigator>
+      {user.isLoading ? (
+        <Loading />
+      ) : (
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {isEmptyObj(user.currentUser) && <Stack.Screen name="Authentication" component={LoginNav} />}
+          <Stack.Screen name="Home" component={HomeNav} />
+        </Stack.Navigator>
+      )}
     </>
   );
 };
