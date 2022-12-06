@@ -1,27 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginNav from 'navigation/authentication';
 import HomeNav from 'navigation/home';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isEmptyObj } from 'native-base';
+import { authMe } from 'store/reducer/user';
+import Loading from 'components/loading';
 
 const Stack = createNativeStackNavigator();
 const Index = () => {
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(authMe());
+  }, [dispatch]);
 
   return (
     <>
       <StatusBar style="auto" />
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        {isEmptyObj(user.currentUser) && <Stack.Screen name="Authentication" component={LoginNav} />}
-        <Stack.Screen name="Home" component={HomeNav} />
-      </Stack.Navigator>
+      {user.isLoading ? (
+        <Loading />
+      ) : (
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {isEmptyObj(user.currentUser) && <Stack.Screen name="Authentication" component={LoginNav} />}
+          <Stack.Screen name="Home" component={HomeNav} />
+        </Stack.Navigator>
+      )}
     </>
   );
 };
