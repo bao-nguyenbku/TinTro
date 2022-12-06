@@ -17,7 +17,7 @@ const TitleHeaderOfMessageScreen = ({ name, avatar, navigation }) => {
         onPress={() => dispatch(clearMessageSections()) && navigation.navigate('MessagerList')}
         name="chevron-back-sharp"
         size={24}
-        color="white"
+        color="#fff"
       />
       <Avatar mr="2" w={42} h={42} source={{ uri: avatar }} />
       <Text bold fontSize="lg" color="#fff">
@@ -44,7 +44,7 @@ const MessageNav = () => {
           title: '',
           headerLeft: () => <TitleHeaderOfMessageScreen navigation={navigation} name={route.params.name} avatar={route.params.avatar} />,
 
-          headerTitleAlign: 'left',
+          headerTitleAlign: 'center',
         })}
       />
     </Stack.Navigator>
