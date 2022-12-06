@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Text, ScrollView } from 'native-base';
-import { TouchableWithoutFeedback, Keyboard, TextInput } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, TextInput, TouchableOpacity } from 'react-native';
 import { disableBottomTabBar } from 'utils/utils';
 import { selectAccommodationState, searchAccommodationByKeyword } from 'store/reducer/accommodation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,8 @@ import Loading from 'components/loading';
 
 const SearchScreen = (props) => {
   const { navigation } = props;
+  const { stack } = props;
+  const { accommodationDetails } = stack;
   const { searchAccommodations, loading } = useSelector(selectAccommodationState);
   const [focusStyle, setFocusStyle] = useState({
     borderColor: 'muted.300',
@@ -71,7 +73,16 @@ const SearchScreen = (props) => {
               )}
               {searchAccommodations &&
                 searchAccommodations.map((item) => {
-                  return <SingleItem key={item.id} data={item} />;
+                  return (
+                    <TouchableOpacity
+                      key={item.id}
+                      onPress={() => navigation.navigate(accommodationDetails.title, {
+                        item
+                      })}
+                    >
+                      <SingleItem data={item} />
+                    </TouchableOpacity>
+                  );
                 })}
             </Box>
           )}
