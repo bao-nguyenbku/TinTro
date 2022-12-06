@@ -4,13 +4,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 const OwnerContact = (props) => {
   const { item, handlePressMessageIcon } = props;
-  const owner = item?.owner?.user;
+  const { owner } = item;
 
   return (
     <Box bgColor="white" p="3" rounded="full" flexDirection="row" alignItems="center">
       <Image
         source={{
-          uri: 'https://randomuser.me/api/portraits/women/63.jpg',
+          uri: owner.avatar,
         }}
         alt="avatar"
         size={42}
