@@ -2,21 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Button, useDisclose, isEmptyObj, useToast } from 'native-base';
 import ConfirmModal from 'components/confirm-modal';
-import { requestRentRoom, selectAccommodationState } from 'store/reducer/accommodation';
+import { requestRentRoom, selectAccommodationState, resetError } from 'store/reducer/accommodation';
 import { useDispatch, useSelector } from 'react-redux';
+import CustomToast from 'components/custom-toast';
 
 const RequestRentalButton = (props) => {
   const { item } = props;
   const { isOpen, onOpen, onClose } = useDisclose();
   const toast = useToast();
-  const { rentRequest, error } = useSelector(selectAccommodationState);
+  const { rentRequest } = useSelector(selectAccommodationState);
   const rentRequestData = rentRequest.data;
   const rentRequestLoading = rentRequest.loading;
+  const { error, isSuccess } = rentRequest;
+  const dispatch = useDispatch();
   const [buttonProps, setButtonProps] = useState({
     title: 'Yêu cầu thuê phòng',
     disable: false,
   });
   useEffect(() => {
+    console.log('From useEffect: ', rentRequest);
     if (!isEmptyObj(rentRequestData) && rentRequestData.accommodationId === item.id) {
       setButtonProps({
         title: 'Đã gửi yêu cầu thuê phòng',
@@ -27,12 +31,25 @@ const RequestRentalButton = (props) => {
   useEffect(() => {
     if (isEmptyObj(error)) return;
     toast.show({
-      description: error.message,
+      onCloseComplete: () => dispatch(resetError()),
+      render: () => <CustomToast description={error.message} title='Xin lỗi bạn' status='error'/>,
+      placement: 'top'
+  
     });
   }, [error]);
-  const dispatch = useDispatch();
   const onConfirm = () => {
     dispatch(requestRentRoom(item));
+    if (isSuccess) {
+      toast.show({
+        onCloseComplete: () => dispatch(resetError()),
+        render: () => <CustomToast description='Chủ trọ sẽ liên lạc với bạn khi yêu cầu được duyệt' title='Yêu cầu thuê phòng thành công!' status='success'/>,
+        placement: 'top'
+      });
+      setButtonProps({
+        title: 'Đã gửi yêu cầu thuê phòng',
+        disable: true,
+      })
+    }
   };
   return (
     <>

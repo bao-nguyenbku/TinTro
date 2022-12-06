@@ -1,6 +1,6 @@
 import { Octicons } from '@expo/vector-icons';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { Avatar, Box, Flex, Input, Pressable, ScrollView, Text, VStack } from 'native-base';
+import { Avatar, Box, Flex, Input, KeyboardAvoidingView, Pressable, ScrollView, Text, VStack } from 'native-base';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { pushMessage, sendMessage, setMessages } from 'store/reducer/message';
@@ -8,7 +8,8 @@ import { getToken } from 'utils/token';
 import { WS_BASE_URL } from '@env';
 import { io } from 'socket.io-client';
 import { disableBottomTabBar } from 'utils/utils';
-import { RefreshControl } from 'react-native';
+import { Platform, RefreshControl } from 'react-native';
+import { useKeyboard } from 'hooks/useKeyboard';
 
 const socketUrl = `${WS_BASE_URL}/message`;
 
@@ -23,6 +24,7 @@ const SendMessage = ({ route }) => {
   const allMessagesFromSection = message.messages;
   const navigation = useNavigation();
   const socketRef = useRef();
+  const keyboardHeight = useKeyboard();
   // *This function will handle send websocket message *//
 
   // * ------------------ Side effects to init websocket ------------------ * //
@@ -71,6 +73,7 @@ const SendMessage = ({ route }) => {
   };
 
   let pos = 'row-reverse';
+  console.log(keyboardHeight);
   return (
     <VStack py={4} px={4}>
       <ScrollView refreshControl={<RefreshControl refreshing={message.loading} onRefresh={() => socketRef.emit('fetch-all-messages')} />} py={4} h="90%">
@@ -94,27 +97,28 @@ const SendMessage = ({ route }) => {
           );
         })}
       </ScrollView>
-      <Input
-        mt="5"
-        borderRadius={999}
-        backgroundColor="#fff"
-        value={messageText}
-        onChangeText={(text) => setMessageText(text)}
-        InputRightElement={
-          <Pressable onPress={() => sendMessageHandler()}>
-            {({ isHovered }) => (
-              <Box backgroundColor={isHovered ? 'muted.200' : ''} mr={3.5}>
-                <Octicons name="paper-airplane" size={24} color="#059669" />
-              </Box>
-            )}
-          </Pressable>
-        }
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            sendMessageHandler();
+        <Input
+          mt="5"
+          borderRadius={999}
+          height='16'
+          backgroundColor="#fff"
+          value={messageText}
+          onChangeText={(text) => setMessageText(text)}
+          InputRightElement={
+            <Pressable onPress={() => sendMessageHandler()}>
+              {({ isHovered }) => (
+                <Box backgroundColor={isHovered ? 'muted.200' : ''} mr={3.5}>
+                  <Octicons name="paper-airplane" size={24} color="#059669" />
+                </Box>
+              )}
+            </Pressable>
           }
-        }}
-      />
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              sendMessageHandler();
+            }
+          }}
+        />
     </VStack>
   );
 };

@@ -26,6 +26,8 @@ const initialState = {
   },
   rentRequest: {
     loading: false,
+    isSuccess: false,
+    error: undefined,
     data: {},
   },
 };
@@ -33,7 +35,12 @@ const initialState = {
 export const accommodationSlice = createSlice({
   name: 'accommodation',
   initialState,
-  reducers: {},
+  reducers: {
+    resetError(state) {
+      state.error = undefined;
+      state.rentRequest.error = undefined;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllAccommodations.pending, (state) => {
@@ -57,12 +64,18 @@ export const accommodationSlice = createSlice({
         state.loading = false;
         state.searchAccommodations = searchAccommodationList;
       })
+      .addCase(requestRentRoom.pending, (state) => {
+        state.rentRequest.loading = true;
+      })
       .addCase(requestRentRoom.fulfilled, (state, action) => {
-        state.loading = false;
-        state.rentRequest = action.payload;
+        state.rentRequest.loading = false;
+        state.rentRequest.isSuccess = true;
+        state.rentRequest.data = action.payload;
       })
       .addCase(requestRentRoom.rejected, (state, action) => {
-        state.error = action.payload;
+        state.rentRequest.loading = false;
+        state.rentRequest.isSuccess = false;
+        state.rentRequest.error = action.payload;
       })
       .addCase(getRentRequestByRenter.pending, (state) => {
         state.rentRequest.loading = true;
@@ -129,5 +142,5 @@ export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentReq
     });
   }
 });
-
+export const { resetError } = accommodationSlice.actions;
 export default accommodationSlice.reducer;
