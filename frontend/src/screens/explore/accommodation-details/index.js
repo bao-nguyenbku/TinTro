@@ -35,7 +35,6 @@ const AccommodationDetailsScreen = (props) => {
 
   const handlePressMessageIcon = () => {
     const owner = item?.owner;
-    console.log(owner);
     navigation.getParent().navigate('Message', {
       screen: 'SendMessage',
       params: {
