@@ -31,6 +31,20 @@ const AccommodationDetailsScreen = (props) => {
   if (!item) {
     return <Loading />;
   }
+
+  const handlePressMessageIcon = () => {
+    const owner = item?.owner;
+    console.log(owner);
+    navigation.getParent().navigate('Message', {
+      screen: 'SendMessage',
+      params: {
+        fromId: owner?.id,
+        avatar: owner?.avatar,
+        name: owner?.name,
+      },
+    });
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -54,7 +68,7 @@ const AccommodationDetailsScreen = (props) => {
               {item.name}
             </Text>
             <CommonInfo item={item} />
-            <OwnerContact item={item} />
+            <OwnerContact item={item} handlePressMessageIcon={handlePressMessageIcon} />
             <Description item={item} />
           </Box>
         </ScrollView>

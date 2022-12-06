@@ -32,7 +32,6 @@ function RegisterScreen() {
 
   const handleSubmitRegister = (values) => {
     // TODO: done callback function: add something to notify user that they have logged in successfully
-    console.log(JSON.stringify(values, null, 2));
     dispatch(register({ ...values, done: () => navigation.navigate('Login') }));
   };
 
