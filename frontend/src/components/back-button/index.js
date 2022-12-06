@@ -8,7 +8,7 @@ const BackButton = (props) => {
     <TouchableOpacity
       onPress={() => navigation.goBack()}
     >
-      <Ionicons name='chevron-back-outline' size={32} />
+      <Ionicons name='chevron-back-outline' size={32} color='#fff'/>
     </TouchableOpacity>
   )
 }
