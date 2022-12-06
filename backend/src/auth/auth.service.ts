@@ -15,10 +15,17 @@ export class AuthService {
     username: string,
     password: string,
   ): Promise<UserResponseDto> {
-    const user = await this.usersService.findCredentials(username);
+    const user = await this.usersService.findByEmail(username);
     // TODO: Hashed password using bcrypt and compare against the password in the database
     // if match return everything except the pasword
     // if not return null
+
+    if (user && user.password === password) {}
+    if (user) {
+
+    }
+    return null;
+  }
 
     return null;
   }

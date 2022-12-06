@@ -1,4 +1,30 @@
-import { UserEntity } from './../entities/user.entity';
-import { PartialType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsByteLength,
+  IsEmail,
+  IsNotEmpty,
+  IsPhoneNumber,
+} from 'class-validator';
+export class CreateUserDto {
+  @ApiProperty()
+  @IsEmail()
+  email: string;
 
-export class CreateUserDto extends PartialType(UserEntity) {}
+  @ApiProperty()
+  @IsPhoneNumber()
+  phone: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  name: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsByteLength(4, 100)
+  password: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsByteLength(4, 100)
+  reEnterPassword: string;
+}
