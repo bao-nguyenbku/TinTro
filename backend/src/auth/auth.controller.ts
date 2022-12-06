@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from './jwt-auth.guard';
 import { RegisterUserDtos } from './../users/dto/register-user.dto';
 import { UserResponseDto } from './../users/dto/user.dto';
 import { LocalAuthGuard } from './local-auth-guard';
@@ -10,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { TokenPayload } from './dto/token.dto';
-import { Body } from '@nestjs/common/decorators';
+import { TokenPayload, TokenResponse } from './dto/token.dto';
+import { Body, Get } from '@nestjs/common/decorators';
 import { Prisma } from '@prisma/client';
 import { BadRequestException } from '@nestjs/common/exceptions/bad-request.exception';
 
@@ -52,5 +53,12 @@ export class AuthController {
       }
       throw err;
     }
+  }
+
+  @Get('/me')
+  @UseGuards(JwtAuthGuard)
+  @ApiCreatedResponse({ type: TokenResponse })
+  async me(@Request() req): Promise<TokenResponse> {
+    return req.user;
   }
 }

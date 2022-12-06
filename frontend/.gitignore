@@ -16,3 +16,5 @@ web-build/
 .DS_Store
 package-lock.json
 yarn*
+yarn.lock
+*.log
