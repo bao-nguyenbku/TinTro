@@ -11,6 +11,7 @@ import CommonInfo from './CommonInfo';
 import OwnerContact from './OwnerContact';
 import Description from './Description';
 import RequestRentalButton from './RequestRentalButton';
+import ImageGallery from './ImageGallery';
 
 const AccommodationDetailsScreen = (props) => {
   const { route, navigation } = props;
@@ -70,6 +71,7 @@ const AccommodationDetailsScreen = (props) => {
             <CommonInfo item={item} />
             <OwnerContact item={item} handlePressMessageIcon={handlePressMessageIcon} />
             <Description item={item} />
+            <ImageGallery images={item.images} />
           </Box>
         </ScrollView>
         <RequestRentalButton item={item} />

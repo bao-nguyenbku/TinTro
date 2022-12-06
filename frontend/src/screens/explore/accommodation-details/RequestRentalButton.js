@@ -23,13 +23,13 @@ const RequestRentalButton = (props) => {
         disable: true,
       });
     }
-  }, [item.id, rentRequestData]);
+  }, [item.id]);
   useEffect(() => {
     if (isEmptyObj(error)) return;
     toast.show({
       description: error.message,
     });
-  }, [error, toast]);
+  }, [error]);
   const dispatch = useDispatch();
   const onConfirm = () => {
     dispatch(requestRentRoom(item));
