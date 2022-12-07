@@ -4,9 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Avatar, Box, HStack, Text } from 'native-base';
 
 import { MessagerList, SendMessage } from 'screens/message';
-import { clearMessageSections } from 'store/reducer/message';
 import CustomHeader from 'components/header';
-
 
 const Stack = createNativeStackNavigator();
 

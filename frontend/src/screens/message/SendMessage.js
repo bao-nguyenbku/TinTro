@@ -8,7 +8,7 @@ import { getToken } from 'utils/token';
 import { WS_BASE_URL } from '@env';
 import { io } from 'socket.io-client';
 import { disableBottomTabBar } from 'utils/utils';
-import { RefreshControl } from 'react-native';
+import { Platform, RefreshControl } from 'react-native';
 import { useHeaderHeight } from 'hooks/useHeaderHeight';
 
 const socketUrl = `${WS_BASE_URL}/message`;
@@ -74,11 +74,16 @@ const SendMessage = ({ route }) => {
 
   let pos = 'row-reverse';
   return (
-    <KeyboardAvoidingView flex={1} keyboardVerticalOffset={headerHeight + statusBarHeight} behavior='padding' enabled>
+    <KeyboardAvoidingView
+      flex={1}
+      keyboardVerticalOffset={Platform.OS === 'ios' && headerHeight + statusBarHeight}
+      behavior={Platform.OS === 'ios' && 'padding'}
+      enabled
+    >
       <VStack py={3.5} px={3.5}>
         <ScrollView
           automaticallyAdjustContentInsets
-          refreshControl={<RefreshControl refreshing={message.loading} onRefresh={() => socketRef.emit('fetch-all-messages')} />}
+          refreshControl={<RefreshControl refreshing={message.loading} onRefresh={() => socketRef.current.emit('fetch-all-messages')} />}
           py={4}
           h="95%"
         >
@@ -110,7 +115,7 @@ const SendMessage = ({ route }) => {
         <Input
           bottom={5}
           borderRadius={999}
-          height='16'
+          height="16"
           backgroundColor="#fff"
           value={messageText}
           onChangeText={(text) => setMessageText(text)}
