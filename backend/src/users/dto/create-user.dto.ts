@@ -1,4 +1,9 @@
 import { UserEntity } from './../entities/user.entity';
-import { PartialType } from '@nestjs/swagger';
+import { OmitType } from '@nestjs/swagger';
 
-export class CreateUserDto extends PartialType(UserEntity) {}
+export class CreateUserDto extends OmitType(UserEntity, [
+  'createdAt',
+  'updatedAt',
+  'id',
+  'role',
+]) {}

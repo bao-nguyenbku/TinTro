@@ -1,14 +1,14 @@
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: ['babel-preset-expo', 'module:metro-react-native-babel-preset'],
     plugins: [
       [
         'babel-plugin-root-import',
         {
           rootPathPrefix: '~',
-          rootPathSuffix: 'src'
-        }
+          rootPathSuffix: 'src',
+        },
       ],
       [
         'module-resolver',
@@ -16,8 +16,16 @@ module.exports = function(api) {
           root: ['./src'],
           alias: {
             '@components': './src/components',
-            '@screens': './src/screens'
+            '@screens': './src/screens',
           },
+        },
+      ],
+      [
+        'dotenv-import',
+        {
+          envName: 'APP_ENV',
+          moduleName: '@env',
+          path: '.env',
         },
       ],
     ],
