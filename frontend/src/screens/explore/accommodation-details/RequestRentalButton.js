@@ -20,7 +20,6 @@ const RequestRentalButton = (props) => {
     disable: false,
   });
   useEffect(() => {
-    console.log('From useEffect: ', rentRequest);
     if (!isEmptyObj(rentRequestData) && rentRequestData.accommodationId === item.id) {
       setButtonProps({
         title: 'Đã gửi yêu cầu thuê phòng',

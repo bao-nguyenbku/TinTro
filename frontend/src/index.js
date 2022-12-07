@@ -20,8 +20,6 @@ const Index = () => {
   return (
     <>
       <StatusBar style="auto" />
-
-
       {user.isLoading ? (
         <Loading />
       ) : (
