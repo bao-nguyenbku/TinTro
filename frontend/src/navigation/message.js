@@ -4,7 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Avatar, Box, HStack, Text } from 'native-base';
 
 import { MessagerList, SendMessage } from 'screens/message';
-import ExploreHeader from 'components/header/ExploreHeader';
+import { clearMessageSections } from 'store/reducer/message';
+import CustomHeader from 'components/header';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +29,7 @@ const MessageNav = () => {
     <Stack.Navigator initialRouteName="MessagerList">
       <Stack.Screen
         options={{
-          header: (stackProps) => <ExploreHeader {...stackProps} />,
+          header: (stackProps) => <CustomHeader {...stackProps} />,
           headerBackTitleVisible: false,
           headerTitleAlign: 'center',
           title: 'Tin nhắn',
@@ -41,7 +43,7 @@ const MessageNav = () => {
         options={({ route, navigation }) => ({
           header: () => <TitleHeaderOfMessageScreen navigation={navigation} name={route.params.name} avatar={route.params.avatar} />,
 
-          headerTitleAlign: 'left',
+          headerTitleAlign: 'center',
         })}
       />
     </Stack.Navigator>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Text } from 'native-base';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { formatCurrency } from 'utils/utils';
 
 const CommonInfo = (props) => {
   const { item } = props;
@@ -37,6 +38,14 @@ const CommonInfo = (props) => {
       >
         <Ionicons name='checkbox' size={20} color='#059669' />
         <Text color='tertiary.600' marginLeft='1'>Còn 3 phòng trống</Text>
+      </Box>
+      <Box
+        flexDirection='row'
+        alignItems='center'
+        justifyContent='flex-end'
+        marginBottom='2'
+      >
+        <Text color='danger.600' fontSize='xl' fontWeight='700'>{`${formatCurrency(item.price)}/tháng`}</Text>
       </Box>
     </Box>
   )

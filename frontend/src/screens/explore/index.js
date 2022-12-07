@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ExploreHeader from 'components/header/ExploreHeader';
+import CustomHeader from 'components/header';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,7 +12,7 @@ const ExploreScreen = (props) => {
     <Stack.Navigator
       initialRouteName={allAccommodations.title}
       screenOptions={{
-        header: (stackProps) => <ExploreHeader {...stackProps} />,
+        header: (stackProps) => <CustomHeader {...stackProps} />,
         headerBackTitleVisible: false,
         headerTitleAlign: 'center'
       }}

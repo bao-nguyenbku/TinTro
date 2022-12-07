@@ -12,11 +12,13 @@ import CommonInfo from './CommonInfo';
 import OwnerContact from './OwnerContact';
 import Description from './Description';
 import RequestRentalButton from './RequestRentalButton';
+import ImageGallery from './ImageGallery';
 
 const AccommodationDetailsScreen = (props) => {
-  const { route } = props;
   const navigation = useNavigation();
-  const { item } = route.params;
+  const { route } = props;
+  const item =  route.params ? route.params.item : undefined;
+
   const dispatch = useDispatch();
   useEffect(() => {
     disableBottomTabBar(navigation);
@@ -27,8 +29,8 @@ const AccommodationDetailsScreen = (props) => {
   }, [navigation]);
 
   useEffect(() => {
-    dispatch(getRentRequestByRenter(item.id));
-  }, [item.id, dispatch]);
+    dispatch(getRentRequestByRenter(item?.id));
+  }, [item?.id]);
 
   if (!item) {
     return <Loading />;
@@ -60,7 +62,7 @@ const AccommodationDetailsScreen = (props) => {
             <Box height="222px">
               <Image
                 source={{
-                  uri: item.thumbnail,
+                  uri: item?.thumbnail,
                 }}
                 alt="thumbnail"
                 size="full"
@@ -68,11 +70,12 @@ const AccommodationDetailsScreen = (props) => {
               />
             </Box>
             <Text fontSize="2xl" fontWeight="700" marginTop="2">
-              {item.name}
+              {item?.name}
             </Text>
             <CommonInfo item={item} />
             <OwnerContact item={item} handlePressMessageIcon={handlePressMessageIcon} />
             <Description item={item} />
+            <ImageGallery images={item?.images} />
           </Box>
         </ScrollView>
         <RequestRentalButton item={item} />
