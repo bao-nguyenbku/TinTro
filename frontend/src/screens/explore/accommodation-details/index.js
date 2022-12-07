@@ -7,6 +7,7 @@ import Loading from 'components/loading';
 import { useDispatch } from 'react-redux';
 import { getRentRequestByRenter } from 'store/reducer/accommodation';
 import { disableBottomTabBar } from 'utils/utils';
+import { useNavigation } from '@react-navigation/native';
 import CommonInfo from './CommonInfo';
 import OwnerContact from './OwnerContact';
 import Description from './Description';
@@ -14,8 +15,10 @@ import RequestRentalButton from './RequestRentalButton';
 import ImageGallery from './ImageGallery';
 
 const AccommodationDetailsScreen = (props) => {
-  const { route, navigation } = props;
+  const navigation = useNavigation();
+  const { route } = props;
   const item =  route.params ? route.params.item : undefined;
+
   const dispatch = useDispatch();
   useEffect(() => {
     disableBottomTabBar(navigation);
@@ -35,12 +38,14 @@ const AccommodationDetailsScreen = (props) => {
 
   const handlePressMessageIcon = () => {
     const owner = item?.owner;
+
     navigation.getParent().navigate('Message', {
       screen: 'SendMessage',
       params: {
         fromId: owner?.id,
         avatar: owner?.avatar,
         name: owner?.name,
+        initial: false,
       },
     });
   };
