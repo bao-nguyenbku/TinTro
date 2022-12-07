@@ -63,6 +63,18 @@ export const logIn = createAsyncThunk('users/login', async ({ email, password, d
   }
 });
 
+export const authMe = createAsyncThunk('users/authMe', async (_, { rejectWithValue }) => {
+  try {
+    const response = await request.get('/auth/me');
+    return response.data;
+  } catch (err) {
+    if (!err.response) {
+      return rejectWithValue({ statusCode: 500, message: err.message });
+    }
+    return rejectWithValue({ statusCode: err.response.data.statusCode, message: err.response.data.message });
+  }
+});
+
 // --------------------------- SLICE ---------------------------
 export const userSlice = createSlice({
   name: 'user',
@@ -110,6 +122,20 @@ export const userSlice = createSlice({
     builder.addCase(saveUser.rejected, (state, action) => {
       state.error = action.payload.message || 'Something went wrong';
       state.loading = false;
+    });
+    // --------------------------- AUTH ME ---------------------------
+    builder.addCase(authMe.pending, (state, _) => {
+      state.loading = true;
+    });
+    builder.addCase(authMe.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(authMe.rejected, (state, action) => {
+      state.error = action.payload.message || 'Something went wrong';
+      state.loading = false;
+      state.currentUser = {};
     });
   },
 });
