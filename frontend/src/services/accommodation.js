@@ -8,11 +8,11 @@ const getAllAccommodationsService = () => {
 const searchAccommodationByKeywordService = (keyword) => {
   return request.get(`${prefix}?search=${keyword}`);
 }
-const requestRentRoomService = ({ accommodationId, email }) => {
-  return request.post(`${prefix}/${accommodationId}/request-rent`, { email });
+const requestRentRoomService = ({ accommodationId }) => {
+  return request.get(`${prefix}/${accommodationId}/request-rent`);
 }
 const getRequestByRenterService = ({ accommodationId }) => {
-  return request.get(`${prefix}/${accommodationId}/request-rent`);
+  return request.get(`${prefix}/${accommodationId}/all-request-rent`);
 }
 const getRecommendAccommodationsService = () => {
   return request.get(`${prefix}/all/recommend`);

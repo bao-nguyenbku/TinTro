@@ -85,7 +85,7 @@ export class AccommodationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/:id/request-rent')
+  @Get('/:id/all-request-rent')
   async getRequestRentByRenter(
     @Param('id') accommodationId: string,
     @Request() req,
@@ -97,8 +97,37 @@ export class AccommodationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('/:id/request-rent')
+  @Get('/:id/request-rent')
   async requestRentRoom(
+    @Param('id') accommodationId: string,
+    @Request() req,
+    // @Body() requestRentRoom: { email: string },
+  ) {
+    const renterId = req.user.id;
+    const existedAccommodaiton =
+      await this.accommodationService.findAccommodationById(
+        parseInt(accommodationId),
+      );
+    // const existedRenter = await this.usersService.findByEmail(email);
+    const { ownerId, id } = existedAccommodaiton;
+    const result = await this.accommodationService.createRequestRentRoom({
+      ownerId,
+      renterId,
+      accommodationId: id,
+    });
+    return result;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/all/recommend')
+  async getRecommendAccommodations() {
+    const result = await this.accommodationService.getRecommendAccommodations();
+    return result.filter((item) => item.reviewStar > RECOMMEND_LEVEL);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/:id/request-checkout')
+  async requestCheckoutRoom(
     @Param('id') accommodationId: string,
     @Body() requestRentRoom: { email: string },
   ) {
@@ -116,12 +145,5 @@ export class AccommodationController {
       accommodationId: id,
     });
     return result;
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('/all/recommend')
-  async getRecommendAccommodations() {
-    const result = await this.accommodationService.getRecommendAccommodations();
-    return result.filter((item) => item.reviewStar > RECOMMEND_LEVEL);
   }
 }

@@ -121,6 +121,7 @@ model Review {
 enum RequestStatus {
   WAITING
   CONFIRM
+  CHECKOUT
 }
 
 enum RoomStatus {

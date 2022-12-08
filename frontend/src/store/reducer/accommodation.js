@@ -171,12 +171,10 @@ export const searchAccommodationByKeyword = createAsyncThunk('accommodation/sear
   }
 });
 
-export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom', async (accommodation, { rejectWithValue, getState }) => {
-  const renterEmail = getState()?.user?.currentUser?.email || 'test1@gmail.com';
+export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom', async (accommodation, { rejectWithValue }) => {
   try {
     const response = await requestRentRoomService({
       accommodationId: accommodation.id,
-      email: renterEmail,
     });
     return response.data;
   } catch (error) {
