@@ -30,7 +30,7 @@ const initialState = {
     loading: false,
     isSuccess: false,
     error: undefined,
-    data: {},
+    data: [],
   },
 };
 
@@ -66,6 +66,14 @@ export const accommodationSlice = createSlice({
           break;
       }
 
+    },
+    resetRentRequest(state) {
+      state.rentRequest = {
+        loading: false,
+        isSuccess: false,
+        error: undefined,
+        data: [],
+      }
     }
   },
   extraReducers: (builder) => {
@@ -110,7 +118,7 @@ export const accommodationSlice = createSlice({
       .addCase(getRentRequestByRenter.fulfilled, (state, action) => {
         // TODO: Use A renter may request multiple accommodation but for now,
         // one renter can only request to an accommodation
-        const rentRequest = Array.isArray(action.payload) ? action.payload[0] : action.payload;
+        const rentRequest = action.payload;
         state.rentRequest.loading = false;
         state.rentRequest.data = rentRequest;
       })
@@ -190,5 +198,5 @@ export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentReq
     });
   }
 });
-export const { resetError, filterByPrice } = accommodationSlice.actions;
+export const { resetError, filterByPrice, resetRentRequest } = accommodationSlice.actions;
 export default accommodationSlice.reducer;

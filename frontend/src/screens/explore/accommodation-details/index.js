@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native';
 import { Box, Text, Image, ScrollView } from 'native-base';
+import { getRentRequestByRenter, selectAccommodationState } from 'store/reducer/accommodation';
 import Loading from 'components/loading';
-// import Ionicons from '@expo/vector-icons/Ionicons';
-import { useDispatch } from 'react-redux';
-import { getRentRequestByRenter } from 'store/reducer/accommodation';
 import { disableBottomTabBar } from 'utils/utils';
 import { useNavigation } from '@react-navigation/native';
 import CommonInfo from './CommonInfo';
@@ -19,6 +17,11 @@ const AccommodationDetailsScreen = (props) => {
   const { route } = props;
   const item =  route.params ? route.params.item : undefined;
   const dispatch = useDispatch();
+  const { rentRequest } = useSelector(selectAccommodationState);
+  const rentRequestLoading = rentRequest.loading;
+  useEffect(() => {
+    dispatch(getRentRequestByRenter(item?.id));
+  }, [item?.id]);
   useEffect(() => {
     disableBottomTabBar(navigation);
     return () =>
@@ -27,11 +30,7 @@ const AccommodationDetailsScreen = (props) => {
       });
   }, [navigation]);
 
-  useEffect(() => {
-    dispatch(getRentRequestByRenter(item?.id));
-  }, [item?.id]);
-
-  if (!item) {
+  if (!item || rentRequestLoading) {
     return <Loading />;
   }
 
