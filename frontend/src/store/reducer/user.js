@@ -84,6 +84,9 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    setCurrentUser: (state, action) => {
+      state.currentUser = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // --------------------------- REGISTER ---------------------------
@@ -142,7 +145,7 @@ export const userSlice = createSlice({
 // --------------------------- SELECTORS ---------------------------
 export const selectUserState = createSelector([(state) => state.user], (userState) => userState);
 // Action creators are generated for each case reducer function
-const { resetData } = userSlice.actions;
-export { resetData };
+const { resetData, setCurrentUser } = userSlice.actions;
+export { resetData, setCurrentUser };
 
 export default userSlice.reducer;
