@@ -15,12 +15,10 @@ const CustomHeader = (props) => {
             <BackButton {...props} />
           </Box>
         )}
-        <Text fontSize="lg" color="white" position="absolute">
+        <Text bold fontSize="lg" color="white" position="absolute">
           {title}
         </Text>
-        {headerRight && (
-            headerRight()
-        )}
+        {headerRight && headerRight()}
       </Box>
     </Box>
   );

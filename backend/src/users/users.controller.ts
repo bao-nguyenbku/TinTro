@@ -7,6 +7,7 @@ import {
   Param,
   Get,
   UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,6 +16,7 @@ import { UserResponseDto } from './dto/user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { multerOptions } from './multer-options';
+import { Request } from '@nestjs/common/decorators';
 
 @Controller('users')
 @ApiTags('users')
@@ -33,16 +35,13 @@ export class UsersController {
   async uploadAvatar(
     @UploadedFile()
     file: Express.Multer.File,
+    @Request() req,
   ) {
-    console.log('====================================');
-    console.log(file);
-    console.log('====================================');
-    return this.usersService.uploadAvatar(file);
-  }
-
-  @Get(':avatarPath')
-  @UseGuards(JwtAuthGuard)
-  getAvatarFile(@Param('avatarPath') avatarPath: string) {
-    return this.usersService.getAvatarFile(avatarPath);
+    const filePath = `${req.protocol}://${req.get('host')}/public/uploads/${
+      file.filename
+    }`;
+    const userId = req.user.id;
+    await this.usersService.uploadAvatar(filePath, userId);
+    return { avatar: filePath };
   }
 }

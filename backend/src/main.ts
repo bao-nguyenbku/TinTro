@@ -7,8 +7,8 @@ import { ValidationPipe } from '@nestjs/common/pipes';
 import * as morgan from 'morgan';
 import helmet from 'helmet';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import * as express from 'express';
-import path, { join } from 'path';
+import * as express from 'express'; //
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
@@ -22,6 +22,7 @@ async function bootstrap() {
   app.use(helmet());
   app.enableCors();
 
+  // * Add this line to serve static files
   app.use('/public', express.static(join(__dirname, '..', '..', 'public')));
 
   const document = SwaggerModule.createDocument(app, config);
