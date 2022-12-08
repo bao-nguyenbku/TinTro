@@ -1,8 +1,9 @@
+import { MessageSection, Role } from '@prisma/client';
 import { UserEntity } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserResponseDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -18,17 +19,36 @@ export class UsersService {
     return user;
   }
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
-  findAll() {
-    return `This action returns all users`;
-  }
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  // FOR USERs ONLY
+  async create(user: CreateUserDto): Promise<UserEntity> {
+    try {
+      const newUser = await this.prisma.user.create({
+        data: {
+          email: user.email,
+          password: user.password,
+          role: Role.USER,
+          name: user.name,
+          phone: user.phone,
+        },
+      });
+      return newUser;
+    } catch (e) {
+      throw e;
+    }
   }
 
-  // ------------------------------ find username and password --------------------------------
+  async findById(id: number): Promise<UserEntity> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id },
+      });
+      delete user.password;
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findByEmail(username: string) {
     // user name must be email
     const user = await this.prisma.user.findUnique({
@@ -39,11 +59,58 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findMessageSectionsByUserId(id: number): Promise<UserEntity | any> {
+    const userWithMessageSections = await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        messageSections: {
+          select: {
+            id: true,
+            messages: {
+              select: {
+                id: true,
+                text: true,
+                fromId: true,
+                from: {
+                  select: {
+                    name: true,
+                    avatar: true,
+                    createdAt: true,
+                  },
+                },
+              },
+              orderBy: {
+                createdAt: 'desc',
+              },
+              take: 1,
+            },
+            users: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return userWithMessageSections;
   }
-  // Example of role based on role
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+
+  async saveToRenter(user: UserResponseDto) {
+    const renter = await this.prisma.renter.create({
+      data: {
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+    });
+    return renter;
   }
 }

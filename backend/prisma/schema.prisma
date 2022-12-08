@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,16 +8,61 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  role Role @default(USER)
-  email String @unique
-  phone String @unique
-  password String
-  name String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              Int              @id @default(autoincrement())
+  owner           Owner?
+  renter          Renter?
+  role            Role             @default(USER)
+  email           String           @unique
+  phone           String           @unique
+  password        String
+  name            String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  avatar          String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
+  messages        Message[]
+  messageSections MessageSection[] @relation("users_in_message_section")
+  review          Review[]
+
+  @@index([id])
+}
+
+model Message {
+  id               Int            @id @default(autoincrement())
+  text             String
+  createdAt        DateTime       @default(now())
+  fromId           Int
+  messageSectionId Int
+  from             User           @relation(fields: [fromId], references: [id])
+  messageSection   MessageSection @relation(fields: [messageSectionId], references: [id])
+
+  @@index([id, fromId, createdAt])
+}
+
+model MessageSection {
+  id       Int       @id @default(autoincrement())
+  messages Message[]
+  users    User[]    @relation("users_in_message_section")
+}
+
+model Owner {
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
   accommodation Accommodation?
-  @@index(id)
+  rentRequest   RentRequest[]
+
+  @@index(userId)
+}
+
+model Renter {
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  rentRequest RentRequest[]
+  rentRoom    Room?         @relation(fields: [rentRoomId], references: [id])
+  rentRoomId  Int?
+
+  @@index(userId)
 }
 
 enum Role {
@@ -28,30 +70,57 @@ enum Role {
   USER
 }
 
-
 model Accommodation {
-  id Int @id @default(autoincrement())
-  name String
-  addressNumber String
-  addressStreet String
+  id              Int           @id @default(autoincrement())
+  name            String
+  addressNumber   String
+  addressStreet   String
   addressDistrict String
-  addressCity String
-  area Float 
-  rooms Room[]
-  price Int @default(0)
-  owner User @relation(fields: [ownerId], references: [id])
-  ownerId Int @unique
-  description String
-  thumbnail String @default("")
-  images String[] @default([""])
-  utilities String[]
+  addressCity     String
+  area            Float
+  rooms           Room[]
+  price           Int           @default(0)
+  owner           Owner         @relation(fields: [ownerId], references: [userId])
+  ownerId         Int           @unique
+  description     String
+  thumbnail       String        @default("")
+  images          String[]      @default([])
+  utilities       String[]
+  rentRequest     RentRequest[]
+  review          Review[]
+}
+
+model RentRequest {
+  id              Int           @id @default(autoincrement())
+  renter          Renter        @relation(fields: [renterId], references: [userId])
+  renterId        Int           @unique
+  owner           Owner         @relation(fields: [ownerId], references: [userId])
+  ownerId         Int
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId Int
+  status          RequestStatus
 }
 
 model Room {
-  id Int @id @default(autoincrement())
-  accommodation Accommodation @relation(fields: [accommodationId], references: [id])
+  id              Int           @id @default(autoincrement())
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
   accommodationId Int
-  status RoomStatus
+  renter          Renter[]
+  status          RoomStatus
+}
+
+model Review {
+  id              Int           @id @default(autoincrement())
+  userId          Int
+  user            User          @relation(fields: [userId], references: [id])
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId Int
+  rating          Int
+}
+
+enum RequestStatus {
+  WAITING
+  CONFIRM
 }
 
 enum RoomStatus {
