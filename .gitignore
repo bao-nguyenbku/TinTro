@@ -38,6 +38,8 @@ backend/!.vscode/launch.json
 backend/!.vscode/extensions.json
 
 backend/package-lock.json
+backend/yarn.lock
+backend/public/uploads/*
 
 
 frontend/node_modules/

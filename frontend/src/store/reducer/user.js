@@ -10,6 +10,7 @@ const initialState = {
   loading: false,
   messagedUsers: [],
   error: null,
+  loggedIn: false,
 };
 
 // --------------------------- THUNKS ---------------------------
@@ -84,6 +85,10 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    setCurrentUser: (state, _action) => {
+      state.currentUser = {};
+      state.loggedIn = false;
+    },
   },
   extraReducers: (builder) => {
     // --------------------------- REGISTER ---------------------------
@@ -104,6 +109,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(logIn.fulfilled, (state, action) => {
       state.token = action.payload.token;
+      state.loggedIn = true;
       state.loading = false;
     });
     builder.addCase(logIn.rejected, (state, action) => {
@@ -129,20 +135,20 @@ export const userSlice = createSlice({
     });
     builder.addCase(authMe.fulfilled, (state, action) => {
       state.currentUser = action.payload;
+      state.loggedIn = true;
       state.loading = false;
       state.error = null;
     });
-    builder.addCase(authMe.rejected, (state, action) => {
-      state.error = action.payload.message || 'Something went wrong';
+    builder.addCase(authMe.rejected, (state, _) => {
       state.loading = false;
-      state.currentUser = {};
+      state.loggedIn = false;
     });
   },
 });
 // --------------------------- SELECTORS ---------------------------
 export const selectUserState = createSelector([(state) => state.user], (userState) => userState);
 // Action creators are generated for each case reducer function
-const { resetData } = userSlice.actions;
-export { resetData };
+const { resetData, setCurrentUser } = userSlice.actions;
+export { resetData, setCurrentUser };
 
 export default userSlice.reducer;

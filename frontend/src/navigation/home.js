@@ -3,9 +3,10 @@ import React from 'react';
 import ExploreScreen from 'screens/explore';
 import MyRoomScreen from 'screens/my-room';
 import MessageScreen from 'screens/message';
-import AccountScreen from 'screens/account';
+
 import { ROUTES } from 'navigation';
 import { Ionicons } from '@expo/vector-icons';
+import AccountNav from './account';
 
 const Tab = createBottomTabNavigator();
 
@@ -63,7 +64,7 @@ const HomeNav = () => {
             break;
           }
           case ROUTES.account.title: {
-            TabScreen = AccountScreen;
+            TabScreen = AccountNav;
             break;
           }
           default:
