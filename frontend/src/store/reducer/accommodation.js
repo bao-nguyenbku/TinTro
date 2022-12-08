@@ -1,6 +1,7 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService } from 'services/accommodation';
 // import store from 'store';
+import { PRICE_ASCENDING, PRICE_DECENDING, REVIEW_ASCENDING, REVIEW_DECENDING } from 'constants';
 
 const initialState = {
   accommodations: [],
@@ -39,6 +40,31 @@ export const accommodationSlice = createSlice({
     resetError(state) {
       state.error = undefined;
       state.rentRequest.error = undefined;
+    },
+    filterByPrice(state, action) {
+      const value = action.payload;
+      switch (value) {
+        case PRICE_ASCENDING: {
+          state.searchAccommodations = [...state.searchAccommodations].sort((prev, curr) => prev.price - curr.price);
+          break;
+        }
+        case PRICE_DECENDING: {
+          state.searchAccommodations = [...state.searchAccommodations].sort((prev, curr) => curr.price - prev.price)
+          break;
+        }
+        case REVIEW_ASCENDING: {
+          state.searchAccommodations = [...state.searchAccommodations].sort((prev, curr) => prev.reviewStar - curr.reviewStar);
+          break;
+        }
+        case REVIEW_DECENDING: {
+          state.searchAccommodations = [...state.searchAccommodations].sort((prev, curr) => curr.reviewStar - prev.reviewStar);
+          break;
+        }
+
+        default:
+          break;
+      }
+
     }
   },
   extraReducers: (builder) => {
@@ -142,5 +168,5 @@ export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentReq
     });
   }
 });
-export const { resetError } = accommodationSlice.actions;
+export const { resetError, filterByPrice } = accommodationSlice.actions;
 export default accommodationSlice.reducer;

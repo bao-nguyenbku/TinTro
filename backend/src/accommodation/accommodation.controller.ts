@@ -57,13 +57,7 @@ export class AccommodationController {
   async getAllAccommodation() {
     try {
       const result = await this.accommodationService.getAllAccommodation();
-      return result.map((item) => ({
-        ...item,
-        reviewStar: item?.review?.length
-          ? item.review.reduce((acc, cur) => acc + cur.rating, 0) /
-            item.review.length
-          : 0,
-      }));
+      return result;
     } catch (err) {
       Logger.error(err);
       throw err;

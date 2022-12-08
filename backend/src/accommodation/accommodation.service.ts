@@ -26,6 +26,10 @@ export class AccommodationService {
         return {
           ...result,
           owner: result.owner.user,
+          reviewStar: result?.review?.length
+            ? result.review.reduce((acc, cur) => acc + cur.rating, 0) /
+              result.review.length
+            : 0,
         };
       });
     } catch (error) {
