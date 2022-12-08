@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma, RequestStatus } from '@prisma/client';
+import { Prisma, RequestStatus, RoomStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
@@ -26,6 +26,11 @@ export class AccommodationService {
         return {
           ...result,
           owner: result.owner.user,
+          availableRooms: result.rooms.reduce(
+            (acc, curr) =>
+              curr.status === RoomStatus.AVAILABLE ? acc + 1 : acc,
+            0,
+          ),
           reviewStar: result?.review?.length
             ? result.review.reduce((acc, cur) => acc + cur.rating, 0) /
               result.review.length
@@ -63,6 +68,14 @@ export class AccommodationService {
       return {
         ...result,
         owner: result.owner.user,
+        availableRooms: result.rooms.reduce(
+          (acc, curr) => (curr.status === RoomStatus.AVAILABLE ? acc + 1 : acc),
+          0,
+        ),
+        reviewStar: result?.review?.length
+          ? result.review.reduce((acc, cur) => acc + cur.rating, 0) /
+            result.review.length
+          : 0,
       };
     } catch (error) {
       throw new HttpException(error.message, error.status);
