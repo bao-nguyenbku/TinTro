@@ -9,7 +9,6 @@ export const jwtParse = (accessToken) => {
 
 export const tokenKey = 'accessToken';
 
-// TODO: get token, and set token to local storage
 export const setToken = async (_accessToken) => {
   try {
     await AsyncStorage.setItem(tokenKey, _accessToken);
@@ -27,4 +26,8 @@ export const getToken = async () => {
     console.error(err);
     return null;
   }
+};
+
+export const deleteToken = async () => {
+  return AsyncStorage.removeItem(tokenKey);
 };
