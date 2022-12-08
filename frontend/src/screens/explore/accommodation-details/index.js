@@ -18,7 +18,7 @@ const AccommodationDetailsScreen = (props) => {
   const navigation = useNavigation();
   const { route } = props;
   const item =  route.params ? route.params.item : undefined;
-
+  console.log(item);
   const dispatch = useDispatch();
   useEffect(() => {
     disableBottomTabBar(navigation);

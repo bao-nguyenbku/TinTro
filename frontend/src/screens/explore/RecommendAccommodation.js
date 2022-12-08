@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Box, ScrollView } from 'native-base';
+import { TouchableOpacity } from 'react-native';
 import { getRecommendAccommodations, selectAccommodationState } from 'store/reducer/accommodation';
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from 'components/loading';
 import RecommendSingleItem from './RecommendSingleItem';
 
-const RecommendAccommodation = () => {
-
+const RecommendAccommodation = (props) => {
+  const { navigation, stack } = props;
+  const { accommodationDetails } = stack;
   const dispatch = useDispatch();
   const { recommendAccommodations, loading } = useSelector(selectAccommodationState);
   useEffect(() => {
@@ -28,10 +30,14 @@ const RecommendAccommodation = () => {
         <Box flexDirection='row' padding='4'>
           {recommendAccommodations && recommendAccommodations.map(data => {
             return (
-              <RecommendSingleItem
+              <TouchableOpacity
                 key={data.id}
-                data={data}
-              />
+                onPress={() => navigation.navigate(accommodationDetails.title, { item: data })}
+              >
+                <RecommendSingleItem
+                  data={data}
+                />
+              </TouchableOpacity>
             )
           })}
         </Box>

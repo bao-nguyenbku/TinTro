@@ -32,7 +32,7 @@ const AccommodationList = (props) => {
         refreshControl={<RefreshControl refreshing={loading} onRefresh={() => fetchAllAccommodationData()} />}
         contentContainerStyle={{paddingBottom: bottomBarHeight}}
       >
-          <RecommendAccommodation navigation={navigation}/>
+          <RecommendAccommodation navigation={navigation} {...props}/>
           <Box paddingX="2" marginTop='8'>
             <Text fontSize='xl' fontWeight='700'>Tiềm năng</Text>
             {accommodations.length > 0 &&

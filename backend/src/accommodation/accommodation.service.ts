@@ -133,14 +133,20 @@ export class AccommodationService {
 
   async getRecommendAccommodations() {
     try {
-      const result = await this.prismaService.accommodation.findMany({
+      const prismaResult = await this.prismaService.accommodation.findMany({
         include: {
           review: true,
+          owner: {
+            include: {
+              user: true,
+            },
+          },
         },
       });
-      return result.map((item) => {
+      return prismaResult.map((item) => {
         return {
           ...item,
+          owner: item.owner.user,
           reviewStar: item?.review?.length
             ? item.review.reduce((acc, cur) => acc + cur.rating, 0) /
               item.review.length
