@@ -16,9 +16,9 @@ import { UtilsService } from '~/utils/utils.service';
 // import { Roles } from '~/auth/role.decorator';
 import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { AccommodationService } from './accommodation.service';
-
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 // import { RequestRentRoomDto } from './dto/request-rent-room.dto';
+import { RECOMMEND_LEVEL } from './constants';
 
 @Controller('accommodations')
 export class AccommodationController {
@@ -64,6 +64,7 @@ export class AccommodationController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/:id')
   @ApiOkResponse({ type: AccommodationResponseDto })
   async findAccommodationById(@Param('id') id: string) {
@@ -94,6 +95,8 @@ export class AccommodationController {
       parseInt(userId),
     );
   }
+
+  @UseGuards(JwtAuthGuard)
   @Post('/:id/request-rent')
   async requestRentRoom(
     @Param('id') accommodationId: string,
@@ -113,5 +116,12 @@ export class AccommodationController {
       accommodationId: id,
     });
     return result;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/all/recommend')
+  async getRecommendAccommodations() {
+    const result = await this.accommodationService.getRecommendAccommodations();
+    return result.filter((item) => item.reviewStar > RECOMMEND_LEVEL);
   }
 }

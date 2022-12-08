@@ -1,5 +1,5 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService } from 'services/accommodation';
+import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService, getRecommendAccommodationsService } from 'services/accommodation';
 // import store from 'store';
 import { PRICE_ASCENDING, PRICE_DECENDING, REVIEW_ASCENDING, REVIEW_DECENDING } from 'constants';
 
@@ -8,6 +8,7 @@ const initialState = {
   loading: false,
   error: undefined,
   searchAccommodations: [],
+  recommendAccommodations: [],
   accommodationDetails: {
     id: 0,
     name: '',
@@ -112,11 +113,32 @@ export const accommodationSlice = createSlice({
         const rentRequest = Array.isArray(action.payload) ? action.payload[0] : action.payload;
         state.rentRequest.loading = false;
         state.rentRequest.data = rentRequest;
+      })
+      .addCase(getRecommendAccommodations.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getRecommendAccommodations.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recommendAccommodations = action.payload;
       });
   },
 });
 export const selectAccommodationState = createSelector([(state) => state.accommodation], (accommodationState) => accommodationState);
 
+export const getRecommendAccommodations = createAsyncThunk(
+  'accommodation/getRecommendAccommodations',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getRecommendAccommodationsService();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue({
+        statusCode: error.response.status,
+        message: error.response.message
+      })
+    }
+  }
+)
 export const getAllAccommodations = createAsyncThunk('accommodation/getAllAccommodations', async (_, { rejectWithValue }) => {
   try {
     const response = await getAllAccommodationsService();

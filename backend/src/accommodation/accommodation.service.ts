@@ -36,6 +36,7 @@ export class AccommodationService {
       throw new Error(error);
     }
   }
+
   async findAccommodationById(id: number): Promise<AccommodationResponseDto> {
     try {
       const result = await this.prismaService.accommodation.findUnique({
@@ -127,6 +128,27 @@ export class AccommodationService {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
+    }
+  }
+
+  async getRecommendAccommodations() {
+    try {
+      const result = await this.prismaService.accommodation.findMany({
+        include: {
+          review: true,
+        },
+      });
+      return result.map((item) => {
+        return {
+          ...item,
+          reviewStar: item?.review?.length
+            ? item.review.reduce((acc, cur) => acc + cur.rating, 0) /
+              item.review.length
+            : 0,
+        };
+      });
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }
