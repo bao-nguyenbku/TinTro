@@ -113,4 +113,14 @@ export class UsersService {
     });
     return renter;
   }
+
+  uploadAvatar(file: Express.Multer.File) {
+    // save file into public/uploads folder and return the path
+    
+  }
+
+  getAvatarFile(avatarPath: string) {
+    // return the file from public/uploads folder
+    
+  }
 }

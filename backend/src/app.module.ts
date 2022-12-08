@@ -14,6 +14,7 @@ import { ReviewModule } from './review/review.module';
 
 import { MessageSectionModule } from './message-section/message-section.module';
 import { MessageModule } from './message/message.module';
+import { MulterModule } from '@nestjs/platform-express/multer';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { MessageModule } from './message/message.module';
     AccommodationModule,
     UtilsModule,
     ReviewModule,
+    MulterModule,
   ],
   controllers: [AppController, UtilsController],
   providers: [AppService, PrismaService],
