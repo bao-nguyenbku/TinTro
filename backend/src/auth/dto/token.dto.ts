@@ -18,4 +18,7 @@ export class TokenResponse {
 
   @ApiProperty()
   role: Role;
+
+  @ApiProperty()
+  avatar: string;
 }
