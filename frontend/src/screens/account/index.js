@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Center, Image, Pressable, Text, VStack } from 'native-base';
+import { Center, Image, Pressable, Text, useToast, VStack } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteToken } from 'utils/token';
 import { setCurrentUser } from 'store/reducer/user';
 import * as ImagePicker from 'expo-image-picker';
 import sendFileRequest from 'utils/sendFileRequest';
+import CustomToast from 'components/custom-toast';
 
 const AccountMenu = () => {
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
+  const toast = useToast();
   const dispatch = useDispatch();
 
   const pickImage = async () => {
@@ -23,12 +25,15 @@ const AccountMenu = () => {
     if (!result.canceled) {
       const formData = new FormData();
       formData.append('file', {
-        name: `${new Date()}_profile`,
+        name: `${new Date()}_avatar`,
         uri: result.assets[0].uri,
         type: 'image/jpg',
       });
       try {
         await sendFileRequest.post('/users/upload-avatar', formData);
+        toast.show({
+          render: () => <CustomToast title="Cập nhật ảnh đại diện thành công." status="success" />,
+        });
       } catch (err) {
         console.log(err);
       }
@@ -62,7 +67,7 @@ const AccountMenu = () => {
           }}
           isloading={loading}
         >
-          <Text>Đăng xuất abc</Text>
+          <Text>Đăng xuất</Text>
         </Pressable>
       </VStack>
     </VStack>
