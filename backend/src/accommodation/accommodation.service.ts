@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma, RequestStatus } from '@prisma/client';
+import { Prisma, RequestStatus, RoomStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
@@ -26,12 +26,22 @@ export class AccommodationService {
         return {
           ...result,
           owner: result.owner.user,
+          availableRooms: result.rooms.reduce(
+            (acc, curr) =>
+              curr.status === RoomStatus.AVAILABLE ? acc + 1 : acc,
+            0,
+          ),
+          reviewStar: result?.review?.length
+            ? result.review.reduce((acc, cur) => acc + cur.rating, 0) /
+              result.review.length
+            : 0,
         };
       });
     } catch (error) {
       throw new Error(error);
     }
   }
+
   async findAccommodationById(id: number): Promise<AccommodationResponseDto> {
     try {
       const result = await this.prismaService.accommodation.findUnique({
@@ -58,6 +68,14 @@ export class AccommodationService {
       return {
         ...result,
         owner: result.owner.user,
+        availableRooms: result.rooms.reduce(
+          (acc, curr) => (curr.status === RoomStatus.AVAILABLE ? acc + 1 : acc),
+          0,
+        ),
+        reviewStar: result?.review?.length
+          ? result.review.reduce((acc, cur) => acc + cur.rating, 0) /
+            result.review.length
+          : 0,
       };
     } catch (error) {
       throw new HttpException(error.message, error.status);
@@ -123,6 +141,33 @@ export class AccommodationService {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
+    }
+  }
+
+  async getRecommendAccommodations() {
+    try {
+      const prismaResult = await this.prismaService.accommodation.findMany({
+        include: {
+          review: true,
+          owner: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+      return prismaResult.map((item) => {
+        return {
+          ...item,
+          owner: item.owner.user,
+          reviewStar: item?.review?.length
+            ? item.review.reduce((acc, cur) => acc + cur.rating, 0) /
+              item.review.length
+            : 0,
+        };
+      });
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

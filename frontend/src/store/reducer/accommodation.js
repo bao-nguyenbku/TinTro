@@ -1,12 +1,14 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService } from 'services/accommodation';
+import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService, getRecommendAccommodationsService } from 'services/accommodation';
 // import store from 'store';
+import { PRICE_ASCENDING, PRICE_DECENDING, REVIEW_ASCENDING, REVIEW_DECENDING } from 'constants';
 
 const initialState = {
   accommodations: [],
   loading: false,
   error: undefined,
   searchAccommodations: [],
+  recommendAccommodations: [],
   accommodationDetails: {
     id: 0,
     name: '',
@@ -28,7 +30,7 @@ const initialState = {
     loading: false,
     isSuccess: false,
     error: undefined,
-    data: {},
+    data: [],
   },
 };
 
@@ -39,6 +41,39 @@ export const accommodationSlice = createSlice({
     resetError(state) {
       state.error = undefined;
       state.rentRequest.error = undefined;
+    },
+    filterByPrice(state, action) {
+      const value = action.payload;
+      switch (value) {
+        case PRICE_ASCENDING: {
+          state.searchAccommodations = [...state.searchAccommodations].sort((prev, curr) => prev.price - curr.price);
+          break;
+        }
+        case PRICE_DECENDING: {
+          state.searchAccommodations = [...state.searchAccommodations].sort((prev, curr) => curr.price - prev.price)
+          break;
+        }
+        case REVIEW_ASCENDING: {
+          state.searchAccommodations = [...state.searchAccommodations].sort((prev, curr) => prev.reviewStar - curr.reviewStar);
+          break;
+        }
+        case REVIEW_DECENDING: {
+          state.searchAccommodations = [...state.searchAccommodations].sort((prev, curr) => curr.reviewStar - prev.reviewStar);
+          break;
+        }
+
+        default:
+          break;
+      }
+
+    },
+    resetRentRequest(state) {
+      state.rentRequest = {
+        loading: false,
+        isSuccess: false,
+        error: undefined,
+        data: [],
+      }
     }
   },
   extraReducers: (builder) => {
@@ -83,14 +118,35 @@ export const accommodationSlice = createSlice({
       .addCase(getRentRequestByRenter.fulfilled, (state, action) => {
         // TODO: Use A renter may request multiple accommodation but for now,
         // one renter can only request to an accommodation
-        const rentRequest = Array.isArray(action.payload) ? action.payload[0] : action.payload;
+        const rentRequest = action.payload;
         state.rentRequest.loading = false;
         state.rentRequest.data = rentRequest;
+      })
+      .addCase(getRecommendAccommodations.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getRecommendAccommodations.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recommendAccommodations = action.payload;
       });
   },
 });
 export const selectAccommodationState = createSelector([(state) => state.accommodation], (accommodationState) => accommodationState);
 
+export const getRecommendAccommodations = createAsyncThunk(
+  'accommodation/getRecommendAccommodations',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getRecommendAccommodationsService();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue({
+        statusCode: error.response.status,
+        message: error.response.message
+      })
+    }
+  }
+)
 export const getAllAccommodations = createAsyncThunk('accommodation/getAllAccommodations', async (_, { rejectWithValue }) => {
   try {
     const response = await getAllAccommodationsService();
@@ -142,5 +198,5 @@ export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentReq
     });
   }
 });
-export const { resetError } = accommodationSlice.actions;
+export const { resetError, filterByPrice, resetRentRequest } = accommodationSlice.actions;
 export default accommodationSlice.reducer;
