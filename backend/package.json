@@ -16,6 +16,7 @@
     "migrate:dev": "npx prisma migrate dev --name init",
     "generate": "npx prisma generate",
     "studio": "npx prisma studio",
+    "db:push": "npx prisma db push",
     "pg_backup": "docker exec -t backend-postgres-1 pg_dumpall -c -U postgres > backup.sql",
     "pg_restore:windows": "type backup.sql | docker exec -i backend-postgres-1 psql -U postgres",
     "pg_restore": "cat backup.sql | docker exec -i backend-postgres-1 psql -U postgres",

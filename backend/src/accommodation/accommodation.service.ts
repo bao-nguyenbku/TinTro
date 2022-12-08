@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma, RequestStatus, RoomStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
+import { RequestCheckoutRoomDto } from './dto/request-checkout-room.dto';
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 
 @Injectable()
@@ -170,4 +171,17 @@ export class AccommodationService {
       throw new Error(error);
     }
   }
+
+  async createRequestCheckoutRoom(data: RequestCheckoutRoomDto) {
+  //   const { ownerId, renterId, accommodationId, roomId } = data;
+  //   try {
+  //     const prismaResult = await this.prismaService.rentRequest.update({
+  //       where: {
+
+  //       }
+  //     })
+  //   } catch (error) {
+      
+  //   }
+  // }
 }

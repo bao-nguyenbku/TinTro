@@ -8,6 +8,8 @@ import {
   Query,
   Logger,
   Request,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { Review } from '@prisma/client';
@@ -19,6 +21,7 @@ import { AccommodationService } from './accommodation.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 // import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 import { RECOMMEND_LEVEL } from './constants';
+import { RequestCheckoutRoomDto } from './dto/request-checkout-room.dto';
 
 @Controller('accommodations')
 export class AccommodationController {
@@ -129,20 +132,30 @@ export class AccommodationController {
   @Post('/:id/request-checkout')
   async requestCheckoutRoom(
     @Param('id') accommodationId: string,
-    @Body() requestRentRoom: { email: string },
+    @Body() requestCheckoutRoom: { roomId: number },
+    @Request() req,
   ) {
-    const { email } = requestRentRoom;
-
+    const renterId = req.user.id;
+    const { roomId } = requestCheckoutRoom;
     const existedAccommodaiton =
       await this.accommodationService.findAccommodationById(
         parseInt(accommodationId),
       );
-    const existedRenter = await this.usersService.findByEmail(email);
-    const { ownerId, id } = existedAccommodaiton;
-    const result = await this.accommodationService.createRequestRentRoom({
+    const { ownerId, id, rooms } = existedAccommodaiton;
+    const existedRoom = rooms.find(
+      (room) => room.id === roomId && room.accommodationId === id,
+    );
+    if (!existedRoom) {
+      throw new HttpException(
+        'This room does not existed',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const result = await this.accommodationService.createRequestCheckoutRoom({
       ownerId,
-      renterId: existedRenter.id,
+      renterId,
       accommodationId: id,
+      roomId: existedRoom.id,
     });
     return result;
   }

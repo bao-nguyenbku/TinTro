@@ -99,6 +99,8 @@ model RentRequest {
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
   accommodationId Int           @unique
   status          RequestStatus
+  room            Room?          @relation(fields: [roomId], references: [id])
+  roomId          Int?
 }
 
 model Room {
@@ -107,6 +109,7 @@ model Room {
   accommodationId Int
   renter          Renter[]
   status          RoomStatus
+  RentRequest     RentRequest[]
 }
 
 model Review {

@@ -658,6 +658,7 @@ COPY public."Message" (id, text, "createdAt", "fromId", "messageSectionId") FROM
 
 COPY public."MessageSection" (id) FROM stdin;
 1
+2
 \.
 
 
@@ -677,7 +678,8 @@ COPY public."Owner" ("userId") FROM stdin;
 --
 
 COPY public."RentRequest" (id, "renterId", "ownerId", "accommodationId", status) FROM stdin;
-60	8	3	2	WAITING
+87	8	1	1	WAITING
+88	8	9	3	WAITING
 \.
 
 
@@ -687,7 +689,7 @@ COPY public."RentRequest" (id, "renterId", "ownerId", "accommodationId", status)
 
 COPY public."Renter" ("rentRoomId", "userId") FROM stdin;
 \N	2
-\N	8
+1	8
 \.
 
 
@@ -706,6 +708,9 @@ COPY public."Review" (id, "userId", "accommodationId", rating) FROM stdin;
 --
 
 COPY public."Room" (id, "accommodationId", status) FROM stdin;
+1	1	RENTING
+5	2	RENTING
+4	2	AVAILABLE
 \.
 
 
@@ -745,6 +750,8 @@ f2eb5ed1-a7f8-45d5-b1c4-df38627073ac	7a493340c9c69adaf75c60f98f6985452a7f1e450d4
 COPY public._users_in_message_section ("A", "B") FROM stdin;
 1	1
 1	8
+2	8
+2	9
 \.
 
 
@@ -759,7 +766,7 @@ SELECT pg_catalog.setval('public."Accommodation_id_seq"', 3, true);
 -- Name: MessageSection_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."MessageSection_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."MessageSection_id_seq"', 2, true);
 
 
 --
@@ -773,7 +780,7 @@ SELECT pg_catalog.setval('public."Message_id_seq"', 3, true);
 -- Name: RentRequest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."RentRequest_id_seq"', 61, true);
+SELECT pg_catalog.setval('public."RentRequest_id_seq"', 88, true);
 
 
 --
@@ -787,7 +794,7 @@ SELECT pg_catalog.setval('public."Review_id_seq"', 2, true);
 -- Name: Room_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Room_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Room_id_seq"', 5, true);
 
 
 --
@@ -890,10 +897,10 @@ CREATE UNIQUE INDEX "Owner_userId_key" ON public."Owner" USING btree ("userId");
 
 
 --
--- Name: RentRequest_renterId_key; Type: INDEX; Schema: public; Owner: postgres
+-- Name: RentRequest_accommodationId_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX "RentRequest_renterId_key" ON public."RentRequest" USING btree ("renterId");
+CREATE UNIQUE INDEX "RentRequest_accommodationId_key" ON public."RentRequest" USING btree ("accommodationId");
 
 
 --
