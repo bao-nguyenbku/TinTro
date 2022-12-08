@@ -13,7 +13,8 @@ export const multerConfig = {
 export const multerOptions = {
   // Enable file size limits
   limits: {
-    fileSize: +process.env.MAX_IMAGE_FILE_SIZE,
+    fieldNameSize: +process.env.MAX_FIELD_NAME_SIZE || 300,
+    fileSize: +process.env.MAX_IMAGE_FILE_SIZE || 1048576,
   },
   // Check the mimetypes to allow for upload
   fileFilter: (req: any, file: any, cb: any) => {

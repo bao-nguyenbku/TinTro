@@ -4,9 +4,6 @@ import {
   Body,
   UseInterceptors,
   UploadedFile,
-  MaxFileSizeValidator,
-  FileTypeValidator,
-  ParseFilePipe,
   Param,
   Get,
   UseGuards,
@@ -17,6 +14,7 @@ import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { UserResponseDto } from './dto/user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
+import { multerOptions } from './multer-options';
 
 @Controller('users')
 @ApiTags('users')
@@ -31,18 +29,14 @@ export class UsersController {
 
   @Post('upload-avatar')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', multerOptions))
   async uploadAvatar(
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 1024 }),
-          new FileTypeValidator({ fileType: /\.(jpg|jpeg|png|gif)$/ }),
-        ],
-      }),
-    )
+    @UploadedFile()
     file: Express.Multer.File,
   ) {
+    console.log('====================================');
+    console.log(file);
+    console.log('====================================');
     return this.usersService.uploadAvatar(file);
   }
 

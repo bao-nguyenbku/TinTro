@@ -1,7 +1,7 @@
-import { MessageSection, Role } from '@prisma/client';
+import { Role } from '@prisma/client';
 import { UserEntity } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserResponseDto } from './dto/user.dto';
 
@@ -116,11 +116,9 @@ export class UsersService {
 
   uploadAvatar(file: Express.Multer.File) {
     // save file into public/uploads folder and return the path
-    
   }
 
   getAvatarFile(avatarPath: string) {
     // return the file from public/uploads folder
-    
   }
 }
