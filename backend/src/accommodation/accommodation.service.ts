@@ -142,6 +142,9 @@ export class AccommodationService {
         where: {
           renterId,
         },
+        include: {
+          accommodation: true,
+        },
       });
       return result;
     } catch (error) {

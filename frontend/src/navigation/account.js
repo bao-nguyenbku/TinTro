@@ -3,6 +3,7 @@ import CustomHeader from 'components/header';
 import React from 'react';
 import 'react-native-gesture-handler';
 import AccountMenu from 'screens/account';
+import RentRequestScreen from 'screens/rent-request';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,13 @@ const AccountNav = () => {
       initialRouteName="AccountMenu"
     >
       <Stack.Screen name="AccountMenu" component={AccountMenu} />
+      <Stack.Screen 
+        name="RentRequestList" 
+        component={RentRequestScreen} 
+        options={{
+          title: 'Danh sách yêu cầu thuê phòng'
+        }}
+      />
     </Stack.Navigator>
   );
 };

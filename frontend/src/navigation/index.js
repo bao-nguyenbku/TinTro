@@ -1,6 +1,7 @@
 import AccommodationList from 'screens/explore/AccommodationList';
 import AccommodationDetailsScreen from 'screens/explore/accommodation-details';
 import SearchScreen from 'screens/search';
+import RentRequestScreen from 'screens/rent-request';
 
 export const ROUTES = {
   explore: {
@@ -37,6 +38,12 @@ export const ROUTES = {
   account: {
     title: 'Account',
     label: 'Tài khoản',
-    stack: {},
+    stack: {
+      rentRequest: {
+        title: 'RentRequestList',
+        label: 'Danh sách yêu cầu thuê phòng',
+        component: RentRequestScreen
+      }
+    },
   },
 };

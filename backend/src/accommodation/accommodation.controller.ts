@@ -33,7 +33,7 @@ export class AccommodationController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get()
+  @Get('')
   @ApiOkResponse({ type: AccommodationResponseDto, isArray: true })
   async searchAccommodationByKeyword(@Query('search') keyword: string) {
     const accommodations =
@@ -67,14 +67,19 @@ export class AccommodationController {
       throw err;
     }
   }
-
+  @UseGuards(JwtAuthGuard)
+  @Get('/all-rent-request')
+  async getRequestRentByRenter(@Request() req) {
+    const userId = req.user.id;
+    return await this.accommodationService.getRentRequestByRenter(
+      parseInt(userId),
+    );
+  }
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
   @ApiOkResponse({ type: AccommodationResponseDto })
-  async findAccommodationById(@Param('id') id: string) {
-    const result = await this.accommodationService.findAccommodationById(
-      parseInt(id),
-    );
+  async findAccommodationById(@Param('id') id: number) {
+    const result = await this.accommodationService.findAccommodationById(id);
     const newResult = {
       ...result,
       reviewStar: 0,
@@ -86,18 +91,6 @@ export class AccommodationController {
         ) / result.review.length
       : 0;
     return newResult;
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('/:id/all-request-rent')
-  async getRequestRentByRenter(
-    @Param('id') accommodationId: string,
-    @Request() req,
-  ) {
-    const userId = req.user.id;
-    return await this.accommodationService.getRentRequestByRenter(
-      parseInt(userId),
-    );
   }
 
   @UseGuards(JwtAuthGuard)

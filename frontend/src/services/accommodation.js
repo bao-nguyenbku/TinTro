@@ -11,10 +11,11 @@ const searchAccommodationByKeywordService = (keyword) => {
 const requestRentRoomService = ({ accommodationId }) => {
   return request.get(`${prefix}/${accommodationId}/request-rent`);
 }
-const getRequestByRenterService = ({ accommodationId }) => {
-  return request.get(`${prefix}/${accommodationId}/all-request-rent`);
+const getAllRequestByRenterService = () => {
+  return request.get(`${prefix}/all-rent-request`);
 }
 const getRecommendAccommodationsService = () => {
   return request.get(`${prefix}/all/recommend`);
 }
-export { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService, getRecommendAccommodationsService };
+
+export { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getAllRequestByRenterService, getRecommendAccommodationsService };
