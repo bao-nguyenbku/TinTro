@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma, RequestStatus, RoomStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
+import { CreateAccommodationDto } from './dto/create-accommodation.dto';
 import { RequestCheckoutRoomDto } from './dto/request-checkout-room.dto';
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 
@@ -172,16 +173,38 @@ export class AccommodationService {
     }
   }
 
-  async createRequestCheckoutRoom(data: RequestCheckoutRoomDto) {
-  //   const { ownerId, renterId, accommodationId, roomId } = data;
+  // **
+  async createAccommodation(createData: CreateAccommodationDto) {
+    try {
+      await this.prismaService.accommodation.create({
+        data: {
+          ...createData,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  // async getConfirmRequestByRenter(params: {
+  //   renterId: number;
+  //   accommodationId: number;
+  // }) {
+  //   const { renterId, accommodationId } = params;
   //   try {
-  //     const prismaResult = await this.prismaService.rentRequest.update({
-  //       where: {
+  //     const confirmRequest = this.prismaService.rentRequest.update({
 
-  //       }
-  //     })
-  //   } catch (error) {
-      
-  //   }
+  //   } catch (error) {}
+  // }
+  // async createRequestCheckoutRoom(data: RequestCheckoutRoomDto) {
+  //   const { ownerId, renterId, accommodationId, roomId } = data;
+  //   //   try {
+  //   //     const prismaResult = await this.prismaService.rentRequest.update({
+  //   //       where: {
+
+  //   //       }
+  //   //     })
+  //   //   } catch (error) {
+
+  //   //   }
   // }
 }

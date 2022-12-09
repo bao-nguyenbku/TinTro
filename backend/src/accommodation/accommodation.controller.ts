@@ -22,6 +22,7 @@ import { AccommodationResponseDto } from './dto/accommodation.dto';
 // import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 import { RECOMMEND_LEVEL } from './constants';
 import { RequestCheckoutRoomDto } from './dto/request-checkout-room.dto';
+import { CreateAccommodationDto } from './dto/create-accommodation.dto';
 
 @Controller('accommodations')
 export class AccommodationController {
@@ -127,6 +128,17 @@ export class AccommodationController {
     const result = await this.accommodationService.getRecommendAccommodations();
     return result.filter((item) => item.reviewStar > RECOMMEND_LEVEL);
   }
+  @UseGuards(JwtAuthGuard)
+  @Post('/create')
+  async createAccommodations(
+    @Body() createAccommodationList: CreateAccommodationDto[],
+  ) {
+    return await Promise.all(
+      createAccommodationList.map(async (data) => {
+        await this.accommodationService.createAccommodation(data);
+      }),
+    );
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('/:id/request-checkout')
@@ -151,12 +163,12 @@ export class AccommodationController {
         HttpStatus.NOT_FOUND,
       );
     }
-    const result = await this.accommodationService.createRequestCheckoutRoom({
-      ownerId,
-      renterId,
-      accommodationId: id,
-      roomId: existedRoom.id,
-    });
-    return result;
+    // const result = await this.accommodationService.createRequestCheckoutRoom({
+    //   ownerId,
+    //   renterId,
+    //   accommodationId: id,
+    //   roomId: existedRoom.id,
+    // });
+    // return result;
   }
 }
