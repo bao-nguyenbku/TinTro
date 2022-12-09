@@ -19,7 +19,7 @@ model User {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   // FIXME: Change this later
-  avatar          String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
+  avatar          String           @default("https://obedient-veil-production.up.railway.app/public/default-avatar.png")
   messages        Message[]
   messageSections MessageSection[] @relation("users_in_message_section")
   review          Review[]
