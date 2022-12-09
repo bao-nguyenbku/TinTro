@@ -37,7 +37,7 @@ const UserMenu = ({ setLoading, loading, dispatch }) => {
   ];
 
   return (
-    <Box py={6} px={6}>
+    <Box pt={2.5} px={6}>
       <VStack borderRadius={12} space={8} px={4} py={6} bgColor="#fff">
         {menu.map((item) => (
           <Pressable key={item.id} onPress={item.onPress}>
