@@ -1,37 +1,51 @@
-import { AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { Box, Flex, HStack, Pressable, Text, VStack } from 'native-base';
 import React from 'react';
 import { setCurrentUser } from 'store/reducer/user';
 import { deleteToken } from 'utils/token';
 
-const UserMenu = ({ setLoading, loading, dispatch }) => {
+const AdminMenu = ({ setLoading, loading, dispatch }) => {
   const menu = [
     {
       id: 1,
-      title: 'Tạo yêu cầu sửa chữa',
-      description: 'Gửi yêu cầu sửa chữa tới quản trị viên',
+      title: 'Quản lý yêu cầu sửa chữa',
+      description: 'Xem và quản lý yêu cầu từ người thuê',
       icon: <Ionicons name="person-outline" size={24} color="black" />,
       onPress: () => {},
     },
     {
       id: 2,
-      title: 'Yêu cầu trả phòng từ quản trị viên',
-      description: 'Quản trị viên yêu cầu xác nhận trả phòng',
+      title: 'Yêu cầu trả phòng',
+      description: 'Quản lý yêu cầu trả phòng',
       icon: <FontAwesome5 name="check-circle" size={24} color="black" />,
       onPress: () => {},
     },
     {
       id: 3,
       title: 'Hóa đơn',
-      description: 'Xem và thanh toán hóa đơn nợ',
+      description: 'Quản lý hóa đơn',
       icon: <Ionicons name="document-text-outline" size={24} color="black" />,
       onPress: () => {},
     },
     {
       id: 4,
-      title: 'Yêu cầu thuê phòng',
-      description: 'Xem các yêu cầu thuê phòng đang duyệt',
-      icon: <MaterialCommunityIcons name="chat-question" size={24} color="black" />,
+      title: 'Thống kê số lượng phòng',
+      description: 'Số lượng phòng còn trống và cho thuê',
+      icon: <Ionicons name="ios-albums-outline" size={24} color="black" />,
+      onPress: () => {},
+    },
+    {
+      id: 5,
+      title: 'Thống kê tiền trọ',
+      description: 'Tổng số tiền trọ đã thu',
+      icon: <MaterialIcons name="attach-money" size={24} color="black" />,
+      onPress: () => {},
+    },
+    {
+      id: 6,
+      title: 'Thống kê điện nước',
+      description: 'Chỉ số điện nước các phòng',
+      icon: <MaterialIcons name="water-damage" size={24} color="black" />,
       onPress: () => {},
     },
   ];
@@ -95,4 +109,4 @@ const UserMenu = ({ setLoading, loading, dispatch }) => {
     </Box>
   );
 };
-export default UserMenu;
+export default AdminMenu;

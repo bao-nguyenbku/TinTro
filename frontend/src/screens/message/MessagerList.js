@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMessageSections } from 'store/reducer/message';
 import Loading from 'components/loading';
 import Error from 'components/error';
-import { Avatar, Flex, Heading, Pressable, ScrollView, Text, VStack } from 'native-base';
+import { Avatar, Flex, Heading, HStack, Pressable, ScrollView, Text, VStack } from 'native-base';
 import { formatDate } from 'utils/formatDate';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { RefreshControl } from 'react-native';
@@ -55,20 +55,11 @@ const MessagerList = () => {
               w="full"
             >
               {({ isPressed }) => (
-                <VStack
-                  borderRadius={12}
-                  h="full"
-                  alignItems="center"
-                  mx="6"
-                  space={2}
-                  backgroundColor={isPressed ? 'muted.200' : '#fff'}
-                  flexDirection="row"
-                  px="4"
-                >
+                <HStack borderRadius={12} h="full" alignItems="center" mx="6" space={2} backgroundColor={isPressed ? 'muted.200' : '#fff'} px="4">
                   <Flex mr={2} pr={2} w="1/6">
                     <Avatar size="md" borderRadius="full" source={{ uri: otherUser.avatar }} />
                   </Flex>
-                  <VStack w="2/3" space={1.5}>
+                  <VStack w="1/2" space={1.5}>
                     <Heading fontSize="md" color="#000">
                       {otherUser.name}
                     </Heading>
@@ -77,12 +68,12 @@ const MessagerList = () => {
                       {fromId === user?.currentUser?.id && 'Bạn: '} {messages[0].text}
                     </Text>
                   </VStack>
-                  <Flex mt="12" h="full">
+                  <Flex wrap="wrap" left={4} w="auto" mt="12" h="full">
                     <Text color="muted.500" fontSize="xs">
-                      {formatDate(messages[0].createdAt)}
+                      {formatDate(messages[0].createdAt, 'MM/DD HH:mm')}
                     </Text>
                   </Flex>
-                </VStack>
+                </HStack>
               )}
             </Pressable>
           );
