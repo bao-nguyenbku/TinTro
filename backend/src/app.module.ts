@@ -1,3 +1,4 @@
+import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -15,6 +16,8 @@ import { ReviewModule } from './review/review.module';
 import { MessageSectionModule } from './message-section/message-section.module';
 import { MessageModule } from './message/message.module';
 import { MulterModule } from '@nestjs/platform-express/multer';
+import { StatisticsModule } from './statistics/statistics.module';
+import { RolesGuard } from './auth/role.guard';
 
 @Module({
   imports: [
@@ -34,6 +37,7 @@ import { MulterModule } from '@nestjs/platform-express/multer';
     UtilsModule,
     ReviewModule,
     MulterModule,
+    StatisticsModule,
   ],
   controllers: [AppController, UtilsController],
   providers: [AppService, PrismaService],
