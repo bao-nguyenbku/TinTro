@@ -141,34 +141,44 @@ export class AccommodationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('/:id/request-checkout')
+  @Get('/:id/renting')
+  async getCurrentRentingByRenter(
+    @Request() req,
+    @Param('id') accommodationId: string,
+  ) {
+    const renterId = req.user.id;
+    const result = await this.accommodationService.getCurrentRentingByRenter(
+      parseInt(renterId),
+    );
+    if (result.accommodationId !== parseInt(accommodationId)) {
+      throw new HttpException(
+        'This renter did not rent any room in this accommodation',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return result;
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('/:id/rooms/:roomId/request-checkout')
   async requestCheckoutRoom(
     @Param('id') accommodationId: string,
-    @Body() requestCheckoutRoom: { roomId: number },
+    @Param('roomId') roomId: string,
+    @Body() requestCheckoutRoom: { rentingId: number },
     @Request() req,
   ) {
     const renterId = req.user.id;
-    const { roomId } = requestCheckoutRoom;
+    const { rentingId } = requestCheckoutRoom;
     const existedAccommodaiton =
       await this.accommodationService.findAccommodationById(
         parseInt(accommodationId),
       );
     const { ownerId, id, rooms } = existedAccommodaiton;
-    const existedRoom = rooms.find(
-      (room) => room.id === roomId && room.accommodationId === id,
-    );
-    if (!existedRoom) {
-      throw new HttpException(
-        'This room does not existed',
-        HttpStatus.NOT_FOUND,
-      );
-    }
-    // const result = await this.accommodationService.createRequestCheckoutRoom({
-    //   ownerId,
-    //   renterId,
-    //   accommodationId: id,
-    //   roomId: existedRoom.id,
-    // });
-    // return result;
+    const result = await this.accommodationService.createRequestCheckoutRoom({
+      ownerId,
+      renterId,
+      accommodationId: id,
+      rentingId,
+    });
+    return result;
   }
 }

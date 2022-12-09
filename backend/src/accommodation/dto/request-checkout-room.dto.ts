@@ -3,5 +3,5 @@ import { RequestRentRoomEntity } from '../entities/request-rent-room.entity';
 
 export class RequestCheckoutRoomDto extends RequestRentRoomEntity {
   @ApiProperty()
-  roomId: number;
+  rentingId: number;
 }

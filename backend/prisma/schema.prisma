@@ -90,7 +90,7 @@ model Accommodation {
   utilities       String[]
   rentRequest     RentRequest[]
   review          Review[]
-  Renting         Renting?
+  Renting         Renting[]
 }
 
 model RentRequest {
@@ -107,9 +107,9 @@ model RentRequest {
 model Renting {
   id              Int           @id @default(autoincrement())
   renter          Renter        @relation(fields: [renterId], references: [userId])
-  renterId        Int
+  renterId        Int           @unique
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
-  accommodationId Int           @unique
+  accommodationId Int
   owner           Owner         @relation(fields: [ownerId], references: [userId])
   ownerId         Int
   room            Room          @relation(fields: [roomId], references: [id])
@@ -122,6 +122,7 @@ model Room {
   id              Int           @id @default(autoincrement())
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
   accommodationId Int
+  roomName        String        @default("")
   renter          Renter[]
   status          RoomStatus
   Renting         Renting[]

@@ -1,5 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma, RequestStatus, RoomStatus } from '@prisma/client';
+import {
+  Prisma,
+  RequestStatus,
+  RoomStatus,
+  RentingStatus,
+} from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
@@ -195,16 +200,49 @@ export class AccommodationService {
 
   //   } catch (error) {}
   // }
-  // async createRequestCheckoutRoom(data: RequestCheckoutRoomDto) {
-  //   const { ownerId, renterId, accommodationId, roomId } = data;
-  //   //   try {
-  //   //     const prismaResult = await this.prismaService.rentRequest.update({
-  //   //       where: {
-
-  //   //       }
-  //   //     })
-  //   //   } catch (error) {
-
-  //   //   }
-  // }
+  async getCurrentRentingByRenter(renterId: number) {
+    try {
+      const result = await this.prismaService.renting.findUnique({
+        where: {
+          renterId,
+        },
+      });
+      if (!result) {
+        throw new HttpException(
+          'Can not found any renting information about this renter',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return result;
+    } catch (error) {
+      //TODO: Handling Error
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+    }
+  }
+  async createRequestCheckoutRoom(data: RequestCheckoutRoomDto) {
+    const { rentingId, renterId, accommodationId, ownerId } = data;
+    try {
+      const prismaResult = await this.prismaService.renting.update({
+        where: {
+          id: rentingId,
+        },
+        data: {
+          status: RentingStatus.CHECKOUT,
+        },
+      });
+      return prismaResult;
+    } catch (error) {
+      // TODO: Handling error here
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code == 'P2025') {
+          throw new HttpException(
+            'Can not found renting data',
+            HttpStatus.NOT_FOUND,
+          );
+        }
+      }
+    }
+  }
 }
