@@ -126,7 +126,7 @@ export class UsersService {
   }
 
   uploadAvatar(filePath: string, userId: number): Promise<User> {
-    Logger.log('uploadAvatar', filePath, userId);
+    Logger.log('upload avatar', filePath);
     return this.prisma.user.update({
       where: { id: userId },
       data: {
