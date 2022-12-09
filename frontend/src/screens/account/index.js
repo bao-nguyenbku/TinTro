@@ -36,20 +36,23 @@ const AccountMenu = () => {
 
     if (!result.canceled) {
       const formData = new FormData();
+      const uri = result.assets[0].uri;
+      const fileExtension = uri.substr(uri.lastIndexOf('.') + 1);
+
       formData.append('file', {
         name: `${new Date()}_avatar`,
-        uri: result.assets[0].uri,
-        type: 'image/jpg',
+        uri,
+        type: `image/${fileExtension}`,
       });
       try {
         await sendFileRequest.post('/users/upload-avatar', formData);
         toast.show({
           render: () => <CustomToast title="Cập nhật ảnh đại diện thành công." status="success" />,
         });
+        setImage(result.assets[0].uri);
       } catch (err) {
         console.log(err);
       }
-      setImage(result.assets[0].uri);
     }
   };
 
