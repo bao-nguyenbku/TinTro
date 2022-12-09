@@ -1,4 +1,4 @@
-import { MessageSection, Role } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 import { UserEntity } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
@@ -112,5 +112,15 @@ export class UsersService {
       },
     });
     return renter;
+  }
+
+  uploadAvatar(filePath: string, userId: number): Promise<User> {
+    Logger.log('uploadAvatar', filePath, userId);
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        avatar: filePath,
+      },
+    });
   }
 }

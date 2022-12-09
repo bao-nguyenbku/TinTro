@@ -14,4 +14,7 @@ const requestRentRoomService = ({ accommodationId, email }) => {
 const getRequestByRenterService = ({ accommodationId }) => {
   return request.get(`${prefix}/${accommodationId}/request-rent`);
 }
-export { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService };
+const getRecommendAccommodationsService = () => {
+  return request.get(`${prefix}/all/recommend`);
+}
+export { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService, getRecommendAccommodationsService };

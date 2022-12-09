@@ -384,13 +384,6 @@ ALTER SEQUENCE public."Message_id_seq" OWNED BY public."Message".id;
 --
 
 CREATE TABLE public."Owner" (
-    role public."Role" DEFAULT 'USER'::public."Role" NOT NULL,
-    email text NOT NULL,
-    phone text NOT NULL,
-    password text NOT NULL,
-    name text NOT NULL,
-    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    "updatedAt" timestamp(3) without time zone NOT NULL,
     "userId" integer NOT NULL
 );
 
@@ -439,19 +432,48 @@ ALTER SEQUENCE public."RentRequest_id_seq" OWNED BY public."RentRequest".id;
 --
 
 CREATE TABLE public."Renter" (
-    role public."Role" DEFAULT 'USER'::public."Role" NOT NULL,
-    email text NOT NULL,
-    phone text NOT NULL,
-    password text NOT NULL,
-    name text NOT NULL,
-    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    "updatedAt" timestamp(3) without time zone NOT NULL,
     "rentRoomId" integer,
     "userId" integer NOT NULL
 );
 
 
 ALTER TABLE public."Renter" OWNER TO postgres;
+
+--
+-- Name: Review; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Review" (
+    id integer NOT NULL,
+    "userId" integer NOT NULL,
+    "accommodationId" integer NOT NULL,
+    rating integer NOT NULL
+);
+
+
+ALTER TABLE public."Review" OWNER TO postgres;
+
+--
+-- Name: Review_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Review_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Review_id_seq" OWNER TO postgres;
+
+--
+-- Name: Review_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Review_id_seq" OWNED BY public."Review".id;
+
 
 --
 -- Name: Room; Type: TABLE; Schema: public; Owner: postgres
@@ -588,6 +610,13 @@ ALTER TABLE ONLY public."RentRequest" ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: Review id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Review" ALTER COLUMN id SET DEFAULT nextval('public."Review_id_seq"'::regclass);
+
+
+--
 -- Name: Room id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -607,7 +636,8 @@ ALTER TABLE ONLY public."User" ALTER COLUMN id SET DEFAULT nextval('public."User
 
 COPY public."Accommodation" (id, name, "addressNumber", "addressStreet", "addressDistrict", "addressCity", area, price, "ownerId", description, thumbnail, images, utilities) FROM stdin;
 1	Nhà Trọ Phát Lộc	123	Trần Não	Quận 2	Hồ Chí Minh	23.5	1200000	1	Đây là mô tả cho nhà trọ này	https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg	{https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg,https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2013-7.jpg}	{}
-2	Nhà trọ Penthouse	14	Nguyễn Bỉnh Khiêm	Quận 1	Hồ Chí Minh	34.8	2400000	3	Nhà trọ phong cách quý tộc đỉnh cao	https://images.cenhomes.vn/2020/03/1585033152-can-ho-mau-eurowindow-river-park.jpg	{https://e8rbh6por3n.exactdn.com/sites/uploads/2020/05/chung-cu-la-gi-thumbnail.jpg?strip=all&lossy=1&ssl=1,https://noithatviet24h.vn/wp-content/uploads/2020/08/hinh-anh-can-ho-chung-cu-dep-3.jpg}	{}
+2	Nhà trọ Penthouse	14	Nguyễn Bỉnh Khiêm	Quận 1	Hồ Chí Minh	34.8	2400000	3	Nhà trọ phong cách quý tộc đỉnh cao	https://images.cenhomes.vn/2020/03/1585033152-can-ho-mau-eurowindow-river-park.jpg	{https://e8rbh6por3n.exactdn.com/sites/uploads/2020/05/chung-cu-la-gi-thumbnail.jpg?strip=all&lossy=1&ssl=1,https://noithatviet24h.vn/wp-content/uploads/2020/08/hinh-anh-can-ho-chung-cu-dep-3.jpg,https://digistay.co/wp-content/uploads/2018/07/nha-tro-cho-thue.jpg,https://datnenthuongmai.com/img/uploads/tin-tuc/kinh%20ngiem/nha-tro.jpg,https://xaydungtienthanh.vn/wp-content/uploads/2019/12/xay-nha-tro-cap-4.jpg}	{}
+3	Nhà trọ Sadora	13	Mai Chí Thọ	Quận 2	Hồ Chí Minh	34.7	2800000	9	Nhà trọ đắt đỏ quận 2	https://mogi.vn/news/wp-content/uploads/2020/03/tim-phong-tro.jpg	{https://timescityminhkhai.com/wp-content/uploads/sites/7/2020/10/phong-tro-cho-thue.jpg}	{}
 \.
 
 
@@ -616,6 +646,9 @@ COPY public."Accommodation" (id, name, "addressNumber", "addressStreet", "addres
 --
 
 COPY public."Message" (id, text, "createdAt", "fromId", "messageSectionId") FROM stdin;
+1	Hello	2022-12-07 14:14:22.486	8	1
+2	Tôi là người thuê trọ	2022-12-07 14:15:19.838	8	1
+3	Tôi muốn thuê phòng	2022-12-07 15:28:58.478	8	1
 \.
 
 
@@ -624,6 +657,7 @@ COPY public."Message" (id, text, "createdAt", "fromId", "messageSectionId") FROM
 --
 
 COPY public."MessageSection" (id) FROM stdin;
+1
 \.
 
 
@@ -631,9 +665,10 @@ COPY public."MessageSection" (id) FROM stdin;
 -- Data for Name: Owner; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Owner" (role, email, phone, password, name, "createdAt", "updatedAt", "userId") FROM stdin;
-USER	baonguyen@gmail.com	012345678	12345678	Bảo Nguyễn	2022-12-02 15:17:54.287	2022-12-03 05:08:54.82	1
-USER	duyen@gmail.com	0967183457	12345678	Duyên Lê	2022-12-04 05:22:57.93	2022-12-04 05:20:21.769	3
+COPY public."Owner" ("userId") FROM stdin;
+1
+3
+9
 \.
 
 
@@ -642,7 +677,7 @@ USER	duyen@gmail.com	0967183457	12345678	Duyên Lê	2022-12-04 05:22:57.93	2022-
 --
 
 COPY public."RentRequest" (id, "renterId", "ownerId", "accommodationId", status) FROM stdin;
-1	2	1	1	WAITING
+60	8	3	2	WAITING
 \.
 
 
@@ -650,8 +685,19 @@ COPY public."RentRequest" (id, "renterId", "ownerId", "accommodationId", status)
 -- Data for Name: Renter; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Renter" (role, email, phone, password, name, "createdAt", "updatedAt", "rentRoomId", "userId") FROM stdin;
-USER	trung@gmail.com	0945010023	12345678	Trung Trần	2022-12-03 05:06:57.967	2022-12-03 05:06:09.082	\N	2
+COPY public."Renter" ("rentRoomId", "userId") FROM stdin;
+\N	2
+\N	8
+\.
+
+
+--
+-- Data for Name: Review; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Review" (id, "userId", "accommodationId", rating) FROM stdin;
+1	8	2	4
+2	2	3	4
 \.
 
 
@@ -671,6 +717,8 @@ COPY public."User" (id, role, email, phone, password, name, "createdAt", "update
 1	USER	baonguyen@gmail.com	012345678	123456789	Bảo Nguyễn	2022-12-02 15:16:02.436	2022-12-02 15:16:02.436	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
 2	USER	trung@gmail.com	0945010023	123456789	Trung Trần	2022-12-02 15:16:02.436	2022-12-03 05:04:27.852	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
 3	USER	duyen@gmail.com	0934567892	123456789	Duyên Lê	2022-12-04 05:22:24.453	2022-12-04 05:21:49.843	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
+8	USER	test1@gmail.com	0934186549	$2b$10$r6BrQ0QPpFDOD7I.61mAye4r.lugP38KHYMQj6m9S3h.k94yRSkbC	baonguyen	2022-12-05 04:19:51.917	2022-12-05 04:19:51.917	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
+9	USER	duyenle@gmail.com	123456789	$2b$10$qSkMinzdOVry6G8oUlyyJutPYs8gSC/xHCr1LzkZbaUbIjkhMHK1K	Duyên Lê	2022-12-08 08:48:23.32	2022-12-08 08:48:23.32	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
 \.
 
 
@@ -685,6 +733,8 @@ f2eb5ed1-a7f8-45d5-b1c4-df38627073ac	7a493340c9c69adaf75c60f98f6985452a7f1e450d4
 2bb7ee1d-71d7-4cac-9024-4b7b7a4ce98d	6cc8c7074c95d085dd2936c6e8b89d1a0c4dfa406e7c83240cb35ad12f69c928	2022-12-02 14:45:22.604904+00	20221201090037_init	\N	\N	2022-12-02 14:45:22.492984+00	1
 929feec9-527e-4f81-81b3-c5f9b3ffbeaf	518addc0356479b6f161787858b325373bffb819880800f067fd92d9a1b6f13d	2022-12-02 14:45:22.732328+00	20221201090532_init	\N	\N	2022-12-02 14:45:22.652743+00	1
 0ff6a5a7-c30b-4174-96b4-b403a4d5b010	dc3d5dad5344618daf0ad1ae39bcb9bfae82d1a775474f524eafce9cb3edbfaa	2022-12-03 09:04:07.368656+00	20221203090406_init	\N	\N	2022-12-03 09:04:07.253081+00	1
+1571a388-fac1-4c7f-aa0c-64ac1adbb943	6a48979c5fdfa43e283d83b1cdc3ff340ac539b614ce655a18a25469abf7531d	2022-12-05 04:13:39.500378+00	20221205041338_init	\N	\N	2022-12-05 04:13:39.404207+00	1
+47f1bd7d-ee61-41c9-b9bc-7007c4626a23	3962d13b8820bfd49be6e657eace2450baa99e397c9a36f27102cb51d681d5d3	2022-12-05 06:02:58.595337+00	20221205042026_add_review_migrations	\N	\N	2022-12-05 06:02:58.496923+00	1
 \.
 
 
@@ -693,6 +743,8 @@ f2eb5ed1-a7f8-45d5-b1c4-df38627073ac	7a493340c9c69adaf75c60f98f6985452a7f1e450d4
 --
 
 COPY public._users_in_message_section ("A", "B") FROM stdin;
+1	1
+1	8
 \.
 
 
@@ -700,28 +752,35 @@ COPY public._users_in_message_section ("A", "B") FROM stdin;
 -- Name: Accommodation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Accommodation_id_seq"', 2, true);
+SELECT pg_catalog.setval('public."Accommodation_id_seq"', 3, true);
 
 
 --
 -- Name: MessageSection_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."MessageSection_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."MessageSection_id_seq"', 1, true);
 
 
 --
 -- Name: Message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Message_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Message_id_seq"', 3, true);
 
 
 --
 -- Name: RentRequest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."RentRequest_id_seq"', 14, true);
+SELECT pg_catalog.setval('public."RentRequest_id_seq"', 61, true);
+
+
+--
+-- Name: Review_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Review_id_seq"', 2, true);
 
 
 --
@@ -735,7 +794,7 @@ SELECT pg_catalog.setval('public."Room_id_seq"', 1, false);
 -- Name: User_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."User_id_seq"', 3, true);
+SELECT pg_catalog.setval('public."User_id_seq"', 9, true);
 
 
 --
@@ -768,6 +827,14 @@ ALTER TABLE ONLY public."Message"
 
 ALTER TABLE ONLY public."RentRequest"
     ADD CONSTRAINT "RentRequest_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Review Review_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Review"
+    ADD CONSTRAINT "Review_pkey" PRIMARY KEY (id);
 
 
 --
@@ -809,20 +876,6 @@ CREATE INDEX "Message_id_fromId_createdAt_idx" ON public."Message" USING btree (
 
 
 --
--- Name: Owner_email_key; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX "Owner_email_key" ON public."Owner" USING btree (email);
-
-
---
--- Name: Owner_phone_key; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX "Owner_phone_key" ON public."Owner" USING btree (phone);
-
-
---
 -- Name: Owner_userId_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -841,20 +894,6 @@ CREATE UNIQUE INDEX "Owner_userId_key" ON public."Owner" USING btree ("userId");
 --
 
 CREATE UNIQUE INDEX "RentRequest_renterId_key" ON public."RentRequest" USING btree ("renterId");
-
-
---
--- Name: Renter_email_key; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX "Renter_email_key" ON public."Renter" USING btree (email);
-
-
---
--- Name: Renter_phone_key; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX "Renter_phone_key" ON public."Renter" USING btree (phone);
 
 
 --
@@ -976,6 +1015,22 @@ ALTER TABLE ONLY public."Renter"
 
 ALTER TABLE ONLY public."Renter"
     ADD CONSTRAINT "Renter_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: Review Review_accommodationId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Review"
+    ADD CONSTRAINT "Review_accommodationId_fkey" FOREIGN KEY ("accommodationId") REFERENCES public."Accommodation"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: Review Review_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Review"
+    ADD CONSTRAINT "Review_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --

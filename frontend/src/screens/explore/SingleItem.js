@@ -44,7 +44,7 @@ const SingleItem = (props) => {
             <Text marginLeft="4px">{data.reviewStar}</Text>
           </Box>
         </Box>
-        <Text color="error.400">Còn 3 phòng trống</Text>
+        <Text color="error.400">Còn {data.availableRooms} phòng trống</Text>
         <Box flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
           <Text color="tertiary.600" fontWeight="700" fontSize="lg">
             {formatCurrency(data.price)}

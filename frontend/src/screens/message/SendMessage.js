@@ -8,7 +8,7 @@ import { getToken } from 'utils/token';
 import { WS_BASE_URL } from '@env';
 import { io } from 'socket.io-client';
 import { disableBottomTabBar } from 'utils/utils';
-import { RefreshControl } from 'react-native';
+import { Platform, RefreshControl } from 'react-native';
 import { useHeaderHeight } from 'hooks/useHeaderHeight';
 
 const socketUrl = `${WS_BASE_URL}/message`;
@@ -25,9 +25,14 @@ const SendMessage = ({ route }) => {
   const navigation = useNavigation();
   const socketRef = useRef();
   const { headerHeight, statusBarHeight } = useHeaderHeight();
+  const scrollRef = useRef();
   // *This function will handle send websocket message *//
 
   // * ------------------ Side effects to init websocket ------------------ * //
+  const scrollToBottom = () => {
+    scrollRef.current?.scrollToEnd({ animated: true });
+  };
+
   useEffect(() => {
     if (isFocus) {
       // get user token and then init websocket
@@ -52,9 +57,11 @@ const SendMessage = ({ route }) => {
         socket.emit('fetch-all-messages');
         socket.on('client-all-past-messages', (data) => {
           dispatch(setMessages(data));
+          scrollToBottom();
         });
         socket.on('client-receive-message', (data) => {
           dispatch(pushMessage({ message: data }));
+          scrollToBottom();
         });
         socketRef.current = socket;
       });
@@ -74,13 +81,20 @@ const SendMessage = ({ route }) => {
 
   let pos = 'row-reverse';
   return (
-    <KeyboardAvoidingView flex={1} keyboardVerticalOffset={headerHeight + statusBarHeight} behavior='padding' enabled>
-      <VStack py={3.5} px={3.5}>
+    <KeyboardAvoidingView
+      onTouchStart={() => {}}
+      flex={1}
+      keyboardVerticalOffset={Platform.OS === 'ios' && headerHeight + statusBarHeight}
+      behavior={Platform.OS === 'ios' && 'padding'}
+    >
+      <VStack px={2}>
         <ScrollView
+          ref={(e) => {
+            scrollRef.current = e;
+          }}
           automaticallyAdjustContentInsets
-          refreshControl={<RefreshControl refreshing={message.loading} onRefresh={() => socketRef.emit('fetch-all-messages')} />}
-          py={4}
-          h="95%"
+          refreshControl={<RefreshControl refreshing={message.loading} onRefresh={() => socketRef.current.emit('fetch-all-messages')} />}
+          h="90%"
         >
           {allMessagesFromSection?.map((messageInSection) => {
             if (currentUser.id === messageInSection.fromId) {
@@ -89,8 +103,8 @@ const SendMessage = ({ route }) => {
               pos = 'row';
             }
             return (
-              <Flex my="4" key={messageInSection.id} w="100%">
-                <Flex alignItems="flex-end" direction={pos}>
+              <Flex pb={3} my={2} key={messageInSection.id} w="100%">
+                <Flex maxWidth={pos === 'row' ? '80%' : '80%'} left={pos === 'row-reverse' ? 20 : 0} alignItems="flex-end" direction={pos}>
                   <Avatar mx={2} size="sm" source={{ uri: messageInSection.from.avatar }} />
                   <Box
                     alignItems="center"
@@ -108,11 +122,16 @@ const SendMessage = ({ route }) => {
           })}
         </ScrollView>
         <Input
-          bottom={5}
           borderRadius={999}
-          height='16'
           backgroundColor="#fff"
           value={messageText}
+          flexWrap="wrap"
+          bottom={3}
+          py={3}
+          px={2}
+          mb={3}
+          placeholder="Message"
+          size="2xl"
           onChangeText={(text) => setMessageText(text)}
           InputRightElement={
             <Pressable onPress={() => sendMessageHandler()}>
@@ -123,10 +142,9 @@ const SendMessage = ({ route }) => {
               )}
             </Pressable>
           }
+          onSubmitEditing={() => sendMessageHandler()}
           onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              sendMessageHandler();
-            }
+            if (e.nativeEvent.key === 'Enter') sendMessageHandler();
           }}
         />
       </VStack>

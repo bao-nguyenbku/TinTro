@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Text, ScrollView } from 'native-base';
+import { Box, Text, ScrollView, Select, CheckIcon } from 'native-base';
 import { TouchableWithoutFeedback, Keyboard, TextInput, TouchableOpacity } from 'react-native';
 import { disableBottomTabBar } from 'utils/utils';
-import { selectAccommodationState, searchAccommodationByKeyword } from 'store/reducer/accommodation';
+import { selectAccommodationState, searchAccommodationByKeyword, filterByPrice } from 'store/reducer/accommodation';
 import { useDispatch, useSelector } from 'react-redux';
 import SingleItem from 'screens/explore/SingleItem';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Loading from 'components/loading';
+import { PRICE_ASCENDING, PRICE_DECENDING, REVIEW_ASCENDING, REVIEW_DECENDING  } from 'constants';
 
 const SearchScreen = (props) => {
   const { navigation } = props;
@@ -17,6 +18,7 @@ const SearchScreen = (props) => {
     borderColor: 'muted.300',
   });
   const [searchText, setSearchText] = useState('');
+  const [filterValue, setFilterValue] = React.useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,6 +29,10 @@ const SearchScreen = (props) => {
       });
   }, [navigation]);
 
+  const handleFilterChange = (itemValue) => {
+    setFilterValue(itemValue);
+    dispatch(filterByPrice(itemValue));
+  }
   const submitSearchText = ({ nativeEvent }) => {
     dispatch(searchAccommodationByKeyword(nativeEvent.text)).then(() => setSearchText(nativeEvent.text));
   };
@@ -70,6 +76,29 @@ const SearchScreen = (props) => {
                 <Text fontWeight="600">Kết quả tìm kiếm cho &ldquo;{searchText}&ldquo;</Text>
               ) : (
                 <Text fontWeight="600">Không tìm thấy kết quả cho &ldquo;{searchText}&ldquo;</Text>
+              )}
+              {searchAccommodations && searchAccommodations.length > 0 && (
+                <Select 
+                  selectedValue={filterValue} 
+                  minWidth="200" 
+                  accessibilityLabel="Lọc theo" 
+                  placeholder="Lọc theo" 
+                  marginLeft='auto'
+                  _selectedItem={{
+                    bg: "tertiary.600",
+                    endIcon: <CheckIcon size="5" color='white'/>,
+                    rounded: 'xl',
+                    color: 'white',
+                    _text: {
+                      color: 'white'
+                    }
+                  }} 
+                mt={1} onValueChange={itemValue => handleFilterChange(itemValue)}>
+                  <Select.Item label="Giá tăng dần" value={PRICE_ASCENDING} />
+                  <Select.Item label="Giá giảm dần" value={PRICE_DECENDING} />
+                  <Select.Item label="Đánh giá tăng dần" value={REVIEW_ASCENDING} />
+                  <Select.Item label="Đánh giá giảm dần" value={REVIEW_DECENDING} />
+                </Select>
               )}
               {searchAccommodations &&
                 searchAccommodations.map((item) => {

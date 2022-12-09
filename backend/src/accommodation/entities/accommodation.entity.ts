@@ -57,4 +57,7 @@ export class AccommodationEntity implements Accommodation {
 
   @ApiProperty()
   reviewStar?: number;
+
+  @ApiProperty()
+  availableRooms: number;
 }

@@ -9,7 +9,7 @@ export const ROUTES = {
     stack: {
       allAccommodations: {
         title: 'AllAccommodations',
-        label: 'Tiềm năng',
+        label: 'Tìm phòng trọ tốt nhất cho bạn',
         component: AccommodationList,
       },
       accommodationDetails: {

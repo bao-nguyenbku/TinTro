@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginNav from 'navigation/authentication';
 import HomeNav from 'navigation/home';
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmptyObj } from 'native-base';
 import { authMe } from 'store/reducer/user';
 import Loading from 'components/loading';
 
@@ -15,7 +14,7 @@ const Index = () => {
 
   useEffect(() => {
     dispatch(authMe());
-  }, [dispatch]);
+  }, [dispatch, user.loggedIn]);
 
   return (
     <>
@@ -28,8 +27,7 @@ const Index = () => {
             headerShown: false,
           }}
         >
-          {isEmptyObj(user.currentUser) && <Stack.Screen name="Authentication" component={LoginNav} />}
-          <Stack.Screen name="Home" component={HomeNav} />
+          {!user.loggedIn ? <Stack.Screen name="Authentication" component={LoginNav} /> : <Stack.Screen name="Home" component={HomeNav} />}
         </Stack.Navigator>
       )}
     </>
