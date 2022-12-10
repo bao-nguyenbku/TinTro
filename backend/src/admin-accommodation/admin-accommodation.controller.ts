@@ -1,5 +1,5 @@
 import { Controller, UseGuards } from '@nestjs/common';
-import { Get } from '@nestjs/common/decorators';
+import { Body, Get, Post } from '@nestjs/common/decorators';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { UsersService } from '~/users/users.service';
@@ -10,9 +10,20 @@ import { AdminAccommodationService } from './admin-accommodation.service';
 export class AdminAccommodationController {
     constructor(
         private readonly adminAccommodationService: AdminAccommodationService,
-        private readonly utilsService: UtilsService,
-        private readonly userService: UsersService,
     ) {}
-    
-    
+    @Get('/all')
+    findAll(): string {
+        return this.adminAccommodationService.getAllAdminAccommodation();
+    }
+    @Post('/new')
+    async newAccommodation(
+        @Body() newAccommodation:{
+            accomNumber: number,
+            personNumber: number,
+            price: number,
+            utility: string 
+        }
+    ) {
+        return newAccommodation
+    }
 }

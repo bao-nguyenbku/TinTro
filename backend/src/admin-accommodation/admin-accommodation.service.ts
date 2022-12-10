@@ -4,5 +4,12 @@ import { PrismaService } from '~/prisma/prisma.service';
 
 @Injectable()
 export class AdminAccommodationService {
-    
+    getAllAdminAccommodation() {
+        try {
+            return "AllAdminAccommodation"
+        } catch (error) {
+            throw new Error(error)
+        }
+
+    }
 }
