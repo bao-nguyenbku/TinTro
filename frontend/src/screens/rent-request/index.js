@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { ScrollView } from 'native-base';
+import { RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRentRequestByRenter, selectAccommodationState } from 'store/reducer/accommodation';
 import Loading from 'components/loading';
@@ -18,6 +19,12 @@ const RentRequestScreen = () => {
   return (
     <ScrollView
       p='2'
+      refreshControl={
+        <RefreshControl 
+          refreshing={loading}
+          onRefresh={() => dispatch(getRentRequestByRenter())}
+        />
+      }
     >
       {data && data.map(item => {
         return (
