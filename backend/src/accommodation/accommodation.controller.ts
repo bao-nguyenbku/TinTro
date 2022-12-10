@@ -21,7 +21,6 @@ import { AccommodationService } from './accommodation.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 // import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 import { RECOMMEND_LEVEL } from './constants';
-import { RequestCheckoutRoomDto } from './dto/request-checkout-room.dto';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
 
 @Controller('accommodations')
@@ -149,29 +148,6 @@ export class AccommodationController {
         HttpStatus.NOT_FOUND,
       );
     }
-    return result;
-  }
-  @UseGuards(JwtAuthGuard)
-  @Post('/:id/rooms/:roomId/request-checkout')
-  async requestCheckoutRoom(
-    @Param('id') accommodationId: string,
-    @Param('roomId') roomId: string,
-    @Body() requestCheckoutRoom: { rentingId: number },
-    @Request() req,
-  ) {
-    const renterId = req.user.id;
-    const { rentingId } = requestCheckoutRoom;
-    const existedAccommodaiton =
-      await this.accommodationService.findAccommodationById(
-        parseInt(accommodationId),
-      );
-    const { ownerId, id, rooms } = existedAccommodaiton;
-    const result = await this.accommodationService.createRequestCheckoutRoom({
-      ownerId,
-      renterId,
-      accommodationId: id,
-      rentingId,
-    });
     return result;
   }
 }

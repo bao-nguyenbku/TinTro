@@ -18,4 +18,7 @@ const getRecommendAccommodationsService = () => {
   return request.get(`${prefix}/all/recommend`);
 }
 
-export { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getAllRequestByRenterService, getRecommendAccommodationsService };
+const requestCheckoutRoomService = ({ accommodationId, roomId }) => {
+  return request.post(`${prefix}/${accommodationId}/rooms/${roomId}/request-checkout`);
+}
+export { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getAllRequestByRenterService, getRecommendAccommodationsService, requestCheckoutRoomService };

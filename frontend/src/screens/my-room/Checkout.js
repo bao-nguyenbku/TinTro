@@ -1,47 +1,76 @@
-import React from 'react';
-import { Box, Text, VStack, useDisclose } from 'native-base';
+import React, { useState, useEffect } from 'react';
+import { Box, Text, useDisclose, Button, useToast } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ConfirmModal from 'components/confirm-modal';
 import { CONFIRM_MODAL } from 'constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { requestCheckoutRoom, selectRentingState, reset } from 'store/reducer/renting';
+import CustomToast from 'components/custom-toast';
 
-const CheckoutMenuItem = () => {
+const CheckoutButton = (props) => {
+  const { data } = props;
+  const dispatch = useDispatch();
+  const { renting } = useSelector(selectRentingState);
+  const { loading, isSuccess } = renting;
+  const toast = useToast();
   const { onOpen, isOpen, onClose } = useDisclose();
+  const [buttonProps, setButtonProps] = useState({
+    disable: false,
+    title: 'Yêu cầu trả phòng'
+  })
+  useEffect(() => {
+    if (data.status === 'CHECKOUT') {
+      setButtonProps({
+        disable: true,
+        title: 'Hủy yêu cầu trả phòng'
+      })
+    }
+  }, [])
+  
+  useEffect(() => {
+    console.log(isSuccess);
+    if (isSuccess) {
+      setButtonProps({
+        title: 'Hủy yêu cầu trả phòng',
+        disable: true
+      })
+      toast.show({
+        title: 'Yêu cầu trả phòng thành công',
+        description: 'Vui lòng đợi chủ trọ xác nhận cho bạn',
+        placement: 'top'
+      })
+    }
+    return () => 
+      dispatch(reset())
+  }, [isSuccess])
   const onConfirm = () => {
-    console.log('Confirm');
+    dispatch(requestCheckoutRoom({ rentingId: data.id }));
   }
   return (
     <>
       <TouchableOpacity
-        onPress={onOpen}
+        style={{
+          width: '100%'
+        }}
       >
-        <Box
-          bgColor='white'
-          flexDirection='row'
+        <Button
+          onPress={onOpen}
+          bgColor={buttonProps.disable ? 'danger.600:alpha.60' : 'danger.600'}
+          rounded='xl'
+          p='5'
+          w='full'
           alignItems='center'
-          width='80%'
-          p='3'
+          isLoading={loading}
+          disabled={buttonProps.disable}
+          _pressed={{
+            opacity: 0.8
+          }}
         >
-          <Box
-            bgColor='danger.100'
-            p='2'
-            rounded='full'
-            marginRight='2'
-          >
-            <Ionicons name='swap-horizontal-outline' size={24} color='#F43F5E'/>
-          </Box>
-          <VStack  space="1" alignItems="flex-start">  
-            <Text fontWeight='700' color='danger.500'>Trả phòng</Text>
-            <Text color='muted.400'>Gửi yêu cầu trả phòng</Text>
-          </VStack>
-          
-          <Ionicons name='chevron-forward-outline' size={24} style={{
-            marginLeft: 'auto',
-            color: '#ABABAB'
-          }}/>
-        </Box>
+          <Text color='white' fontWeight='700' fontSize='lg'>{buttonProps.title}</Text>
+        </Button>
       </TouchableOpacity>
-      <ConfirmModal 
+      <ConfirmModal
         isOpen={isOpen}
         onOpen={onOpen}
         onClose={onClose}
@@ -56,4 +85,4 @@ const CheckoutMenuItem = () => {
   )
 }
 
-export default CheckoutMenuItem;
+export default CheckoutButton;

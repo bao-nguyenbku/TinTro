@@ -181,7 +181,7 @@ export class AccommodationService {
     }
   }
 
-  // **
+  // ** FOR DEVELOPMENT
   async createAccommodation(createData: CreateAccommodationDto) {
     try {
       await this.prismaService.accommodation.create({
@@ -221,30 +221,6 @@ export class AccommodationService {
       //TODO: Handling Error
       if (error instanceof HttpException) {
         throw new HttpException(error.message, error.getStatus());
-      }
-    }
-  }
-  async createRequestCheckoutRoom(data: RequestCheckoutRoomDto) {
-    const { rentingId, renterId, accommodationId, ownerId } = data;
-    try {
-      const prismaResult = await this.prismaService.renting.update({
-        where: {
-          id: rentingId,
-        },
-        data: {
-          status: RentingStatus.CHECKOUT,
-        },
-      });
-      return prismaResult;
-    } catch (error) {
-      // TODO: Handling error here
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code == 'P2025') {
-          throw new HttpException(
-            'Can not found renting data',
-            HttpStatus.NOT_FOUND,
-          );
-        }
       }
     }
   }

@@ -116,8 +116,6 @@ export const accommodationSlice = createSlice({
         state.rentRequest.loading = true;
       })
       .addCase(getRentRequestByRenter.fulfilled, (state, action) => {
-        // TODO: Use A renter may request multiple accommodation but for now,
-        // one renter can only request to an accommodation
         const rentRequest = action.payload;
         state.rentRequest.loading = false;
         state.rentRequest.data = rentRequest;
@@ -185,7 +183,7 @@ export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom',
   }
 });
 
-export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentRequestByRenter', async (accommodationId, { rejectWithValue }) => {
+export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentRequestByRenter', async (_,  { rejectWithValue }) => {
   try {
     const response = await getAllRequestByRenterService();
     return response.data;
@@ -196,5 +194,7 @@ export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentReq
     });
   }
 });
+
+
 export const { resetError, filterByPrice, resetRentRequest } = accommodationSlice.actions;
 export default accommodationSlice.reducer;
