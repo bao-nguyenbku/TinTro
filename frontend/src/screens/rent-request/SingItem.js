@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Image, Text } from 'native-base';
+import { Badge, Box, Image, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 
 const SingItem = (props) => {
@@ -24,6 +24,14 @@ const SingItem = (props) => {
           rounded='xl'
         />
         <Text fontWeight='700' fontSize='xl' marginLeft='4'>{item?.accommodation?.name}</Text>
+        <Badge colorScheme='emerald'
+          position='absolute'
+          top={0}
+          right={0}
+          rounded='xl'
+        >
+          <Text>Đang duyệt</Text>
+        </Badge>
         <TouchableOpacity
           style={{
             marginLeft: 'auto'
