@@ -14,9 +14,7 @@ const userAccountMenu = [];
 const AccountNav = () => {
   const user = useSelector((state) => state.user);
   const role = user.currentUser.role;
-  console.log('====================================');
-  console.log(role);
-  console.log('====================================');
+
   return (
     <Stack.Navigator
       screenOptions={{
