@@ -1,5 +1,5 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getAllRequestByRenterService, getRecommendAccommodationsService } from 'services/accommodation';
+import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getAllRequestByRenterService, getRecommendAccommodationsService, cancelRentRequestService } from 'services/accommodation';
 // import store from 'store';
 import { PRICE_ASCENDING, PRICE_DECENDING, REVIEW_ASCENDING, REVIEW_DECENDING } from 'constants';
 
@@ -32,6 +32,10 @@ const initialState = {
     error: undefined,
     data: [],
   },
+  cancelRequest: {
+    loading: false,
+    error: undefined
+  }
 };
 
 export const accommodationSlice = createSlice({
@@ -126,6 +130,13 @@ export const accommodationSlice = createSlice({
       .addCase(getRecommendAccommodations.fulfilled, (state, action) => {
         state.loading = false;
         state.recommendAccommodations = action.payload;
+      })
+      .addCase(cancelRentRequest.pending, (state) => {
+        state.cancelRequest.loading = true;
+      })
+      .addCase(cancelRentRequest.fulfilled, (state, action) => {
+        state.cancelRequest.loading = false;
+
       });
   },
 });
@@ -183,7 +194,7 @@ export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom',
   }
 });
 
-export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentRequestByRenter', async (_,  { rejectWithValue }) => {
+export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentRequestByRenter', async (_, { rejectWithValue }) => {
   try {
     const response = await getAllRequestByRenterService();
     return response.data;
@@ -195,6 +206,21 @@ export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentReq
   }
 });
 
-
+export const cancelRentRequest = createAsyncThunk(
+  'accommodation/cancelRentRequest',
+  async (requestId, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await cancelRentRequestService(requestId);
+      dispatch(getRentRequestByRenter());
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue({
+        statusCode: error.response.status,
+        message: error.response.message,
+      })
+    }
+  }
+)
 export const { resetError, filterByPrice, resetRentRequest } = accommodationSlice.actions;
 export default accommodationSlice.reducer;

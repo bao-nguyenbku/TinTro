@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ScrollView } from 'native-base';
+import { ScrollView, VStack } from 'native-base';
 import { RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRentRequestByRenter, selectAccommodationState } from 'store/reducer/accommodation';
@@ -18,7 +18,6 @@ const RentRequestScreen = () => {
   }
   return (
     <ScrollView
-      p='2'
       refreshControl={
         <RefreshControl 
           refreshing={loading}
@@ -26,14 +25,19 @@ const RentRequestScreen = () => {
         />
       }
     >
-      {data && data.map(item => {
-        return (
-          <SingItem 
-            key={item.id}
-            item={item}
-          />
-        )
-      })}
+      <VStack
+        space='2'
+        p='2'
+      >
+        {data && data.map(item => {
+          return (
+            <SingItem 
+              key={item.id}
+              item={item}
+            />
+          )
+        })}
+      </VStack>
     </ScrollView>
   )
 }

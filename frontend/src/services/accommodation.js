@@ -2,23 +2,26 @@ import request from 'utils/axios';
 
 const prefix = '/accommodations';
 
-const getAllAccommodationsService = () => {
+export const getAllAccommodationsService = () => {
   return request.get(`${prefix}/all`);
 };
-const searchAccommodationByKeywordService = (keyword) => {
+export const searchAccommodationByKeywordService = (keyword) => {
   return request.get(`${prefix}?search=${keyword}`);
 }
-const requestRentRoomService = ({ accommodationId }) => {
+export const requestRentRoomService = ({ accommodationId }) => {
   return request.get(`${prefix}/${accommodationId}/request-rent`);
 }
-const getAllRequestByRenterService = () => {
+export const getAllRequestByRenterService = () => {
   return request.get(`${prefix}/all-rent-request`);
 }
-const getRecommendAccommodationsService = () => {
+export const getRecommendAccommodationsService = () => {
   return request.get(`${prefix}/all/recommend`);
 }
 
-const requestCheckoutRoomService = ({ accommodationId, roomId }) => {
+export const requestCheckoutRoomService = ({ accommodationId, roomId }) => {
   return request.post(`${prefix}/${accommodationId}/rooms/${roomId}/request-checkout`);
 }
-export { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getAllRequestByRenterService, getRecommendAccommodationsService, requestCheckoutRoomService };
+
+export const cancelRentRequestService = (requestId) => {
+  return request.delete(`${prefix}/request-rent/${requestId}`);
+}

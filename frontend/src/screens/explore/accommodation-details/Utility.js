@@ -9,6 +9,7 @@ const Utility = (props) => {
       <Text fontSize='lg' fontWeight='700'>Tiện ích có sẵn</Text>
       {item.utilities.map(utility => (
         <HStack
+          key={`${utility}`}
           alignItems='center'
           space='1'
           marginLeft='3'

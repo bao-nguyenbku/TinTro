@@ -10,6 +10,7 @@ import {
   Request,
   HttpException,
   HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { Review } from '@prisma/client';
@@ -66,6 +67,17 @@ export class AccommodationController {
       throw err;
     }
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/request-rent/:id')
+  @ApiOkResponse({ type: AccommodationResponseDto, isArray: true })
+  async cancelRentRequest(@Param('id') requestId: string) {
+    const result = await this.accommodationService.cancelRentRequest(
+      parseInt(requestId),
+    );
+    return result;
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('/all-rent-request')
   async getRequestRentByRenter(@Request() req) {

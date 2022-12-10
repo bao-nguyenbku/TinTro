@@ -203,6 +203,24 @@ export class AccommodationService {
 
   //   } catch (error) {}
   // }
+  async cancelRentRequest(requestId: number) {
+    try {
+      return await this.prismaService.rentRequest.delete({
+        where: {
+          id: requestId,
+        },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new HttpException(
+            'Can not find this request',
+            HttpStatus.NOT_FOUND,
+          );
+        }
+      }
+    }
+  }
   async getCurrentRentingByRenter(renterId: number) {
     try {
       const result = await this.prismaService.renting.findUnique({

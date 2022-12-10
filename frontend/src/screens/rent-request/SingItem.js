@@ -1,9 +1,15 @@
 import React from 'react';
 import { Badge, Box, Image, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { cancelRentRequest } from 'store/reducer/accommodation';
 
 const SingItem = (props) => {
   const { item } = props;
+  const dispatch = useDispatch();
+  const handleCancelRequest = () => {
+    dispatch(cancelRentRequest(item.id));
+  }
   return (
     <Box
       bgColor='white'
@@ -36,6 +42,7 @@ const SingItem = (props) => {
           style={{
             marginLeft: 'auto'
           }}
+          onPress={handleCancelRequest}
         >
           <Text color='danger.600' fontSize='md'>Hủy</Text>
         </TouchableOpacity>
