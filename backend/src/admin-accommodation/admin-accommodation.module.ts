@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AccommodationService } from '~/accommodation/accommodation.service';
 import { PrismaService } from '~/prisma/prisma.service';
 import { UsersService } from '~/users/users.service';
 import { UtilsService } from '~/utils/utils.service';
@@ -12,6 +13,7 @@ import { AdminAccommodationService } from './admin-accommodation.service';
     PrismaService,
     UtilsService,
     UsersService,
+    AccommodationService,
   ],
 })
 export class AdminAccommodationModule {}

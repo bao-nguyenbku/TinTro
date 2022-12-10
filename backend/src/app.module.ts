@@ -18,6 +18,7 @@ import { AdminAccommodationController } from './admin-accommodation/admin-accomm
 import { AdminAccommodationModule } from './admin-accommodation/admin-accommodation.module';
 import { AdminAccommodationService } from './admin-accommodation/admin-accommodation.service';
 import { UtilsService } from './utils/utils.service';
+import { AccommodationService } from './accommodation/accommodation.service';
 
 @Module({
   imports: [
@@ -39,6 +40,6 @@ import { UtilsService } from './utils/utils.service';
     AdminAccommodationModule,
   ],
   controllers: [AppController, UtilsController, AdminAccommodationController],
-  providers: [AppService, PrismaService, AdminAccommodationService, UtilsService],
+  providers: [AppService, PrismaService, AdminAccommodationService, UtilsService, AccommodationService],
 })
 export class AppModule {}

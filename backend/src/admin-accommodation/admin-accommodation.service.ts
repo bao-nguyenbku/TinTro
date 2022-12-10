@@ -2,11 +2,20 @@ import { Prisma, RequestStatus, RoomStatus } from '@prisma/client';
 import { HttpException, HttpStatus,Injectable } from '@nestjs/common';
 import { PrismaService } from '~/prisma/prisma.service';
 import { AdminaccommodationResponseDto } from './dto/admin-accommodation.dto';
+import { RoomDto } from './dto/room.dto';
+import { AccommodationService } from '~/accommodation/accommodation.service';
+import { UtilsService } from '~/utils/utils.service';
+import { UsersService } from '~/users/users.service';
 
 @Injectable()
 export class AdminAccommodationService {
-    AccommodationService: any;
-    constructor(private readonly prismaService: PrismaService) {}
+    
+    constructor(
+        private readonly prismaService: PrismaService,
+        private readonly accommodationService: AccommodationService,
+        private readonly utilsService: UtilsService,
+        private readonly usersService: UsersService,
+        ) {}
 
     async getAllAdminAccommodation(adminId: number) {
         try {
@@ -41,15 +50,15 @@ export class AdminAccommodationService {
 
     async createRoom(adminId: number, accomId: number, newRoom: {}) {
         try {
-            const existedAccommodaiton = await this.AccommodationService.findAll(accomId);
-            if (existedAccommodaiton in this.getAllAdminAccommodation(adminId)) {
+            const existedAccommodaiton = await this.accommodationService.findAccommodationById(accomId);
+            if (existedAccommodaiton.ownerId == adminId)
+            {
                 const result = await this.prismaService.room.create({
-                    data: {                        
-                        accommodation: existedAccommodaiton,
+                    data: {
                         accommodationId: accomId,
                         status: RoomStatus.AVAILABLE,
-                    },                    
-                });
+                    }
+                })
                 return result;
             }
             else throw new HttpException(
