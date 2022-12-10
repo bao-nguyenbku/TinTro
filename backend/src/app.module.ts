@@ -14,6 +14,10 @@ import { ReviewModule } from './review/review.module';
 
 import { MessageSectionModule } from './message-section/message-section.module';
 import { MessageModule } from './message/message.module';
+import { AdminAccommodationController } from './admin-accommodation/admin-accommodation.controller';
+import { AdminAccommodationModule } from './admin-accommodation/admin-accommodation.module';
+import { AdminAccommodationService } from './admin-accommodation/admin-accommodation.service';
+import { UtilsService } from './utils/utils.service';
 
 @Module({
   imports: [
@@ -32,8 +36,9 @@ import { MessageModule } from './message/message.module';
     AccommodationModule,
     UtilsModule,
     ReviewModule,
+    AdminAccommodationModule,
   ],
-  controllers: [AppController, UtilsController],
-  providers: [AppService, PrismaService],
+  controllers: [AppController, UtilsController, AdminAccommodationController],
+  providers: [AppService, PrismaService, AdminAccommodationService, UtilsService],
 })
 export class AppModule {}
