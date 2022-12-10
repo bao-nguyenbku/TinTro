@@ -8,7 +8,15 @@ import AdminRoomStatistics from 'screens/account/AdminRoomStatistics';
 
 const Stack = createNativeStackNavigator();
 
-const adminAccountMenu = [<Stack.Screen name="AdminRoomStatistics" component={AdminRoomStatistics} />];
+const adminAccountMenu = [
+  <Stack.Screen
+    options={{
+      title: 'Thống kê',
+    }}
+    name="AdminRoomStatistics"
+    component={AdminRoomStatistics}
+  />,
+];
 const userAccountMenu = [];
 
 const AccountNav = () => {
