@@ -69,4 +69,15 @@ export class AdminAccommodationService {
             throw new Error(error)
         }
     }
+
+    async getAllRentRequest(adminId: number) {
+        try {
+            const result = await this.prismaService.rentRequest.findMany({
+                where: {ownerId: adminId,},
+            });
+            return result;
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
 }

@@ -12,7 +12,6 @@ import {
 import { Icon } from '@iconify/react';
 import React from 'react';
 import AdminAccommodationList from '..';
-import AdminAccommodationCRUDScreen from '../AdminAccommodationCRUD';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stacks = createNativeStackNavigator();

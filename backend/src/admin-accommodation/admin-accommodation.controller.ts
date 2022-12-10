@@ -1,5 +1,5 @@
 import { Controller, UseGuards } from '@nestjs/common';
-import { Body, Get, Param, Post, Query } from '@nestjs/common/decorators';
+import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common/decorators';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { Accommodation } from '~/accommodation/accommodation';
 import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
@@ -33,5 +33,14 @@ export class AdminAccommodationController {
         const result = await this.adminAccommodationService.createRoom(parseInt(adminId),parseInt(accomId),newRoom);
         return result;
     }
-    
+
+    @Get(':id/all-rent-request')
+    async getAllRentRequest(@Param('id') adminId: string,) {
+        return this.adminAccommodationService.getAllRentRequest(parseInt(adminId))
+    }
+
+    @Put(':id/accept-rent-request')
+    async acceptRequest(@Param('id') requestId: string) {
+        
+    }
 }
