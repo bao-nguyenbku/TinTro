@@ -1,10 +1,12 @@
 import { AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { Box, Flex, HStack, Pressable, Text, VStack } from 'native-base';
 import React from 'react';
 import { setCurrentUser } from 'store/reducer/user';
 import { deleteToken } from 'utils/token';
 
 const AdminMenu = ({ setLoading, loading, dispatch }) => {
+  const navigation = useNavigation();
   const menu = [
     {
       id: 1,
@@ -32,7 +34,7 @@ const AdminMenu = ({ setLoading, loading, dispatch }) => {
       title: 'Thống kê số lượng phòng',
       description: 'Số lượng phòng còn trống và cho thuê',
       icon: <Ionicons name="ios-albums-outline" size={24} color="black" />,
-      onPress: () => {},
+      onPress: () => navigation.navigate('AdminRoomStatistics'),
     },
     {
       id: 5,
