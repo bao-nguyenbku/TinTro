@@ -47,3 +47,32 @@ export const ROUTES = {
     },
   },
 };
+
+export const ADMIN_ROUTES = {
+  myAccomm: {
+    title: 'MyAccomm',
+    label: 'Nhà trọ của tôi',
+    stack: {
+      allRoom: {
+        title: 'AllRoom',
+        label: '',
+      }
+    }
+  },
+  request: {
+    title: 'Request',
+    label: 'Yêu cầu',
+    stack: {
+    }
+  },
+  message: {
+    title: 'Message',
+    label: 'Tin nhắn',
+    stack: {},
+  },
+  account: {
+    title: 'Account',
+    label: 'Tài khoản',
+    stack: {}
+  }
+}
