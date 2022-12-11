@@ -77,7 +77,7 @@ const AccountMenu = (props) => {
         </Center>
 
         {user.currentUser.role === 'USER' && <UserMenu loading={loading} setLoading={setLoading} dispatch={dispatch} {...props}/>}
-        {user.currentUser.role === 'ADMIN' && <AdminMenu loading={loading} setLoading={setLoading} dispatch={dispatch} />}
+        {user.currentUser.role === 'ADMIN' && <AdminMenu loading={loading} setLoading={setLoading} dispatch={dispatch} {...props}/>}
       </VStack>
     </ScrollView>
   );
