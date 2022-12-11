@@ -12,7 +12,7 @@ const MyRoomScreen = () => {
   const { loading, data } = roomInfo;
   useEffect(() => {
     dispatch(getRoomInfo());
-  }, [])
+  }, [dispatch])
   if (loading) {
     return <Loading />
   }

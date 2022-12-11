@@ -99,10 +99,7 @@ export class UsersService {
         },
       },
     });
-    Logger.log(
-      'userWithMessageSections',
-      userWithMessageSections.messageSections,
-    );
+
     userWithMessageSections.messageSections.sort((a, b) => {
       const aDate = new Date(a.messages[0].createdAt);
       const bDate = new Date(b.messages[0].createdAt);
@@ -126,7 +123,7 @@ export class UsersService {
   }
 
   uploadAvatar(filePath: string, userId: number): Promise<User> {
-    Logger.log('uploadAvatar', filePath, userId);
+    Logger.log('upload avatar', filePath);
     return this.prisma.user.update({
       where: { id: userId },
       data: {

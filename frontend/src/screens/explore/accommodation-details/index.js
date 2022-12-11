@@ -22,7 +22,7 @@ const AccommodationDetailsScreen = (props) => {
   const rentRequestLoading = rentRequest.loading;
   useEffect(() => {
     dispatch(getRentRequestByRenter(item?.id));
-  }, [item?.id]);
+  }, [item?.id, dispatch]);
   useEffect(() => {
     disableBottomTabBar(navigation);
     return () =>

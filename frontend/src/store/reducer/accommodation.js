@@ -134,7 +134,7 @@ export const accommodationSlice = createSlice({
       .addCase(cancelRentRequest.pending, (state) => {
         state.cancelRequest.loading = true;
       })
-      .addCase(cancelRentRequest.fulfilled, (state) => {
+      .addCase(cancelRentRequest.fulfilled, (state, _action) => {
         state.cancelRequest.loading = false;
 
       });

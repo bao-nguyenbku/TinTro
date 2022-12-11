@@ -1,10 +1,12 @@
-import { AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { Box, Flex, HStack, Pressable, Text, VStack } from 'native-base';
 import React from 'react';
 import { setCurrentUser } from 'store/reducer/user';
 import { deleteToken } from 'utils/token';
 
 const AdminMenu = ({ setLoading, loading, dispatch }) => {
+  const navigation = useNavigation();
   const menu = [
     {
       id: 1,
@@ -29,24 +31,10 @@ const AdminMenu = ({ setLoading, loading, dispatch }) => {
     },
     {
       id: 4,
-      title: 'Thống kê số lượng phòng',
-      description: 'Số lượng phòng còn trống và cho thuê',
+      title: 'Thống kê',
+      description: 'Xem thống kê số lượng phòng, hóa đơn...',
       icon: <Ionicons name="ios-albums-outline" size={24} color="black" />,
-      onPress: () => {},
-    },
-    {
-      id: 5,
-      title: 'Thống kê tiền trọ',
-      description: 'Tổng số tiền trọ đã thu',
-      icon: <MaterialIcons name="attach-money" size={24} color="black" />,
-      onPress: () => {},
-    },
-    {
-      id: 6,
-      title: 'Thống kê điện nước',
-      description: 'Chỉ số điện nước các phòng',
-      icon: <MaterialIcons name="water-damage" size={24} color="black" />,
-      onPress: () => {},
+      onPress: () => navigation.navigate('AdminRoomStatistics'),
     },
   ];
 

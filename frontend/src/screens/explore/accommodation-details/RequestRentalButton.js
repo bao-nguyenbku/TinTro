@@ -47,7 +47,7 @@ const RequestRentalButton = (props) => {
 
     return () => 
       dispatch(resetRentRequest())
-  }, [isSuccess])
+  }, [isSuccess, toast, dispatch])
   const onConfirm = () => {
     dispatch(requestRentRoom(item));
   };

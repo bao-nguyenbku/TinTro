@@ -6,23 +6,19 @@ import UserBottomBar from 'components/user-bottom-bar';
 import AdminBottomBar from 'components/admin-bottom-bar';
 import Loading from 'components/loading';
 
-
-
-
-
 const HomeNav = () => {
   const { currentUser, loading } = useSelector(selectUserState);
   console.log(currentUser);
   if (loading) {
-    return <Loading />
+    return <Loading />;
   }
   if (currentUser.role === 'USER') {
-    return <UserBottomBar />
+    return <UserBottomBar />;
   }
   if (currentUser.role === 'ADMIN') {
-    return <AdminBottomBar />
+    return <AdminBottomBar />;
   }
-  return <Loading />
+  return <Loading />;
 };
 
 export default HomeNav;
