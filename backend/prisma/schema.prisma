@@ -118,12 +118,11 @@ model Renting {
   status          RentingStatus
 }
 
-
 model Room {
   id              Int           @id @default(autoincrement())
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
   accommodationId Int
-  roomName        String        @default("")
+  roomName        String?       @default("")
   renter          Renter[]
   status          RoomStatus
   Renting         Renting[]
@@ -145,10 +144,12 @@ enum RequestStatus {
   WAITING
   CONFIRM
 }
+
 enum RentingStatus {
   CHECKOUT
   RENTING
 }
+
 enum RoomStatus {
   RENTING
   AVAILABLE
