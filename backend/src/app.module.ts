@@ -45,8 +45,19 @@ import { RentingService } from './renting/renting.service';
     MulterModule,
     RentingModule,
   ],
-  controllers: [AppController, UtilsController, AdminAccommodationController, RentingController,],
-  providers: [AppService, PrismaService, AdminAccommodationService, UtilsService, AccommodationService, RentingService,],
-  
+  controllers: [
+    AppController,
+    UtilsController,
+    AdminAccommodationController,
+    RentingController,
+  ],
+  providers: [
+    AppService,
+    PrismaService,
+    AdminAccommodationService,
+    UtilsService,
+    AccommodationService,
+    RentingService,
+  ],
 })
 export class AppModule {}

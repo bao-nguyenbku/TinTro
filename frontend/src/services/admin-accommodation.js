@@ -2,10 +2,12 @@ import request from "utils/axios";
 
 const prefix = '/admin-accommodation';
 
-export const getAllRooms = ({ adminId }) => {
-    return request.get(`${adminId}/${prefix}/get-all-room`);
+export const getAllRooms = () => {
+    return request.get(`${prefix}/get-all-room`);
 };
-
+export const getAllRenterByRoomIdService = (roomId) => {
+    return request.get(`${prefix}/rooms/${roomId}/renter/all`);
+}
 export const newRoom = ({ adminId }) => {
     return request.post(`${adminId}/${prefix}/new-room`);
 };
