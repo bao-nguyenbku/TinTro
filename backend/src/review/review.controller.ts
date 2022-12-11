@@ -1,13 +1,8 @@
-import { HttpException } from '@nestjs/common/exceptions';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   UseGuards,
   Request,
   Logger,

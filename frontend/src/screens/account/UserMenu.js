@@ -4,7 +4,7 @@ import React from 'react';
 import { setCurrentUser } from 'store/reducer/user';
 import { deleteToken } from 'utils/token';
 
-const UserMenu = ({ setLoading, loading, dispatch }) => {
+const UserMenu = ({ setLoading, loading, dispatch, navigation }) => {
   const menu = [
     {
       id: 1,
@@ -32,12 +32,14 @@ const UserMenu = ({ setLoading, loading, dispatch }) => {
       title: 'Yêu cầu thuê phòng',
       description: 'Xem các yêu cầu thuê phòng đang duyệt',
       icon: <MaterialCommunityIcons name="chat-question" size={24} color="black" />,
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate('RentRequestList');
+      },
     },
   ];
 
   return (
-    <Box py={6} px={6}>
+    <Box pt={2.5} px={6}>
       <VStack borderRadius={12} space={8} px={4} py={6} bgColor="#fff">
         {menu.map((item) => (
           <Pressable key={item.id} onPress={item.onPress}>

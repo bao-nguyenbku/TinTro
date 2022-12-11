@@ -103,12 +103,13 @@ const SendMessage = ({ route }) => {
               pos = 'row';
             }
             return (
-              <Flex pb={3} my={2} key={messageInSection.id} w="100%">
-                <Flex maxWidth={pos === 'row' ? '80%' : '80%'} left={pos === 'row-reverse' ? 20 : 0} alignItems="flex-end" direction={pos}>
-                  <Avatar mx={2} size="sm" source={{ uri: messageInSection.from.avatar }} />
+              <Flex pb={3} my={1} key={messageInSection.id} w="100%">
+                <Flex maxWidth={pos === 'row' ? '75%' : '80%'} left={pos === 'row-reverse' ? 20 : 0} alignItems="flex-end" direction={pos}>
+                  <Avatar mx={1.5} size="sm" source={{ uri: messageInSection.from.avatar }} />
                   <Box
                     alignItems="center"
-                    p={3}
+                    py={1.5}
+                    px={3}
                     borderRadius="2xl"
                     backgroundColor={messageInSection.fromId === currentUser.id ? 'tertiary.600' : '#fff'}
                   >
@@ -127,8 +128,8 @@ const SendMessage = ({ route }) => {
           value={messageText}
           flexWrap="wrap"
           bottom={3}
-          py={3}
-          px={2}
+          py={2}
+          px={4}
           mb={3}
           placeholder="Message"
           size="2xl"

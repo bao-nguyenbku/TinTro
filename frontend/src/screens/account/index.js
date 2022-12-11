@@ -6,6 +6,8 @@ import * as ImagePicker from 'expo-image-picker';
 import sendFileRequest from 'utils/sendFileRequest';
 import CustomToast from 'components/custom-toast';
 import UserMenu from './UserMenu';
+import AdminMenu from './AdminMenu';
+
 
 const mapRoleToText = (role) => {
   switch (role) {
@@ -18,7 +20,7 @@ const mapRoleToText = (role) => {
   }
 };
 
-const AccountMenu = () => {
+const AccountMenu = (props) => {
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
@@ -35,25 +37,28 @@ const AccountMenu = () => {
 
     if (!result.canceled) {
       const formData = new FormData();
+      const uri = result.assets[0].uri;
+      const fileExtension = uri.substr(uri.lastIndexOf('.') + 1);
+
       formData.append('file', {
         name: `${new Date()}_avatar`,
-        uri: result.assets[0].uri,
-        type: 'image/jpg',
+        uri,
+        type: `image/${fileExtension}`,
       });
       try {
         await sendFileRequest.post('/users/upload-avatar', formData);
         toast.show({
           render: () => <CustomToast title="Cập nhật ảnh đại diện thành công." status="success" />,
         });
+        setImage(result.assets[0].uri);
       } catch (err) {
         console.log(err);
       }
-      setImage(result.assets[0].uri);
     }
   };
 
   return (
-    <ScrollView>
+    <ScrollView mb={12}>
       <VStack py={4}>
         <Center>
           <Pressable onPress={pickImage}>
@@ -63,7 +68,7 @@ const AccountMenu = () => {
               source={{
                 uri: !image ? user.currentUser.avatar : image,
               }}
-              alt="user avatar"
+              alt={user.currentUser.name}
             />
           </Pressable>
           <Text pt={2} color="tertiary.600" bold fontSize="2xl">
@@ -72,7 +77,8 @@ const AccountMenu = () => {
           <Text color="muted.500">{user.currentUser.role ? mapRoleToText(user.currentUser.role) : 'Khách'}</Text>
         </Center>
 
-        {user.currentUser.role === 'USER' && <UserMenu loading={loading} setLoading={setLoading} dispatch={dispatch} />}
+        {user.currentUser.role === 'USER' && <UserMenu loading={loading} setLoading={setLoading} dispatch={dispatch} {...props}/>}
+        {user.currentUser.role === 'ADMIN' && <AdminMenu loading={loading} setLoading={setLoading} dispatch={dispatch} />}
       </VStack>
     </ScrollView>
   );

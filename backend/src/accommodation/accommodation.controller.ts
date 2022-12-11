@@ -8,6 +8,9 @@ import {
   Query,
   Logger,
   Request,
+  HttpException,
+  HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { Review } from '@prisma/client';
@@ -19,6 +22,7 @@ import { AccommodationService } from './accommodation.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 // import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 import { RECOMMEND_LEVEL } from './constants';
+import { CreateAccommodationDto } from './dto/create-accommodation.dto';
 
 @Controller('accommodations')
 export class AccommodationController {
@@ -29,7 +33,7 @@ export class AccommodationController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get()
+  @Get('')
   @ApiOkResponse({ type: AccommodationResponseDto, isArray: true })
   async searchAccommodationByKeyword(@Query('search') keyword: string) {
     const accommodations =
@@ -65,12 +69,28 @@ export class AccommodationController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Delete('/request-rent/:id')
+  @ApiOkResponse({ type: AccommodationResponseDto, isArray: true })
+  async cancelRentRequest(@Param('id') requestId: string) {
+    const result = await this.accommodationService.cancelRentRequest(
+      parseInt(requestId),
+    );
+    return result;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/all-rent-request')
+  async getRequestRentByRenter(@Request() req) {
+    const userId = req.user.id;
+    return await this.accommodationService.getRentRequestByRenter(
+      parseInt(userId),
+    );
+  }
+  @UseGuards(JwtAuthGuard)
   @Get('/:id')
   @ApiOkResponse({ type: AccommodationResponseDto })
-  async findAccommodationById(@Param('id') id: string) {
-    const result = await this.accommodationService.findAccommodationById(
-      parseInt(id),
-    );
+  async findAccommodationById(@Param('id') id: number) {
+    const result = await this.accommodationService.findAccommodationById(id);
     const newResult = {
       ...result,
       reviewStar: 0,
@@ -86,33 +106,21 @@ export class AccommodationController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/:id/request-rent')
-  async getRequestRentByRenter(
-    @Param('id') accommodationId: string,
-    @Request() req,
-  ) {
-    const userId = req.user.id;
-    return await this.accommodationService.getRentRequestByRenter(
-      parseInt(userId),
-    );
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post('/:id/request-rent')
   async requestRentRoom(
     @Param('id') accommodationId: string,
-    @Body() requestRentRoom: { email: string },
+    @Request() req,
+    // @Body() requestRentRoom: { email: string },
   ) {
-    const { email } = requestRentRoom;
-
+    const renterId = req.user.id;
     const existedAccommodaiton =
       await this.accommodationService.findAccommodationById(
         parseInt(accommodationId),
       );
-    const existedRenter = await this.usersService.findByEmail(email);
+    // const existedRenter = await this.usersService.findByEmail(email);
     const { ownerId, id } = existedAccommodaiton;
     const result = await this.accommodationService.createRequestRentRoom({
       ownerId,
-      renterId: existedRenter.id,
+      renterId,
       accommodationId: id,
     });
     return result;
@@ -123,5 +131,35 @@ export class AccommodationController {
   async getRecommendAccommodations() {
     const result = await this.accommodationService.getRecommendAccommodations();
     return result.filter((item) => item.reviewStar > RECOMMEND_LEVEL);
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('/create')
+  async createAccommodations(
+    @Body() createAccommodationList: CreateAccommodationDto[],
+  ) {
+    return await Promise.all(
+      createAccommodationList.map(async (data) => {
+        await this.accommodationService.createAccommodation(data);
+      }),
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/:id/renting')
+  async getCurrentRentingByRenter(
+    @Request() req,
+    @Param('id') accommodationId: string,
+  ) {
+    const renterId = req.user.id;
+    const result = await this.accommodationService.getCurrentRentingByRenter(
+      parseInt(renterId),
+    );
+    if (result.accommodationId !== parseInt(accommodationId)) {
+      throw new HttpException(
+        'This renter did not rent any room in this accommodation',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return result;
   }
 }

@@ -1,4 +1,4 @@
-import { Role, User } from '@prisma/client';
+import { MessageSection, Role, User } from '@prisma/client';
 import { UserEntity } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
@@ -81,6 +81,7 @@ export class UsersService {
                     createdAt: true,
                   },
                 },
+                createdAt: true,
               },
               orderBy: {
                 createdAt: 'desc',
@@ -98,6 +99,13 @@ export class UsersService {
         },
       },
     });
+
+    userWithMessageSections.messageSections.sort((a, b) => {
+      const aDate = new Date(a.messages[0].createdAt);
+      const bDate = new Date(b.messages[0].createdAt);
+      return bDate.getTime() - aDate.getTime();
+    });
+
     return userWithMessageSections;
   }
 
@@ -115,7 +123,7 @@ export class UsersService {
   }
 
   uploadAvatar(filePath: string, userId: number): Promise<User> {
-    Logger.log('uploadAvatar', filePath, userId);
+    Logger.log('upload avatar', filePath);
     return this.prisma.user.update({
       where: { id: userId },
       data: {

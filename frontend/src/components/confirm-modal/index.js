@@ -1,9 +1,9 @@
 import React from 'react'
 import { Stack, Button, Modal, Text } from 'native-base';
+import { CONFIRM_MODAL } from 'constants';
 // @ts-nocheck
 const ConfirmModal = (props) => {
-  const { isOpen, onClose, onConfirm, headerTitle = 'Header title', content = 'body', cancelTitle = 'Cancel', saveTitle = 'Save' } = props;
-
+  const { isOpen, onClose, onConfirm, headerTitle = 'Header title', content = 'body', cancelTitle = 'Cancel', saveTitle = 'Save', status = CONFIRM_MODAL.SUCCESS } = props;
   return <>
     <Stack direction={{
       base: "column",
@@ -26,7 +26,7 @@ const ConfirmModal = (props) => {
               onConfirm();
               onClose();
               }}
-              bgColor='tertiary.600'
+              bgColor={status}
             >
               {saveTitle}
             </Button>

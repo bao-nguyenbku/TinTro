@@ -11,10 +11,13 @@ import { AccommodationModule } from './accommodation/accommodation.module';
 import { UtilsController } from './utils/utils.controller';
 import { UtilsModule } from './utils/utils.module';
 import { ReviewModule } from './review/review.module';
-
 import { MessageSectionModule } from './message-section/message-section.module';
 import { MessageModule } from './message/message.module';
 import { MulterModule } from '@nestjs/platform-express/multer';
+import { StatisticsModule } from './statistics/statistics.module';
+import { RentingController } from './renting/renting.controller';
+import { RentingModule } from './renting/renting.module';
+import { RentingService } from './renting/renting.service';
 
 @Module({
   imports: [
@@ -34,8 +37,10 @@ import { MulterModule } from '@nestjs/platform-express/multer';
     UtilsModule,
     ReviewModule,
     MulterModule,
+    StatisticsModule,
+    RentingModule,
   ],
-  controllers: [AppController, UtilsController],
-  providers: [AppService, PrismaService],
+  controllers: [AppController, UtilsController, RentingController],
+  providers: [AppService, PrismaService, RentingService],
 })
 export class AppModule {}

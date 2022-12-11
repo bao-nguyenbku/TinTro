@@ -15,5 +15,6 @@ import { UsersService } from '~/users/users.service';
     UtilsService,
     UsersService,
   ],
+  exports: [AccommodationService],
 })
 export class AccommodationModule {}
