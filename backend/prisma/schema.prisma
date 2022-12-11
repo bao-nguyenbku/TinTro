@@ -116,6 +116,7 @@ model Renting {
   room            Room          @relation(fields: [roomId], references: [id])
   roomId          Int
   status          RentingStatus
+  requestRole     Role          @default(USER)
 }
 
 model Room {

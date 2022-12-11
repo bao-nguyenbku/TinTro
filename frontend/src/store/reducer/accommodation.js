@@ -136,7 +136,6 @@ export const accommodationSlice = createSlice({
       })
       .addCase(cancelRentRequest.fulfilled, (state, _action) => {
         state.cancelRequest.loading = false;
-
       });
   },
 });
