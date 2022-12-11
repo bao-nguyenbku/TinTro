@@ -11,6 +11,7 @@ import OwnerContact from './OwnerContact';
 import Description from './Description';
 import RequestRentalButton from './RequestRentalButton';
 import ImageGallery from './ImageGallery';
+import Utility from './Utility';
 
 const AccommodationDetailsScreen = (props) => {
   const navigation = useNavigation();
@@ -73,6 +74,7 @@ const AccommodationDetailsScreen = (props) => {
             <CommonInfo item={item} />
             <OwnerContact item={item} handlePressMessageIcon={handlePressMessageIcon} />
             <Description item={item} />
+            <Utility item={item}/>
             <ImageGallery images={item?.images} />
           </Box>
         </ScrollView>

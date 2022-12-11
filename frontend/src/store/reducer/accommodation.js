@@ -1,5 +1,5 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService, getRecommendAccommodationsService } from 'services/accommodation';
+import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getAllRequestByRenterService, getRecommendAccommodationsService, cancelRentRequestService } from 'services/accommodation';
 // import store from 'store';
 import { PRICE_ASCENDING, PRICE_DECENDING, REVIEW_ASCENDING, REVIEW_DECENDING } from 'constants';
 
@@ -32,6 +32,10 @@ const initialState = {
     error: undefined,
     data: [],
   },
+  cancelRequest: {
+    loading: false,
+    error: undefined
+  }
 };
 
 export const accommodationSlice = createSlice({
@@ -116,8 +120,6 @@ export const accommodationSlice = createSlice({
         state.rentRequest.loading = true;
       })
       .addCase(getRentRequestByRenter.fulfilled, (state, action) => {
-        // TODO: Use A renter may request multiple accommodation but for now,
-        // one renter can only request to an accommodation
         const rentRequest = action.payload;
         state.rentRequest.loading = false;
         state.rentRequest.data = rentRequest;
@@ -128,6 +130,13 @@ export const accommodationSlice = createSlice({
       .addCase(getRecommendAccommodations.fulfilled, (state, action) => {
         state.loading = false;
         state.recommendAccommodations = action.payload;
+      })
+      .addCase(cancelRentRequest.pending, (state) => {
+        state.cancelRequest.loading = true;
+      })
+      .addCase(cancelRentRequest.fulfilled, (state, action) => {
+        state.cancelRequest.loading = false;
+
       });
   },
 });
@@ -171,12 +180,10 @@ export const searchAccommodationByKeyword = createAsyncThunk('accommodation/sear
   }
 });
 
-export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom', async (accommodation, { rejectWithValue, getState }) => {
-  const renterEmail = getState()?.user?.currentUser?.email || 'test1@gmail.com';
+export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom', async (accommodation, { rejectWithValue }) => {
   try {
     const response = await requestRentRoomService({
       accommodationId: accommodation.id,
-      email: renterEmail,
     });
     return response.data;
   } catch (error) {
@@ -187,9 +194,9 @@ export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom',
   }
 });
 
-export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentRequestByRenter', async (accommodationId, { rejectWithValue }) => {
+export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentRequestByRenter', async (_, { rejectWithValue }) => {
   try {
-    const response = await getRequestByRenterService({ accommodationId });
+    const response = await getAllRequestByRenterService();
     return response.data;
   } catch (error) {
     return rejectWithValue({
@@ -198,5 +205,22 @@ export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentReq
     });
   }
 });
+
+export const cancelRentRequest = createAsyncThunk(
+  'accommodation/cancelRentRequest',
+  async (requestId, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await cancelRentRequestService(requestId);
+      dispatch(getRentRequestByRenter());
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue({
+        statusCode: error.response.status,
+        message: error.response.message,
+      })
+    }
+  }
+)
 export const { resetError, filterByPrice, resetRentRequest } = accommodationSlice.actions;
 export default accommodationSlice.reducer;

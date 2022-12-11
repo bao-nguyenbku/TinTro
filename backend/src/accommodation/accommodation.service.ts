@@ -1,7 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma, RequestStatus, RoomStatus } from '@prisma/client';
+import {
+  Prisma,
+  RequestStatus,
+  RoomStatus,
+  RentingStatus,
+} from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
+import { CreateAccommodationDto } from './dto/create-accommodation.dto';
+import { RequestCheckoutRoomDto } from './dto/request-checkout-room.dto';
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 
 @Injectable()
@@ -135,6 +142,9 @@ export class AccommodationService {
         where: {
           renterId,
         },
+        include: {
+          accommodation: true,
+        },
       });
       return result;
     } catch (error) {
@@ -168,6 +178,68 @@ export class AccommodationService {
       });
     } catch (error) {
       throw new Error(error);
+    }
+  }
+
+  // ** FOR DEVELOPMENT
+  async createAccommodation(createData: CreateAccommodationDto) {
+    try {
+      await this.prismaService.accommodation.create({
+        data: {
+          ...createData,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  // async getConfirmRequestByRenter(params: {
+  //   renterId: number;
+  //   accommodationId: number;
+  // }) {
+  //   const { renterId, accommodationId } = params;
+  //   try {
+  //     const confirmRequest = this.prismaService.rentRequest.update({
+
+  //   } catch (error) {}
+  // }
+  async cancelRentRequest(requestId: number) {
+    try {
+      return await this.prismaService.rentRequest.delete({
+        where: {
+          id: requestId,
+        },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new HttpException(
+            'Can not find this request',
+            HttpStatus.NOT_FOUND,
+          );
+        }
+      }
+    }
+  }
+  async getCurrentRentingByRenter(renterId: number) {
+    try {
+      const result = await this.prismaService.renting.findUnique({
+        where: {
+          renterId,
+        },
+      });
+      if (!result) {
+        throw new HttpException(
+          'Can not found any renting information about this renter',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return result;
+    } catch (error) {
+      //TODO: Handling Error
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
     }
   }
 }

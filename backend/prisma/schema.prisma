@@ -51,6 +51,7 @@ model Owner {
 
   accommodation Accommodation?
   rentRequest   RentRequest[]
+  Renting       Renting[]
 
   @@index(userId)
 }
@@ -62,6 +63,7 @@ model Renter {
   rentRequest RentRequest[]
   rentRoom    Room?         @relation(fields: [rentRoomId], references: [id])
   rentRoomId  Int?
+  Renting     Renting[]
 
   @@index(userId)
 }
@@ -89,6 +91,7 @@ model Accommodation {
   utilities       String[]
   rentRequest     RentRequest[]
   review          Review[]
+  Renting         Renting[]
 }
 
 model RentRequest {
@@ -102,12 +105,28 @@ model RentRequest {
   status          RequestStatus
 }
 
+model Renting {
+  id              Int           @id @default(autoincrement())
+  renter          Renter        @relation(fields: [renterId], references: [userId])
+  renterId        Int           @unique
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId Int
+  owner           Owner         @relation(fields: [ownerId], references: [userId])
+  ownerId         Int
+  room            Room          @relation(fields: [roomId], references: [id])
+  roomId          Int
+  status          RentingStatus
+}
+
+
 model Room {
   id              Int           @id @default(autoincrement())
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
   accommodationId Int
+  roomName        String        @default("")
   renter          Renter[]
   status          RoomStatus
+  Renting         Renting[]
 }
 
 model Review {
@@ -123,7 +142,10 @@ enum RequestStatus {
   WAITING
   CONFIRM
 }
-
+enum RentingStatus {
+  CHECKOUT
+  RENTING
+}
 enum RoomStatus {
   RENTING
   AVAILABLE
