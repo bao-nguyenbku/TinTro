@@ -22,11 +22,10 @@ export class AdminAccommodationController {
     @Post(':id/new-room')
     async newRoom(
         @Param('id') adminId: string,
-        @Query('accomId') accomId,
         @Body() newRoom: RoomDto,        
     ) {        
         
-        const result = await this.adminAccommodationService.createRoom(parseInt(adminId),parseInt(accomId),newRoom);
+        const result = await this.adminAccommodationService.createRoom(parseInt(adminId),newRoom);
         return result;
     }
 
@@ -40,7 +39,7 @@ export class AdminAccommodationController {
         return result;
     }
 
-    @Delete(':id/modify-room')
+    @Delete(':id/delete-room')
     async deleteRoom(
         @Param('id') adminId: string,
         @Query('roomId') roomId,
@@ -50,11 +49,25 @@ export class AdminAccommodationController {
 
     @Get(':id/all-rent-request')
     async getAllRentRequest(@Param('id') adminId: string,) {
-        return this.adminAccommodationService.getAllRentRequest(parseInt(adminId))
+        return await this.adminAccommodationService.getAllRentRequest(parseInt(adminId))
     }
 
     @Put(':id/accept-rent-request')
     async acceptRequest(@Param('id') requestId: string) {
-        
+        return await this.adminAccommodationService.acceptRequest(parseInt(requestId));
+    }
+
+    @Post(':id/add-renter-to-room')
+    async addRenterToRoom(
+        @Param('id') adminId: string,
+        @Query('roomId') roomId,
+        @Query('renterId') renterId,
+    ) {
+        return await this.adminAccommodationService.addRenterToRoom(parseInt(adminId),parseInt(roomId),parseInt(renterId))
+    }
+
+    @Get(':id/get-all-rooms')
+    async getAllRooms(@Param('id') adminId: string,) {
+        return await this.adminAccommodationService.getAllRooms(parseInt(adminId));
     }
 }
