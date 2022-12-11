@@ -99,10 +99,7 @@ export class UsersService {
         },
       },
     });
-    Logger.log(
-      'userWithMessageSections',
-      userWithMessageSections.messageSections,
-    );
+
     userWithMessageSections.messageSections.sort((a, b) => {
       const aDate = new Date(a.messages[0].createdAt);
       const bDate = new Date(b.messages[0].createdAt);

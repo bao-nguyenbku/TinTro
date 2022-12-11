@@ -5,6 +5,7 @@ import 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import AccountMenu from 'screens/account';
 import AdminRoomStatistics from 'screens/account/AdminRoomStatistics';
+import RentRequestScreen from 'screens/rent-request';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +18,16 @@ const adminAccountMenu = [
     component={AdminRoomStatistics}
   />,
 ];
-const userAccountMenu = [];
+
+const userAccountMenu = [
+  <Stack.Screen
+    name="RentRequestList"
+    component={RentRequestScreen}
+    options={{
+      title: 'Danh sách yêu cầu thuê phòng',
+    }}
+  />,
+];
 
 const AccountNav = () => {
   const user = useSelector((state) => state.user);

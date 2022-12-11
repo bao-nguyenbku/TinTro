@@ -14,7 +14,7 @@ const RecommendAccommodation = (props) => {
   const { recommendAccommodations, loading } = useSelector(selectAccommodationState);
   useEffect(() => {
     dispatch(getRecommendAccommodations())
-  }, [])
+  }, [dispatch])
   if (loading)
     return <Loading />
   return (

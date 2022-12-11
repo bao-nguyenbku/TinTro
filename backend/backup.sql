@@ -225,6 +225,18 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: RentingStatus; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public."RentingStatus" AS ENUM (
+    'CHECKOUT',
+    'RENTING'
+);
+
+
+ALTER TYPE public."RentingStatus" OWNER TO postgres;
+
+--
 -- Name: RequestStatus; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -440,6 +452,44 @@ CREATE TABLE public."Renter" (
 ALTER TABLE public."Renter" OWNER TO postgres;
 
 --
+-- Name: Renting; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Renting" (
+    id integer NOT NULL,
+    "renterId" integer NOT NULL,
+    "accommodationId" integer NOT NULL,
+    "ownerId" integer NOT NULL,
+    "roomId" integer NOT NULL,
+    status public."RentingStatus" NOT NULL
+);
+
+
+ALTER TABLE public."Renting" OWNER TO postgres;
+
+--
+-- Name: Renting_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Renting_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Renting_id_seq" OWNER TO postgres;
+
+--
+-- Name: Renting_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Renting_id_seq" OWNED BY public."Renting".id;
+
+
+--
 -- Name: Review; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -610,6 +660,13 @@ ALTER TABLE ONLY public."RentRequest" ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: Renting id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Renting" ALTER COLUMN id SET DEFAULT nextval('public."Renting_id_seq"'::regclass);
+
+
+--
 -- Name: Review id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -658,6 +715,7 @@ COPY public."Message" (id, text, "createdAt", "fromId", "messageSectionId") FROM
 
 COPY public."MessageSection" (id) FROM stdin;
 1
+2
 \.
 
 
@@ -677,7 +735,8 @@ COPY public."Owner" ("userId") FROM stdin;
 --
 
 COPY public."RentRequest" (id, "renterId", "ownerId", "accommodationId", status) FROM stdin;
-60	8	3	2	WAITING
+88	8	9	3	WAITING
+87	8	1	1	CONFIRM
 \.
 
 
@@ -687,7 +746,15 @@ COPY public."RentRequest" (id, "renterId", "ownerId", "accommodationId", status)
 
 COPY public."Renter" ("rentRoomId", "userId") FROM stdin;
 \N	2
-\N	8
+1	8
+\.
+
+
+--
+-- Data for Name: Renting; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Renting" (id, "renterId", "accommodationId", "ownerId", "roomId", status) FROM stdin;
 \.
 
 
@@ -706,6 +773,9 @@ COPY public."Review" (id, "userId", "accommodationId", rating) FROM stdin;
 --
 
 COPY public."Room" (id, "accommodationId", status) FROM stdin;
+1	1	RENTING
+5	2	RENTING
+4	2	AVAILABLE
 \.
 
 
@@ -745,6 +815,8 @@ f2eb5ed1-a7f8-45d5-b1c4-df38627073ac	7a493340c9c69adaf75c60f98f6985452a7f1e450d4
 COPY public._users_in_message_section ("A", "B") FROM stdin;
 1	1
 1	8
+2	8
+2	9
 \.
 
 
@@ -759,7 +831,7 @@ SELECT pg_catalog.setval('public."Accommodation_id_seq"', 3, true);
 -- Name: MessageSection_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."MessageSection_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."MessageSection_id_seq"', 2, true);
 
 
 --
@@ -773,7 +845,14 @@ SELECT pg_catalog.setval('public."Message_id_seq"', 3, true);
 -- Name: RentRequest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."RentRequest_id_seq"', 61, true);
+SELECT pg_catalog.setval('public."RentRequest_id_seq"', 88, true);
+
+
+--
+-- Name: Renting_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Renting_id_seq"', 1, false);
 
 
 --
@@ -787,7 +866,7 @@ SELECT pg_catalog.setval('public."Review_id_seq"', 2, true);
 -- Name: Room_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Room_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Room_id_seq"', 5, true);
 
 
 --
@@ -827,6 +906,14 @@ ALTER TABLE ONLY public."Message"
 
 ALTER TABLE ONLY public."RentRequest"
     ADD CONSTRAINT "RentRequest_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Renting Renting_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Renting"
+    ADD CONSTRAINT "Renting_pkey" PRIMARY KEY (id);
 
 
 --
@@ -890,10 +977,10 @@ CREATE UNIQUE INDEX "Owner_userId_key" ON public."Owner" USING btree ("userId");
 
 
 --
--- Name: RentRequest_renterId_key; Type: INDEX; Schema: public; Owner: postgres
+-- Name: RentRequest_accommodationId_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX "RentRequest_renterId_key" ON public."RentRequest" USING btree ("renterId");
+CREATE UNIQUE INDEX "RentRequest_accommodationId_key" ON public."RentRequest" USING btree ("accommodationId");
 
 
 --
@@ -908,6 +995,13 @@ CREATE INDEX "Renter_userId_idx" ON public."Renter" USING btree ("userId");
 --
 
 CREATE UNIQUE INDEX "Renter_userId_key" ON public."Renter" USING btree ("userId");
+
+
+--
+-- Name: Renting_accommodationId_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX "Renting_accommodationId_key" ON public."Renting" USING btree ("accommodationId");
 
 
 --
@@ -1015,6 +1109,38 @@ ALTER TABLE ONLY public."Renter"
 
 ALTER TABLE ONLY public."Renter"
     ADD CONSTRAINT "Renter_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: Renting Renting_accommodationId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Renting"
+    ADD CONSTRAINT "Renting_accommodationId_fkey" FOREIGN KEY ("accommodationId") REFERENCES public."Accommodation"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: Renting Renting_ownerId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Renting"
+    ADD CONSTRAINT "Renting_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES public."Owner"("userId") ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: Renting Renting_renterId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Renting"
+    ADD CONSTRAINT "Renting_renterId_fkey" FOREIGN KEY ("renterId") REFERENCES public."Renter"("userId") ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: Renting Renting_roomId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Renting"
+    ADD CONSTRAINT "Renting_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES public."Room"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --

@@ -20,7 +20,7 @@ const mapRoleToText = (role) => {
   }
 };
 
-const AccountMenu = () => {
+const AccountMenu = (props) => {
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
@@ -77,7 +77,7 @@ const AccountMenu = () => {
           <Text color="muted.500">{user.currentUser.role ? mapRoleToText(user.currentUser.role) : 'Khách'}</Text>
         </Center>
 
-        {user.currentUser.role === 'USER' && <UserMenu loading={loading} setLoading={setLoading} dispatch={dispatch} />}
+        {user.currentUser.role === 'USER' && <UserMenu loading={loading} setLoading={setLoading} dispatch={dispatch} {...props}/>}
         {user.currentUser.role === 'ADMIN' && <AdminMenu loading={loading} setLoading={setLoading} dispatch={dispatch} />}
       </VStack>
     </ScrollView>
