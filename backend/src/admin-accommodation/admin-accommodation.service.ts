@@ -52,11 +52,15 @@ export class AdminAccommodationService {
             ownerId: adminId,
           },
         });
-      newRoom.accommodationId = existedAccommodaiton.id;
-      newRoom.status = RoomStatus.AVAILABLE;
+
       if (existedAccommodaiton.ownerId == adminId) {
         const result = await this.prismaService.room.create({
-          data: newRoom,
+          data: {
+            status: RoomStatus.AVAILABLE,
+            roomName: newRoom.roomName,
+            personNumber: newRoom.personNumber,
+            accommodationId: existedAccommodaiton.id,
+          },
         });
         return result;
       } else
@@ -180,6 +184,7 @@ export class AdminAccommodationService {
             status: RentingStatus.RENTING,
           },
         });
+        return result;
       } else
         throw new HttpException('Can not find this room', HttpStatus.NOT_FOUND);
     } catch (error) {

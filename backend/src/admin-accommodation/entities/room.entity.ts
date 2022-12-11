@@ -6,17 +6,8 @@ export class RoomEntity {
   status: RoomStatus;
 
   @ApiProperty()
-  accommodationId: number;
-
-  @ApiProperty()
   roomName: string;
 
   @ApiProperty()
   personNumber: number;
-
-  @ApiProperty()
-  price: number;
-
-  @ApiProperty()
-  utility: string;
 }

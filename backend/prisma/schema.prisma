@@ -8,17 +8,17 @@ datasource db {
 }
 
 model User {
-  id              Int              @id @default(autoincrement())
-  owner           Owner?
-  renter          Renter?
-  role            Role             @default(USER)
-  email           String           @unique
-  phone           String           @unique
-  password        String
-  name            String
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  // FIXME: Change this later
+  id        Int      @id @default(autoincrement())
+  owner     Owner?
+  renter    Renter?
+  role      Role     @default(USER)
+  email     String   @unique
+  phone     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   avatar          String           @default("https://obedient-veil-production.up.railway.app/public/default-avatar.png")
   messages        Message[]
   messageSections MessageSection[] @relation("users_in_message_section")
@@ -123,13 +123,11 @@ model Room {
   id              Int           @id @default(autoincrement())
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
   accommodationId Int
-  roomName        String?       @default("")
+  roomName        String        @default("")
   renter          Renter[]
-  status          RoomStatus
+  status          RoomStatus    @default(AVAILABLE)
   Renting         Renting[]
-  personNumber    Int
-  price           Int
-  utility         String
+  personNumber    Int           @default(1)
 }
 
 model Review {
