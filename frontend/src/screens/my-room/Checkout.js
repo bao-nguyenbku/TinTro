@@ -24,7 +24,7 @@ const CheckoutButton = (props) => {
         title: 'Hủy yêu cầu trả phòng',
       });
     }
-  }, []);
+  }, [data.status]);
 
   useEffect(() => {
     if (isSuccess) {
