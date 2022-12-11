@@ -1,20 +1,14 @@
 import { 
   TouchableOpacity,
   SafeAreaView,
-  TextInput,
   Pressable,
-  AntDesign,
   Button,
   Text, 
   View,
   StyleSheet,
   } from 'react-native';
-import { Icon } from '@iconify/react';
 import React from 'react';
-import AdminAccommodationList from '..';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const Stacks = createNativeStackNavigator();
 
 const AdminAccommodationDetailsScreen = ({navigation}) => {
   const onPressBack = () => {

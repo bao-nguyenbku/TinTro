@@ -1,14 +1,10 @@
 import { 
-  Center,
-  Flex,
-  Button,
   Text, 
   View,
   StyleSheet,
   Pressable, } from 'react-native';
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import CustomHeader from 'components/header';
 import { AntDesign, Fontisto } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AdminAccommodationDetailsScreen from './AdminAcommodationDetails';

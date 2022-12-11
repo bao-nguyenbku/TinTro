@@ -1,4 +1,4 @@
-import { Prisma, RequestStatus, RoomStatus } from '@prisma/client';
+import { RequestStatus, RoomStatus } from '@prisma/client';
 import { HttpException, HttpStatus,Injectable } from '@nestjs/common';
 import { PrismaService } from '~/prisma/prisma.service';
 import { AdminaccommodationResponseDto } from './dto/admin-accommodation.dto';
@@ -48,21 +48,72 @@ export class AdminAccommodationService {
 
     }
 
-    async createRoom(adminId: number, accomId: number, newRoom: {}) {
+    async createRoom(adminId: number, accomId: number, newRoom: RoomDto) {
         try {
             const existedAccommodaiton = await this.accommodationService.findAccommodationById(accomId);
+            newRoom.accommodationId = accomId;
+            newRoom.status = RoomStatus.AVAILABLE;
             if (existedAccommodaiton.ownerId == adminId)
             {
                 const result = await this.prismaService.room.create({
-                    data: {
-                        accommodationId: accomId,
-                        status: RoomStatus.AVAILABLE,
-                    }
+                    data: newRoom,
                 })
                 return result;
             }
             else throw new HttpException(
                 'Can not find this renter to make a request',
+                HttpStatus.NOT_FOUND,
+              );
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    async findRoombyId(roomId: number) {
+        try {
+            const result = await this.prismaService.room.findUnique({
+                where: {
+                    id: roomId,
+                },                
+            })
+            if (!result) {
+                throw new HttpException(
+                  'Can not find this accommodation',
+                  HttpStatus.NOT_FOUND,
+                );
+            }
+            return result
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    async modifyRoom(roomId: number, modifyRoom: RoomDto) {
+        try {
+            const existedRoom = this.findRoombyId(roomId);
+            if (!existedRoom) {
+            }
+            else throw new HttpException(
+                'Can not find this room',
+                HttpStatus.NOT_FOUND,
+              );
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    async deleteRoom(roomId: number) {
+        try {
+            const existedRoom = this.findRoombyId(roomId);
+            if (!existedRoom) {
+                return await this.prismaService.room.delete({
+                    where: {
+                        id: roomId
+                    }
+                })
+            }
+            else throw new HttpException(
+                'Can not find this room',
                 HttpStatus.NOT_FOUND,
               );
         } catch (error) {

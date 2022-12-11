@@ -1,9 +1,4 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-<<<<<<< HEAD
-import { Prisma, RequestStatus } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { AccommodationResponseDto } from './dto/accommodation.dto';
-=======
 import {
   Prisma,
   RequestStatus,
@@ -14,7 +9,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
 import { RequestCheckoutRoomDto } from './dto/request-checkout-room.dto';
->>>>>>> remotes/origin/ntb/checkout-when-renting
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 
 @Injectable()
@@ -39,8 +33,6 @@ export class AccommodationService {
         return {
           ...result,
           owner: result.owner.user,
-<<<<<<< HEAD
-=======
           availableRooms: result.rooms.reduce(
             (acc, curr) =>
               curr.status === RoomStatus.AVAILABLE ? acc + 1 : acc,
@@ -50,17 +42,12 @@ export class AccommodationService {
             ? result.review.reduce((acc, cur) => acc + cur.rating, 0) /
               result.review.length
             : 0,
->>>>>>> remotes/origin/ntb/checkout-when-renting
         };
       });
     } catch (error) {
       throw new Error(error);
     }
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> remotes/origin/ntb/checkout-when-renting
   async findAccommodationById(id: number): Promise<AccommodationResponseDto> {
     try {
       const result = await this.prismaService.accommodation.findUnique({
@@ -87,8 +74,6 @@ export class AccommodationService {
       return {
         ...result,
         owner: result.owner.user,
-<<<<<<< HEAD
-=======
         availableRooms: result.rooms.reduce(
           (acc, curr) => (curr.status === RoomStatus.AVAILABLE ? acc + 1 : acc),
           0,
@@ -97,7 +82,6 @@ export class AccommodationService {
           ? result.review.reduce((acc, cur) => acc + cur.rating, 0) /
             result.review.length
           : 0,
->>>>>>> remotes/origin/ntb/checkout-when-renting
       };
     } catch (error) {
       throw new HttpException(error.message, error.status);
@@ -157,12 +141,9 @@ export class AccommodationService {
         where: {
           renterId,
         },
-<<<<<<< HEAD
-=======
         include: {
           accommodation: true,
         },
->>>>>>> remotes/origin/ntb/checkout-when-renting
       });
       return result;
     } catch (error) {
@@ -171,8 +152,6 @@ export class AccommodationService {
       }
     }
   }
-<<<<<<< HEAD
-=======
 
   async getRecommendAccommodations() {
     try {
@@ -262,5 +241,4 @@ export class AccommodationService {
       }
     }
   }
->>>>>>> remotes/origin/ntb/checkout-when-renting
 }

@@ -7,4 +7,16 @@ export class RoomEntity {
 
   @ApiProperty()
   accommodationId: number;
+
+  @ApiProperty()
+  roomName: string;
+
+  @ApiProperty()
+  personNumber: number;
+
+  @ApiProperty()
+  price: number;
+
+  @ApiProperty()
+  utility: string;
 }

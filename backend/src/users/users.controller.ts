@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import { Controller, Post, Body } from '@nestjs/common';
-=======
 import {
   Controller,
   Post,
@@ -12,7 +9,6 @@ import {
   UseGuards,
   Logger,
 } from '@nestjs/common';
->>>>>>> remotes/origin/ntb/checkout-when-renting
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
@@ -32,8 +28,6 @@ export class UsersController {
   create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
     return this.usersService.create(createUserDto);
   }
-<<<<<<< HEAD
-=======
 
   @Post('upload-avatar')
   @UseGuards(JwtAuthGuard)
@@ -50,5 +44,4 @@ export class UsersController {
     await this.usersService.uploadAvatar(filePath, userId);
     return { avatar: filePath };
   }
->>>>>>> remotes/origin/ntb/checkout-when-renting
 }

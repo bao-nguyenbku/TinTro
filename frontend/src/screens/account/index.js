@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-import { Text, View } from 'react-native';
-import React from 'react';
-
-const AccountScreen = () => (
-  <View>
-    <Text>AccountScreen</Text>
-  </View>
-);
-
-export default AccountScreen;
-=======
 import React, { useState } from 'react';
 import { Center, Image, Pressable, ScrollView, Text, useToast, VStack } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
@@ -96,4 +84,3 @@ const AccountMenu = (props) => {
 };
 
 export default AccountMenu;
->>>>>>> remotes/origin/ntb/checkout-when-renting

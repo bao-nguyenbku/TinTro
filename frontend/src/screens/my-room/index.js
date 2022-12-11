@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-import { Text, View } from 'react-native';
-import React from 'react';
-
-const MyRoomScreen = () => (
-  <View>
-    <Text>MyRoomScreen</Text>
-  </View>
-);
-=======
 import React, { useEffect } from 'react';
 import { Box, ScrollView } from 'native-base';
 import { RefreshControl } from 'react-native';
@@ -48,6 +38,5 @@ const MyRoomScreen = () => {
   )
 }
 
->>>>>>> remotes/origin/ntb/checkout-when-renting
 
 export default MyRoomScreen;

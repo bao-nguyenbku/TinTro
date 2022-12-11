@@ -8,12 +8,9 @@ import {
   Query,
   Logger,
   Request,
-<<<<<<< HEAD
-=======
   HttpException,
   HttpStatus,
   Delete,
->>>>>>> remotes/origin/ntb/checkout-when-renting
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { Review } from '@prisma/client';
@@ -22,16 +19,10 @@ import { UtilsService } from '~/utils/utils.service';
 // import { Roles } from '~/auth/role.decorator';
 import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { AccommodationService } from './accommodation.service';
-<<<<<<< HEAD
-
-import { AccommodationResponseDto } from './dto/accommodation.dto';
-// import { RequestRentRoomDto } from './dto/request-rent-room.dto';
-=======
 import { AccommodationResponseDto } from './dto/accommodation.dto';
 // import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 import { RECOMMEND_LEVEL } from './constants';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
->>>>>>> remotes/origin/ntb/checkout-when-renting
 
 @Controller('accommodations')
 export class AccommodationController {
@@ -42,11 +33,7 @@ export class AccommodationController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-<<<<<<< HEAD
-  @Get()
-=======
   @Get('')
->>>>>>> remotes/origin/ntb/checkout-when-renting
   @ApiOkResponse({ type: AccommodationResponseDto, isArray: true })
   async searchAccommodationByKeyword(@Query('search') keyword: string) {
     const accommodations =
@@ -74,31 +61,13 @@ export class AccommodationController {
   async getAllAccommodation() {
     try {
       const result = await this.accommodationService.getAllAccommodation();
-<<<<<<< HEAD
-      return result.map((item) => ({
-        ...item,
-        reviewStar: item?.review?.length
-          ? item.review.reduce((acc, cur) => acc + cur.rating, 0) /
-            item.review.length
-          : 0,
-      }));
-=======
       return result;
->>>>>>> remotes/origin/ntb/checkout-when-renting
     } catch (err) {
       Logger.error(err);
       throw err;
     }
   }
 
-<<<<<<< HEAD
-  @Get('/:id')
-  @ApiOkResponse({ type: AccommodationResponseDto })
-  async findAccommodationById(@Param('id') id: string) {
-    const result = await this.accommodationService.findAccommodationById(
-      parseInt(id),
-    );
-=======
   @UseGuards(JwtAuthGuard)
   @Delete('/request-rent/:id')
   @ApiOkResponse({ type: AccommodationResponseDto, isArray: true })
@@ -122,7 +91,6 @@ export class AccommodationController {
   @ApiOkResponse({ type: AccommodationResponseDto })
   async findAccommodationById(@Param('id') id: number) {
     const result = await this.accommodationService.findAccommodationById(id);
->>>>>>> remotes/origin/ntb/checkout-when-renting
     const newResult = {
       ...result,
       reviewStar: 0,
@@ -138,54 +106,25 @@ export class AccommodationController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/:id/request-rent')
-<<<<<<< HEAD
-  async getRequestRentByRenter(
-    @Param('id') accommodationId: string,
-    @Request() req,
-  ) {
-    const userId = req.user.id;
-    return await this.accommodationService.getRentRequestByRenter(
-      parseInt(userId),
-    );
-  }
-  @Post('/:id/request-rent')
-  async requestRentRoom(
-    @Param('id') accommodationId: string,
-    @Body() requestRentRoom: { email: string },
-  ) {
-    const { email } = requestRentRoom;
-
-=======
   async requestRentRoom(
     @Param('id') accommodationId: string,
     @Request() req,
     // @Body() requestRentRoom: { email: string },
   ) {
     const renterId = req.user.id;
->>>>>>> remotes/origin/ntb/checkout-when-renting
     const existedAccommodaiton =
       await this.accommodationService.findAccommodationById(
         parseInt(accommodationId),
       );
-<<<<<<< HEAD
-    const existedRenter = await this.usersService.findByEmail(email);
-    const { ownerId, id } = existedAccommodaiton;
-    const result = await this.accommodationService.createRequestRentRoom({
-      ownerId,
-      renterId: existedRenter.id,
-=======
     // const existedRenter = await this.usersService.findByEmail(email);
     const { ownerId, id } = existedAccommodaiton;
     const result = await this.accommodationService.createRequestRentRoom({
       ownerId,
       renterId,
->>>>>>> remotes/origin/ntb/checkout-when-renting
       accommodationId: id,
     });
     return result;
   }
-<<<<<<< HEAD
-=======
 
   @UseGuards(JwtAuthGuard)
   @Get('/all/recommend')
@@ -223,5 +162,4 @@ export class AccommodationController {
     }
     return result;
   }
->>>>>>> remotes/origin/ntb/checkout-when-renting
 }

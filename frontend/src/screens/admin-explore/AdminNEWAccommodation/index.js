@@ -7,10 +7,6 @@ import {
   StyleSheet,
   } from 'react-native';
 import React from 'react';
-import AdminAccommodationList from '..';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-const Stacks = createNativeStackNavigator();
 
 const AdminNEWAccommodationScreen = ({navigation}) => {
   const onPressCreate = () => {

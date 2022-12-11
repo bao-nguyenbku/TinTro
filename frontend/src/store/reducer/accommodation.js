@@ -1,22 +1,14 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-<<<<<<< HEAD
-import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getRequestByRenterService } from 'services/accommodation';
-// import store from 'store';
-=======
 import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getAllRequestByRenterService, getRecommendAccommodationsService, cancelRentRequestService } from 'services/accommodation';
 // import store from 'store';
 import { PRICE_ASCENDING, PRICE_DECENDING, REVIEW_ASCENDING, REVIEW_DECENDING } from 'constants';
->>>>>>> remotes/origin/ntb/checkout-when-renting
 
 const initialState = {
   accommodations: [],
   loading: false,
   error: undefined,
   searchAccommodations: [],
-<<<<<<< HEAD
-=======
   recommendAccommodations: [],
->>>>>>> remotes/origin/ntb/checkout-when-renting
   accommodationDetails: {
     id: 0,
     name: '',
@@ -38,17 +30,12 @@ const initialState = {
     loading: false,
     isSuccess: false,
     error: undefined,
-<<<<<<< HEAD
-    data: {},
-  },
-=======
     data: [],
   },
   cancelRequest: {
     loading: false,
     error: undefined
   }
->>>>>>> remotes/origin/ntb/checkout-when-renting
 };
 
 export const accommodationSlice = createSlice({
@@ -58,8 +45,6 @@ export const accommodationSlice = createSlice({
     resetError(state) {
       state.error = undefined;
       state.rentRequest.error = undefined;
-<<<<<<< HEAD
-=======
     },
     filterByPrice(state, action) {
       const value = action.payload;
@@ -93,7 +78,6 @@ export const accommodationSlice = createSlice({
         error: undefined,
         data: [],
       }
->>>>>>> remotes/origin/ntb/checkout-when-renting
     }
   },
   extraReducers: (builder) => {
@@ -136,13 +120,6 @@ export const accommodationSlice = createSlice({
         state.rentRequest.loading = true;
       })
       .addCase(getRentRequestByRenter.fulfilled, (state, action) => {
-<<<<<<< HEAD
-        // TODO: Use A renter may request multiple accommodation but for now,
-        // one renter can only request to an accommodation
-        const rentRequest = Array.isArray(action.payload) ? action.payload[0] : action.payload;
-        state.rentRequest.loading = false;
-        state.rentRequest.data = rentRequest;
-=======
         const rentRequest = action.payload;
         state.rentRequest.loading = false;
         state.rentRequest.data = rentRequest;
@@ -157,17 +134,14 @@ export const accommodationSlice = createSlice({
       .addCase(cancelRentRequest.pending, (state) => {
         state.cancelRequest.loading = true;
       })
-      .addCase(cancelRentRequest.fulfilled, (state, action) => {
+      .addCase(cancelRentRequest.fulfilled, (state) => {
         state.cancelRequest.loading = false;
 
->>>>>>> remotes/origin/ntb/checkout-when-renting
       });
   },
 });
 export const selectAccommodationState = createSelector([(state) => state.accommodation], (accommodationState) => accommodationState);
 
-<<<<<<< HEAD
-=======
 export const getRecommendAccommodations = createAsyncThunk(
   'accommodation/getRecommendAccommodations',
   async (_, { rejectWithValue }) => {
@@ -182,7 +156,6 @@ export const getRecommendAccommodations = createAsyncThunk(
     }
   }
 )
->>>>>>> remotes/origin/ntb/checkout-when-renting
 export const getAllAccommodations = createAsyncThunk('accommodation/getAllAccommodations', async (_, { rejectWithValue }) => {
   try {
     const response = await getAllAccommodationsService();
@@ -207,19 +180,10 @@ export const searchAccommodationByKeyword = createAsyncThunk('accommodation/sear
   }
 });
 
-<<<<<<< HEAD
-export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom', async (accommodation, { rejectWithValue, getState }) => {
-  const renterEmail = getState()?.user?.currentUser?.email || 'test1@gmail.com';
-  try {
-    const response = await requestRentRoomService({
-      accommodationId: accommodation.id,
-      email: renterEmail,
-=======
 export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom', async (accommodation, { rejectWithValue }) => {
   try {
     const response = await requestRentRoomService({
       accommodationId: accommodation.id,
->>>>>>> remotes/origin/ntb/checkout-when-renting
     });
     return response.data;
   } catch (error) {
@@ -230,15 +194,9 @@ export const requestRentRoom = createAsyncThunk('accommodation/requestRentRoom',
   }
 });
 
-<<<<<<< HEAD
-export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentRequestByRenter', async (accommodationId, { rejectWithValue }) => {
-  try {
-    const response = await getRequestByRenterService({ accommodationId });
-=======
 export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentRequestByRenter', async (_, { rejectWithValue }) => {
   try {
     const response = await getAllRequestByRenterService();
->>>>>>> remotes/origin/ntb/checkout-when-renting
     return response.data;
   } catch (error) {
     return rejectWithValue({
@@ -247,9 +205,6 @@ export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentReq
     });
   }
 });
-<<<<<<< HEAD
-export const { resetError } = accommodationSlice.actions;
-=======
 
 export const cancelRentRequest = createAsyncThunk(
   'accommodation/cancelRentRequest',
@@ -268,5 +223,4 @@ export const cancelRentRequest = createAsyncThunk(
   }
 )
 export const { resetError, filterByPrice, resetRentRequest } = accommodationSlice.actions;
->>>>>>> remotes/origin/ntb/checkout-when-renting
 export default accommodationSlice.reducer;

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { MessageSection, Role } from '@prisma/client';
-=======
 import { MessageSection, Role, User } from '@prisma/client';
->>>>>>> remotes/origin/ntb/checkout-when-renting
 import { UserEntity } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
@@ -85,10 +81,7 @@ export class UsersService {
                     createdAt: true,
                   },
                 },
-<<<<<<< HEAD
-=======
                 createdAt: true,
->>>>>>> remotes/origin/ntb/checkout-when-renting
               },
               orderBy: {
                 createdAt: 'desc',
@@ -106,8 +99,6 @@ export class UsersService {
         },
       },
     });
-<<<<<<< HEAD
-=======
     Logger.log(
       'userWithMessageSections',
       userWithMessageSections.messageSections,
@@ -118,7 +109,6 @@ export class UsersService {
       return bDate.getTime() - aDate.getTime();
     });
 
->>>>>>> remotes/origin/ntb/checkout-when-renting
     return userWithMessageSections;
   }
 
@@ -133,8 +123,6 @@ export class UsersService {
       },
     });
     return renter;
-<<<<<<< HEAD
-=======
   }
 
   uploadAvatar(filePath: string, userId: number): Promise<User> {
@@ -145,6 +133,5 @@ export class UsersService {
         avatar: filePath,
       },
     });
->>>>>>> remotes/origin/ntb/checkout-when-renting
   }
 }

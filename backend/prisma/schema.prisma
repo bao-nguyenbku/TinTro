@@ -127,6 +127,9 @@ model Room {
   renter          Renter[]
   status          RoomStatus
   Renting         Renting[]
+  personNumber    Int
+  price           Int
+  utility         String
 }
 
 model Review {

@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
-import { Box, Text, ScrollView } from 'native-base';
-import { TouchableWithoutFeedback, Keyboard, TextInput, TouchableOpacity } from 'react-native';
-import { disableBottomTabBar } from 'utils/utils';
-import { selectAccommodationState, searchAccommodationByKeyword } from 'store/reducer/accommodation';
-=======
 import { Box, Text, ScrollView, Select, CheckIcon } from 'native-base';
 import { TouchableWithoutFeedback, Keyboard, TextInput, TouchableOpacity } from 'react-native';
 import { disableBottomTabBar } from 'utils/utils';
 import { selectAccommodationState, searchAccommodationByKeyword, filterByPrice } from 'store/reducer/accommodation';
->>>>>>> remotes/origin/ntb/checkout-when-renting
 import { useDispatch, useSelector } from 'react-redux';
 import SingleItem from 'screens/explore/SingleItem';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Loading from 'components/loading';
-<<<<<<< HEAD
-=======
 import { PRICE_ASCENDING, PRICE_DECENDING, REVIEW_ASCENDING, REVIEW_DECENDING  } from 'constants';
->>>>>>> remotes/origin/ntb/checkout-when-renting
 
 const SearchScreen = (props) => {
   const { navigation } = props;
@@ -28,10 +18,7 @@ const SearchScreen = (props) => {
     borderColor: 'muted.300',
   });
   const [searchText, setSearchText] = useState('');
-<<<<<<< HEAD
-=======
   const [filterValue, setFilterValue] = React.useState("");
->>>>>>> remotes/origin/ntb/checkout-when-renting
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,13 +29,10 @@ const SearchScreen = (props) => {
       });
   }, [navigation]);
 
-<<<<<<< HEAD
-=======
   const handleFilterChange = (itemValue) => {
     setFilterValue(itemValue);
     dispatch(filterByPrice(itemValue));
   }
->>>>>>> remotes/origin/ntb/checkout-when-renting
   const submitSearchText = ({ nativeEvent }) => {
     dispatch(searchAccommodationByKeyword(nativeEvent.text)).then(() => setSearchText(nativeEvent.text));
   };
@@ -93,8 +77,6 @@ const SearchScreen = (props) => {
               ) : (
                 <Text fontWeight="600">Không tìm thấy kết quả cho &ldquo;{searchText}&ldquo;</Text>
               )}
-<<<<<<< HEAD
-=======
               {searchAccommodations && searchAccommodations.length > 0 && (
                 <Select 
                   selectedValue={filterValue} 
@@ -118,7 +100,6 @@ const SearchScreen = (props) => {
                   <Select.Item label="Đánh giá giảm dần" value={REVIEW_DECENDING} />
                 </Select>
               )}
->>>>>>> remotes/origin/ntb/checkout-when-renting
               {searchAccommodations &&
                 searchAccommodations.map((item) => {
                   return (

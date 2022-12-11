@@ -32,10 +32,7 @@ export class AuthService {
       sub: user.id,
       name: user.name,
       role: user.role,
-<<<<<<< HEAD
-=======
       avatar: user.avatar,
->>>>>>> remotes/origin/ntb/checkout-when-renting
     };
     return {
       access_token: this.jwtService.sign(payload),

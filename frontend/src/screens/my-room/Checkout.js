@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Text, useDisclose, Button, useToast } from 'native-base';
+import { Text, useDisclose, Button, useToast } from 'native-base';
 import { TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+
 import ConfirmModal from 'components/confirm-modal';
 import { CONFIRM_MODAL } from 'constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestCheckoutRoom, selectRentingState, reset } from 'store/reducer/renting';
-import CustomToast from 'components/custom-toast';
+
 
 const CheckoutButton = (props) => {
   const { data } = props;

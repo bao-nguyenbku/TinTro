@@ -6,6 +6,7 @@ import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { UsersService } from '~/users/users.service';
 import { UtilsService } from '~/utils/utils.service';
 import { AdminAccommodationService } from './admin-accommodation.service';
+import { RoomDto } from './dto/room.dto';
 
 @Controller('admin-accommodation')
 export class AdminAccommodationController {
@@ -18,20 +19,33 @@ export class AdminAccommodationController {
     async findAll(@Param('id') adminId: string) {        
         return this.adminAccommodationService.getAllAdminAccommodation(parseInt(adminId));
     }
-    @Post(':id/new')
+    @Post(':id/new-room')
     async newRoom(
         @Param('id') adminId: string,
         @Query('accomId') accomId,
-        @Body() newRoom:{
-            roomNumber: number,
-            personNumber: number,
-            price: number,
-            utility: string 
-        }
+        @Body() newRoom: RoomDto,        
     ) {        
         
         const result = await this.adminAccommodationService.createRoom(parseInt(adminId),parseInt(accomId),newRoom);
         return result;
+    }
+
+    @Put(':id/modify-room')
+    async modifyRoom(
+        @Param('id') adminId: string,
+        @Query('roomId') roomId,
+        @Body() modifyRoom: RoomDto,
+    ) {
+        const result = await this.adminAccommodationService.modifyRoom(parseInt(roomId),modifyRoom);
+        return result;
+    }
+
+    @Delete(':id/modify-room')
+    async deleteRoom(
+        @Param('id') adminId: string,
+        @Query('roomId') roomId,
+    ) {
+        return await this.adminAccommodationService.deleteRoom(parseInt(roomId));
     }
 
     @Get(':id/all-rent-request')

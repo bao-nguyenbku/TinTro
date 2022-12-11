@@ -35,8 +35,4 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-<<<<<<< HEAD
 package-lock.json
-=======
-package-lock.json
->>>>>>> remotes/origin/ntb/checkout-when-renting
