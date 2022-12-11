@@ -1,6 +1,5 @@
 import 'intl';
 import 'intl/locale-data/jsonp/it-IT';
-import { CONFIRM_MODAL } from 'constants';
 
 const formatCurrency = Intl.NumberFormat('it-IT', {
   style: 'currency',

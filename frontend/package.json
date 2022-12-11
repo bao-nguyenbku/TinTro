@@ -33,6 +33,7 @@
     "expo-constants": "~14.0.2",
     "expo-font": "~11.0.1",
     "expo-image-picker": "^14.0.2",
+    "expo-linear-gradient": "~12.0.1",
     "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
     "formik": "^2.2.9",
@@ -44,6 +45,7 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-chart-kit": "^6.12.0",
     "react-native-dotenv": "^3.4.2",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-image-viewing": "^0.2.2",
@@ -54,8 +56,7 @@
     "react-navigation": "^2.18.3",
     "react-redux": "^8.0.5",
     "socket.io-client": "^4.5.4",
-    "yup": "^0.32.11",
-    "expo-linear-gradient": "~12.0.1"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

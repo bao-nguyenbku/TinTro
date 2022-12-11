@@ -11,35 +11,21 @@ const RentRequestScreen = () => {
   const { rentRequest } = useSelector(selectAccommodationState);
   const { loading, data } = rentRequest;
   useEffect(() => {
-    dispatch(getRentRequestByRenter())
-  }, [])
+    dispatch(getRentRequestByRenter());
+  }, [dispatch]);
   if (loading) {
-    return <Loading />
+    return <Loading />;
   }
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl 
-          refreshing={loading}
-          onRefresh={() => dispatch(getRentRequestByRenter())}
-        />
-      }
-    >
-      <VStack
-        space='2'
-        p='2'
-      >
-        {data && data.map(item => {
-          return (
-            <SingItem 
-              key={item.id}
-              item={item}
-            />
-          )
-        })}
+    <ScrollView refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRentRequestByRenter())} />}>
+      <VStack space="2" p="2">
+        {data &&
+          data.map((item) => {
+            return <SingItem key={item.id} item={item} />;
+          })}
       </VStack>
     </ScrollView>
-  )
-}
+  );
+};
 
 export default RentRequestScreen;
