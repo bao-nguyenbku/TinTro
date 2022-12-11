@@ -15,12 +15,19 @@ const CustomHeader = (props) => {
             <BackButton {...props} />
           </Box>
         )}
+<<<<<<< HEAD
         <Text fontSize="lg" color="white" position="absolute">
           {title}
         </Text>
         {headerRight && (
             headerRight()
         )}
+=======
+        <Text bold fontSize="lg" color="white" position="absolute">
+          {title}
+        </Text>
+        {headerRight && headerRight()}
+>>>>>>> remotes/origin/ntb/checkout-when-renting
       </Box>
     </Box>
   );

@@ -1,5 +1,9 @@
 import 'intl';
 import 'intl/locale-data/jsonp/it-IT';
+<<<<<<< HEAD
+=======
+import { CONFIRM_MODAL } from 'constants';
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 
 const formatCurrency = Intl.NumberFormat('it-IT', {
   style: 'currency',

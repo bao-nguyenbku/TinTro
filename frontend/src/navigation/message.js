@@ -2,11 +2,17 @@ import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Avatar, Box, HStack, Text } from 'native-base';
+<<<<<<< HEAD
 
 import { MessagerList, SendMessage } from 'screens/message';
 import { clearMessageSections } from 'store/reducer/message';
 import CustomHeader from 'components/header';
 
+=======
+import CustomHeader from 'components/header';
+import MessagerList from 'screens/message/MessagerList';
+import SendMessage from 'screens/message/SendMessage';
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 
 const Stack = createNativeStackNavigator();
 

@@ -18,7 +18,8 @@ model User {
   name            String
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-  avatar          String           @default("https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png")
+  // FIXME: Change this later
+  avatar          String           @default("https://obedient-veil-production.up.railway.app/public/default-avatar.png")
   messages        Message[]
   messageSections MessageSection[] @relation("users_in_message_section")
   review          Review[]
@@ -50,6 +51,7 @@ model Owner {
 
   accommodation Accommodation?
   rentRequest   RentRequest[]
+  Renting       Renting[]
 
   @@index(userId)
 }
@@ -61,6 +63,7 @@ model Renter {
   rentRequest RentRequest[]
   rentRoom    Room?         @relation(fields: [rentRoomId], references: [id])
   rentRoomId  Int?
+  Renting     Renting[]
 
   @@index(userId)
 }
@@ -88,25 +91,42 @@ model Accommodation {
   utilities       String[]
   rentRequest     RentRequest[]
   review          Review[]
+  Renting         Renting[]
 }
 
 model RentRequest {
   id              Int           @id @default(autoincrement())
   renter          Renter        @relation(fields: [renterId], references: [userId])
-  renterId        Int           @unique
+  renterId        Int
   owner           Owner         @relation(fields: [ownerId], references: [userId])
   ownerId         Int
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
-  accommodationId Int
+  accommodationId Int           @unique
   status          RequestStatus
 }
+
+model Renting {
+  id              Int           @id @default(autoincrement())
+  renter          Renter        @relation(fields: [renterId], references: [userId])
+  renterId        Int           @unique
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId Int
+  owner           Owner         @relation(fields: [ownerId], references: [userId])
+  ownerId         Int
+  room            Room          @relation(fields: [roomId], references: [id])
+  roomId          Int
+  status          RentingStatus
+}
+
 
 model Room {
   id              Int           @id @default(autoincrement())
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
   accommodationId Int
+  roomName        String        @default("")
   renter          Renter[]
   status          RoomStatus
+  Renting         Renting[]
 }
 
 model Review {
@@ -122,7 +142,10 @@ enum RequestStatus {
   WAITING
   CONFIRM
 }
-
+enum RentingStatus {
+  CHECKOUT
+  RENTING
+}
 enum RoomStatus {
   RENTING
   AVAILABLE

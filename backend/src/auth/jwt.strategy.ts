@@ -21,6 +21,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       email: payload.email,
       name: payload.name,
       role: payload.role,
+<<<<<<< HEAD
+=======
+      avatar: payload.avatar,
+>>>>>>> remotes/origin/ntb/checkout-when-renting
     };
   }
 }

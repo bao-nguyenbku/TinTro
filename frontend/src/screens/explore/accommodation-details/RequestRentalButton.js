@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Button, useDisclose, isEmptyObj, useToast } from 'native-base';
 import ConfirmModal from 'components/confirm-modal';
+<<<<<<< HEAD
 import { requestRentRoom, selectAccommodationState, resetError } from 'store/reducer/accommodation';
+=======
+import { requestRentRoom, selectAccommodationState, resetError, resetRentRequest } from 'store/reducer/accommodation';
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 import { useDispatch, useSelector } from 'react-redux';
 import CustomToast from 'components/custom-toast';
 
@@ -19,13 +23,23 @@ const RequestRentalButton = (props) => {
     title: 'Yêu cầu thuê phòng',
     disable: false,
   });
+<<<<<<< HEAD
   useEffect(() => {
     if (!isEmptyObj(rentRequestData) && rentRequestData.accommodationId === item.id) {
+=======
+
+  useEffect(() => {
+    if (!isEmptyObj(rentRequestData)
+      && rentRequestLoading === false
+      && Array.isArray(rentRequestData)
+      && rentRequestData.some(reqData => reqData.accommodationId === item.id)) {
+>>>>>>> remotes/origin/ntb/checkout-when-renting
       setButtonProps({
         title: 'Đã gửi yêu cầu thuê phòng',
         disable: true,
       });
     }
+<<<<<<< HEAD
   }, [item.id]);
   useEffect(() => {
     if (isEmptyObj(error)) return;
@@ -44,14 +58,43 @@ const RequestRentalButton = (props) => {
         render: () => <CustomToast description='Chủ trọ sẽ liên lạc với bạn khi yêu cầu được duyệt' title='Yêu cầu thuê phòng thành công!' status='success'/>,
         placement: 'top'
       });
+=======
+  }, [item.id, rentRequestData, rentRequestLoading]);
+
+  useEffect(() => {
+    if (isSuccess) {
+>>>>>>> remotes/origin/ntb/checkout-when-renting
       setButtonProps({
         title: 'Đã gửi yêu cầu thuê phòng',
         disable: true,
       })
+<<<<<<< HEAD
     }
   };
   return (
     <>
+=======
+      toast.show({
+        onCloseComplete: () => dispatch(resetError()),
+        render: () => <CustomToast description='Chủ trọ sẽ liên lạc với bạn khi yêu cầu được duyệt' title='Yêu cầu thuê phòng thành công!' status='success' />,
+        placement: 'top',
+      })
+    }
+
+    return () => 
+      dispatch(resetRentRequest())
+  }, [isSuccess])
+  const onConfirm = () => {
+    dispatch(requestRentRoom(item));
+  };
+  return (
+    <>
+      {error && toast.show({
+        onCloseComplete: () => dispatch(resetError()),
+        render: () => <CustomToast description={error.message} title='Xin lỗi bạn' status='error' />,
+        placement: 'top'
+      })}
+>>>>>>> remotes/origin/ntb/checkout-when-renting
       <TouchableOpacity>
         <Button
           bgColor="tertiary.600"

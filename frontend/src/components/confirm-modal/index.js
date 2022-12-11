@@ -1,9 +1,16 @@
 import React from 'react'
 import { Stack, Button, Modal, Text } from 'native-base';
+<<<<<<< HEAD
 // @ts-nocheck
 const ConfirmModal = (props) => {
   const { isOpen, onClose, onConfirm, headerTitle = 'Header title', content = 'body', cancelTitle = 'Cancel', saveTitle = 'Save' } = props;
 
+=======
+import { CONFIRM_MODAL } from 'constants';
+// @ts-nocheck
+const ConfirmModal = (props) => {
+  const { isOpen, onClose, onConfirm, headerTitle = 'Header title', content = 'body', cancelTitle = 'Cancel', saveTitle = 'Save', status = CONFIRM_MODAL.SUCCESS } = props;
+>>>>>>> remotes/origin/ntb/checkout-when-renting
   return <>
     <Stack direction={{
       base: "column",
@@ -26,7 +33,11 @@ const ConfirmModal = (props) => {
               onConfirm();
               onClose();
               }}
+<<<<<<< HEAD
               bgColor='tertiary.600'
+=======
+              bgColor={status}
+>>>>>>> remotes/origin/ntb/checkout-when-renting
             >
               {saveTitle}
             </Button>

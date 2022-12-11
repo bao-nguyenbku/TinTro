@@ -8,7 +8,11 @@ import { getToken } from 'utils/token';
 import { WS_BASE_URL } from '@env';
 import { io } from 'socket.io-client';
 import { disableBottomTabBar } from 'utils/utils';
+<<<<<<< HEAD
 import { RefreshControl } from 'react-native';
+=======
+import { Platform, RefreshControl } from 'react-native';
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 import { useHeaderHeight } from 'hooks/useHeaderHeight';
 
 const socketUrl = `${WS_BASE_URL}/message`;
@@ -25,9 +29,20 @@ const SendMessage = ({ route }) => {
   const navigation = useNavigation();
   const socketRef = useRef();
   const { headerHeight, statusBarHeight } = useHeaderHeight();
+<<<<<<< HEAD
   // *This function will handle send websocket message *//
 
   // * ------------------ Side effects to init websocket ------------------ * //
+=======
+  const scrollRef = useRef();
+  // *This function will handle send websocket message *//
+
+  // * ------------------ Side effects to init websocket ------------------ * //
+  const scrollToBottom = () => {
+    scrollRef.current?.scrollToEnd({ animated: true });
+  };
+
+>>>>>>> remotes/origin/ntb/checkout-when-renting
   useEffect(() => {
     if (isFocus) {
       // get user token and then init websocket
@@ -52,9 +67,17 @@ const SendMessage = ({ route }) => {
         socket.emit('fetch-all-messages');
         socket.on('client-all-past-messages', (data) => {
           dispatch(setMessages(data));
+<<<<<<< HEAD
         });
         socket.on('client-receive-message', (data) => {
           dispatch(pushMessage({ message: data }));
+=======
+          scrollToBottom();
+        });
+        socket.on('client-receive-message', (data) => {
+          dispatch(pushMessage({ message: data }));
+          scrollToBottom();
+>>>>>>> remotes/origin/ntb/checkout-when-renting
         });
         socketRef.current = socket;
       });
@@ -74,6 +97,7 @@ const SendMessage = ({ route }) => {
 
   let pos = 'row-reverse';
   return (
+<<<<<<< HEAD
     <KeyboardAvoidingView flex={1} keyboardVerticalOffset={headerHeight + statusBarHeight} behavior='padding' enabled>
       <VStack py={3.5} px={3.5}>
         <ScrollView
@@ -81,6 +105,22 @@ const SendMessage = ({ route }) => {
           refreshControl={<RefreshControl refreshing={message.loading} onRefresh={() => socketRef.emit('fetch-all-messages')} />}
           py={4}
           h="95%"
+=======
+    <KeyboardAvoidingView
+      onTouchStart={() => {}}
+      flex={1}
+      keyboardVerticalOffset={Platform.OS === 'ios' && headerHeight + statusBarHeight}
+      behavior={Platform.OS === 'ios' && 'padding'}
+    >
+      <VStack px={2}>
+        <ScrollView
+          ref={(e) => {
+            scrollRef.current = e;
+          }}
+          automaticallyAdjustContentInsets
+          refreshControl={<RefreshControl refreshing={message.loading} onRefresh={() => socketRef.current.emit('fetch-all-messages')} />}
+          h="90%"
+>>>>>>> remotes/origin/ntb/checkout-when-renting
         >
           {allMessagesFromSection?.map((messageInSection) => {
             if (currentUser.id === messageInSection.fromId) {
@@ -89,12 +129,22 @@ const SendMessage = ({ route }) => {
               pos = 'row';
             }
             return (
+<<<<<<< HEAD
               <Flex my="4" key={messageInSection.id} w="100%">
                 <Flex alignItems="flex-end" direction={pos}>
                   <Avatar mx={2} size="sm" source={{ uri: messageInSection.from.avatar }} />
                   <Box
                     alignItems="center"
                     p={3}
+=======
+              <Flex pb={3} my={1} key={messageInSection.id} w="100%">
+                <Flex maxWidth={pos === 'row' ? '75%' : '80%'} left={pos === 'row-reverse' ? 20 : 0} alignItems="flex-end" direction={pos}>
+                  <Avatar mx={1.5} size="sm" source={{ uri: messageInSection.from.avatar }} />
+                  <Box
+                    alignItems="center"
+                    py={1.5}
+                    px={3}
+>>>>>>> remotes/origin/ntb/checkout-when-renting
                     borderRadius="2xl"
                     backgroundColor={messageInSection.fromId === currentUser.id ? 'tertiary.600' : '#fff'}
                   >
@@ -108,11 +158,24 @@ const SendMessage = ({ route }) => {
           })}
         </ScrollView>
         <Input
+<<<<<<< HEAD
           bottom={5}
           borderRadius={999}
           height='16'
           backgroundColor="#fff"
           value={messageText}
+=======
+          borderRadius={999}
+          backgroundColor="#fff"
+          value={messageText}
+          flexWrap="wrap"
+          bottom={3}
+          py={2}
+          px={4}
+          mb={3}
+          placeholder="Message"
+          size="2xl"
+>>>>>>> remotes/origin/ntb/checkout-when-renting
           onChangeText={(text) => setMessageText(text)}
           InputRightElement={
             <Pressable onPress={() => sendMessageHandler()}>
@@ -123,10 +186,16 @@ const SendMessage = ({ route }) => {
               )}
             </Pressable>
           }
+<<<<<<< HEAD
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
               sendMessageHandler();
             }
+=======
+          onSubmitEditing={() => sendMessageHandler()}
+          onKeyPress={(e) => {
+            if (e.nativeEvent.key === 'Enter') sendMessageHandler();
+>>>>>>> remotes/origin/ntb/checkout-when-renting
           }}
         />
       </VStack>

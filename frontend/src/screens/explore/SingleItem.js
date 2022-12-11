@@ -44,7 +44,11 @@ const SingleItem = (props) => {
             <Text marginLeft="4px">{data.reviewStar}</Text>
           </Box>
         </Box>
+<<<<<<< HEAD
         <Text color="error.400">Còn 3 phòng trống</Text>
+=======
+        <Text color="error.400">Còn {data.availableRooms} phòng trống</Text>
+>>>>>>> remotes/origin/ntb/checkout-when-renting
         <Box flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
           <Text color="tertiary.600" fontWeight="700" fontSize="lg">
             {formatCurrency(data.price)}

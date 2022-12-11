@@ -18,4 +18,10 @@ export class TokenResponse {
 
   @ApiProperty()
   role: Role;
+<<<<<<< HEAD
+=======
+
+  @ApiProperty()
+  avatar: string;
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 }

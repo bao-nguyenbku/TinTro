@@ -9,7 +9,10 @@ export const jwtParse = (accessToken) => {
 
 export const tokenKey = 'accessToken';
 
+<<<<<<< HEAD
 // TODO: get token, and set token to local storage
+=======
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 export const setToken = async (_accessToken) => {
   try {
     await AsyncStorage.setItem(tokenKey, _accessToken);
@@ -28,3 +31,14 @@ export const getToken = async () => {
     return null;
   }
 };
+<<<<<<< HEAD
+=======
+
+export const deleteToken = async () => {
+  try {
+    AsyncStorage.removeItem(tokenKey);
+  } catch (err) {
+    console.error(err);
+  }
+};
+>>>>>>> remotes/origin/ntb/checkout-when-renting

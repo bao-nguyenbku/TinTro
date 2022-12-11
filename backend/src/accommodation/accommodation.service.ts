@@ -1,7 +1,20 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+<<<<<<< HEAD
 import { Prisma, RequestStatus } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation.dto';
+=======
+import {
+  Prisma,
+  RequestStatus,
+  RoomStatus,
+  RentingStatus,
+} from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { AccommodationResponseDto } from './dto/accommodation.dto';
+import { CreateAccommodationDto } from './dto/create-accommodation.dto';
+import { RequestCheckoutRoomDto } from './dto/request-checkout-room.dto';
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 import { RequestRentRoomDto } from './dto/request-rent-room.dto';
 
 @Injectable()
@@ -26,12 +39,28 @@ export class AccommodationService {
         return {
           ...result,
           owner: result.owner.user,
+<<<<<<< HEAD
+=======
+          availableRooms: result.rooms.reduce(
+            (acc, curr) =>
+              curr.status === RoomStatus.AVAILABLE ? acc + 1 : acc,
+            0,
+          ),
+          reviewStar: result?.review?.length
+            ? result.review.reduce((acc, cur) => acc + cur.rating, 0) /
+              result.review.length
+            : 0,
+>>>>>>> remotes/origin/ntb/checkout-when-renting
         };
       });
     } catch (error) {
       throw new Error(error);
     }
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> remotes/origin/ntb/checkout-when-renting
   async findAccommodationById(id: number): Promise<AccommodationResponseDto> {
     try {
       const result = await this.prismaService.accommodation.findUnique({
@@ -58,6 +87,17 @@ export class AccommodationService {
       return {
         ...result,
         owner: result.owner.user,
+<<<<<<< HEAD
+=======
+        availableRooms: result.rooms.reduce(
+          (acc, curr) => (curr.status === RoomStatus.AVAILABLE ? acc + 1 : acc),
+          0,
+        ),
+        reviewStar: result?.review?.length
+          ? result.review.reduce((acc, cur) => acc + cur.rating, 0) /
+            result.review.length
+          : 0,
+>>>>>>> remotes/origin/ntb/checkout-when-renting
       };
     } catch (error) {
       throw new HttpException(error.message, error.status);
@@ -117,6 +157,12 @@ export class AccommodationService {
         where: {
           renterId,
         },
+<<<<<<< HEAD
+=======
+        include: {
+          accommodation: true,
+        },
+>>>>>>> remotes/origin/ntb/checkout-when-renting
       });
       return result;
     } catch (error) {
@@ -125,4 +171,96 @@ export class AccommodationService {
       }
     }
   }
+<<<<<<< HEAD
+=======
+
+  async getRecommendAccommodations() {
+    try {
+      const prismaResult = await this.prismaService.accommodation.findMany({
+        include: {
+          review: true,
+          owner: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+      return prismaResult.map((item) => {
+        return {
+          ...item,
+          owner: item.owner.user,
+          reviewStar: item?.review?.length
+            ? item.review.reduce((acc, cur) => acc + cur.rating, 0) /
+              item.review.length
+            : 0,
+        };
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  // ** FOR DEVELOPMENT
+  async createAccommodation(createData: CreateAccommodationDto) {
+    try {
+      await this.prismaService.accommodation.create({
+        data: {
+          ...createData,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  // async getConfirmRequestByRenter(params: {
+  //   renterId: number;
+  //   accommodationId: number;
+  // }) {
+  //   const { renterId, accommodationId } = params;
+  //   try {
+  //     const confirmRequest = this.prismaService.rentRequest.update({
+
+  //   } catch (error) {}
+  // }
+  async cancelRentRequest(requestId: number) {
+    try {
+      return await this.prismaService.rentRequest.delete({
+        where: {
+          id: requestId,
+        },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new HttpException(
+            'Can not find this request',
+            HttpStatus.NOT_FOUND,
+          );
+        }
+      }
+    }
+  }
+  async getCurrentRentingByRenter(renterId: number) {
+    try {
+      const result = await this.prismaService.renting.findUnique({
+        where: {
+          renterId,
+        },
+      });
+      if (!result) {
+        throw new HttpException(
+          'Can not found any renting information about this renter',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return result;
+    } catch (error) {
+      //TODO: Handling Error
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+    }
+  }
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 }

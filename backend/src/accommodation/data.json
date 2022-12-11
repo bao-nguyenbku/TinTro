@@ -1,4 +1,5 @@
 [
+<<<<<<< HEAD
   {
       "id": 1,
       "name": "Nhà Trọ Phát Lộc",
@@ -30,4 +31,129 @@
       "rentRequest": [],
       "reviewStar": 4
   }
+=======
+    {
+        "id": 1,
+        "name": "Nhà Trọ Phát Lộc",
+        "addressNumber": "123",
+        "addressStreet": "Trần Não",
+        "addressDistrict": "Quận 2",
+        "addressCity": "Hồ Chí Minh",
+        "area": 23.5,
+        "price": 1200000,
+        "ownerId": 1,
+        "description": "Đây là mô tả cho nhà trọ này",
+        "thumbnail": "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg",
+        "images": [
+            "https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg",
+            "https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2013-7.jpg"
+        ],
+        "utilities": [],
+        "review": [],
+        "owner": {
+            "id": 1,
+            "role": "USER",
+            "email": "baonguyen@gmail.com",
+            "phone": "012345678",
+            "password": "123456789",
+            "name": "Bảo Nguyễn",
+            "createdAt": "2022-12-02T15:16:02.436Z",
+            "updatedAt": "2022-12-02T15:16:02.436Z",
+            "avatar": "https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png"
+        },
+        "rooms": [],
+        "rentRequest": [],
+        "reviewStar": 0
+    },
+    {
+        "id": 2,
+        "name": "Nhà trọ Penthouse",
+        "addressNumber": "14",
+        "addressStreet": "Nguyễn Bỉnh Khiêm",
+        "addressDistrict": "Quận 1",
+        "addressCity": "Hồ Chí Minh",
+        "area": 34.8,
+        "price": 2400000,
+        "ownerId": 3,
+        "description": "Nhà trọ phong cách quý tộc đỉnh cao",
+        "thumbnail": "https://images.cenhomes.vn/2020/03/1585033152-can-ho-mau-eurowindow-river-park.jpg",
+        "images": [
+            "https://e8rbh6por3n.exactdn.com/sites/uploads/2020/05/chung-cu-la-gi-thumbnail.jpg?strip=all&lossy=1&ssl=1",
+            "https://noithatviet24h.vn/wp-content/uploads/2020/08/hinh-anh-can-ho-chung-cu-dep-3.jpg",
+            "https://digistay.co/wp-content/uploads/2018/07/nha-tro-cho-thue.jpg",
+            "https://datnenthuongmai.com/img/uploads/tin-tuc/kinh%20ngiem/nha-tro.jpg",
+            "https://xaydungtienthanh.vn/wp-content/uploads/2019/12/xay-nha-tro-cap-4.jpg"
+        ],
+        "utilities": [],
+        "review": [
+            {
+                "id": 1,
+                "userId": 8,
+                "accommodationId": 2,
+                "rating": 4
+            }
+        ],
+        "owner": {
+            "id": 3,
+            "role": "USER",
+            "email": "duyen@gmail.com",
+            "phone": "0934567892",
+            "password": "123456789",
+            "name": "Duyên Lê",
+            "createdAt": "2022-12-04T05:22:24.453Z",
+            "updatedAt": "2022-12-04T05:21:49.843Z",
+            "avatar": "https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png"
+        },
+        "rooms": [],
+        "rentRequest": [
+            {
+                "id": 60,
+                "renterId": 8,
+                "ownerId": 3,
+                "accommodationId": 2,
+                "status": "WAITING"
+            }
+        ],
+        "reviewStar": 4
+    },
+    {
+        "id": 3,
+        "name": "Nhà trọ Sadora",
+        "addressNumber": "13",
+        "addressStreet": "Mai Chí Thọ",
+        "addressDistrict": "Quận 2",
+        "addressCity": "Hồ Chí Minh",
+        "area": 34.7,
+        "price": 2800000,
+        "ownerId": 9,
+        "description": "Nhà trọ đắt đỏ quận 2",
+        "thumbnail": "https://mogi.vn/news/wp-content/uploads/2020/03/tim-phong-tro.jpg",
+        "images": [
+            "https://timescityminhkhai.com/wp-content/uploads/sites/7/2020/10/phong-tro-cho-thue.jpg"
+        ],
+        "utilities": [],
+        "review": [
+            {
+                "id": 2,
+                "userId": 2,
+                "accommodationId": 3,
+                "rating": 4
+            }
+        ],
+        "owner": {
+            "id": 9,
+            "role": "USER",
+            "email": "duyenle@gmail.com",
+            "phone": "123456789",
+            "password": "$2b$10$qSkMinzdOVry6G8oUlyyJutPYs8gSC/xHCr1LzkZbaUbIjkhMHK1K",
+            "name": "Duyên Lê",
+            "createdAt": "2022-12-08T08:48:23.320Z",
+            "updatedAt": "2022-12-08T08:48:23.320Z",
+            "avatar": "https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png"
+        },
+        "rooms": [],
+        "rentRequest": [],
+        "reviewStar": 4
+    }
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 ]

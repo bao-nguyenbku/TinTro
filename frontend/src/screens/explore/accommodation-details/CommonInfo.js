@@ -37,7 +37,11 @@ const CommonInfo = (props) => {
         marginBottom='2'
       >
         <Ionicons name='checkbox' size={20} color='#059669' />
+<<<<<<< HEAD
         <Text color='tertiary.600' marginLeft='1'>Còn 3 phòng trống</Text>
+=======
+        <Text color='tertiary.600' marginLeft='1'>Còn {item.availableRooms} phòng trống</Text>
+>>>>>>> remotes/origin/ntb/checkout-when-renting
       </Box>
       <Box
         flexDirection='row'

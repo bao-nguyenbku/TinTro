@@ -10,6 +10,10 @@ const initialState = {
   loading: false,
   messagedUsers: [],
   error: null,
+<<<<<<< HEAD
+=======
+  loggedIn: false,
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 };
 
 // --------------------------- THUNKS ---------------------------
@@ -84,6 +88,13 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+<<<<<<< HEAD
+=======
+    setCurrentUser: (state, _action) => {
+      state.currentUser = {};
+      state.loggedIn = false;
+    },
+>>>>>>> remotes/origin/ntb/checkout-when-renting
   },
   extraReducers: (builder) => {
     // --------------------------- REGISTER ---------------------------
@@ -104,6 +115,10 @@ export const userSlice = createSlice({
     });
     builder.addCase(logIn.fulfilled, (state, action) => {
       state.token = action.payload.token;
+<<<<<<< HEAD
+=======
+      state.loggedIn = true;
+>>>>>>> remotes/origin/ntb/checkout-when-renting
       state.loading = false;
     });
     builder.addCase(logIn.rejected, (state, action) => {
@@ -129,6 +144,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(authMe.fulfilled, (state, action) => {
       state.currentUser = action.payload;
+<<<<<<< HEAD
       state.loading = false;
       state.error = null;
     });
@@ -136,13 +152,27 @@ export const userSlice = createSlice({
       state.error = action.payload.message || 'Something went wrong';
       state.loading = false;
       state.currentUser = {};
+=======
+      state.loggedIn = true;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(authMe.rejected, (state, _) => {
+      state.loading = false;
+      state.loggedIn = false;
+>>>>>>> remotes/origin/ntb/checkout-when-renting
     });
   },
 });
 // --------------------------- SELECTORS ---------------------------
 export const selectUserState = createSelector([(state) => state.user], (userState) => userState);
 // Action creators are generated for each case reducer function
+<<<<<<< HEAD
 const { resetData } = userSlice.actions;
 export { resetData };
+=======
+const { resetData, setCurrentUser } = userSlice.actions;
+export { resetData, setCurrentUser };
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 
 export default userSlice.reducer;

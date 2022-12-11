@@ -57,4 +57,10 @@ export class AccommodationEntity implements Accommodation {
 
   @ApiProperty()
   reviewStar?: number;
+<<<<<<< HEAD
+=======
+
+  @ApiProperty()
+  availableRooms: number;
+>>>>>>> remotes/origin/ntb/checkout-when-renting
 }
