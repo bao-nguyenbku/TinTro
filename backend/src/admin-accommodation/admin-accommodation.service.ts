@@ -3,21 +3,17 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '~/prisma/prisma.service';
 import { RoomDto } from './dto/room.dto';
 import { AccommodationService } from '~/accommodation/accommodation.service';
-import { UtilsService } from '~/utils/utils.service';
-import { UsersService } from '~/users/users.service';
 
 @Injectable()
 export class AdminAccommodationService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly accommodationService: AccommodationService,
-    private readonly utilsService: UtilsService,
-    private readonly usersService: UsersService,
   ) {}
 
   async getAllAdminAccommodation(adminId: number) {
     try {
-      const result = await this.prismaService.accommodation.findMany({
+      const result = await this.prismaService.accommodation.findFirstOrThrow({
         where: {
           ownerId: adminId,
         },
@@ -36,9 +32,7 @@ export class AdminAccommodationService {
           HttpStatus.NOT_FOUND,
         );
       }
-      return {
-        ...result,
-      };
+      return result;
     } catch (error) {
       throw new Error(error);
     }

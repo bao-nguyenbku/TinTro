@@ -7,6 +7,8 @@ import {
   Post,
   Put,
   Query,
+  Req,
+  Request,
   UseGuards,
 } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
@@ -22,30 +24,27 @@ export class AdminAccommodationController {
     private readonly adminAccommodationService: AdminAccommodationService,
   ) {}
 
-  @Get(':id/all')
+  @Get('my-accommodation')
   @UseGuards(JwtAuthGuard)
-  async findAll(@Param('id') adminId: string) {
+  async findAll(@Request() req) {
     return this.adminAccommodationService.getAllAdminAccommodation(
-      parseInt(adminId),
+      parseInt(req.user.id),
     );
   }
-  @Post(':id/new-room')
+
+  @Post('room')
   @UseGuards(JwtAuthGuard)
-  async newRoom(@Param('id') adminId: string, @Body() newRoom: RoomDto) {
+  async newRoom(@Req() req, @Body() newRoom: RoomDto) {
     const result = await this.adminAccommodationService.createRoom(
-      parseInt(adminId),
+      parseInt(req.user.id),
       newRoom,
     );
     return result;
   }
 
-  @Put(':id/modify-room')
+  @Put('room/:id')
   @UseGuards(JwtAuthGuard)
-  async modifyRoom(
-    @Param('id') adminId: string,
-    @Query('roomId') roomId,
-    @Body() modifyRoom: RoomDto,
-  ) {
+  async modifyRoom(@Param('id') roomId, @Body() modifyRoom: RoomDto) {
     const result = await this.adminAccommodationService.modifyRoom(
       parseInt(roomId),
       modifyRoom,
@@ -53,9 +52,9 @@ export class AdminAccommodationController {
     return result;
   }
 
-  @Delete(':id/delete-room')
+  @Delete('room/:id')
   @UseGuards(JwtAuthGuard)
-  async deleteRoom(@Param('id') adminId: string, @Query('roomId') roomId) {
+  async deleteRoom(@Param('id') roomId) {
     return await this.adminAccommodationService.deleteRoom(parseInt(roomId));
   }
 
