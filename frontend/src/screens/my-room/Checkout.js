@@ -29,7 +29,6 @@ const CheckoutButton = (props) => {
   }, [])
   
   useEffect(() => {
-    console.log(isSuccess);
     if (isSuccess) {
       setButtonProps({
         title: 'Hủy yêu cầu trả phòng',
@@ -57,7 +56,8 @@ const CheckoutButton = (props) => {
         <Button
           onPress={onOpen}
           bgColor={buttonProps.disable ? 'danger.600:alpha.60' : 'danger.600'}
-          rounded='xl'
+          roundedTop='0'
+          roundedBottom='2xl'
           p='5'
           w='full'
           alignItems='center'

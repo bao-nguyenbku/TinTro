@@ -3,7 +3,7 @@ import { Stack, Button, Modal, Text } from 'native-base';
 import { CONFIRM_MODAL } from 'constants';
 // @ts-nocheck
 const ConfirmModal = (props) => {
-  const { isOpen, onClose, onConfirm, headerTitle = 'Header title', content = 'body', cancelTitle = 'Cancel', saveTitle = 'Save', status = CONFIRM_MODAL.SUCCESS } = props;
+  const { isOpen, onClose, onConfirm, headerTitle = 'Header title', content = 'body', cancelTitle = 'Hủy', saveTitle = 'Đồng ý', status = CONFIRM_MODAL.SUCCESS } = props;
   return <>
     <Stack direction={{
       base: "column",

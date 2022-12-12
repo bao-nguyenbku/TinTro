@@ -272,6 +272,18 @@ CREATE TYPE public."RoomStatus" AS ENUM (
 
 ALTER TYPE public."RoomStatus" OWNER TO postgres;
 
+--
+-- Name: ServiceStatus; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public."ServiceStatus" AS ENUM (
+    'PURCHASED',
+    'NONE'
+);
+
+
+ALTER TYPE public."ServiceStatus" OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -403,6 +415,45 @@ CREATE TABLE public."Owner" (
 ALTER TABLE public."Owner" OWNER TO postgres;
 
 --
+-- Name: Parking; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Parking" (
+    id integer NOT NULL,
+    "renterId" integer NOT NULL,
+    "roomId" integer NOT NULL,
+    "licensePlate" text NOT NULL,
+    name text NOT NULL,
+    "purchaseStatus" public."ServiceStatus" NOT NULL,
+    "startDate" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public."Parking" OWNER TO postgres;
+
+--
+-- Name: Parking_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Parking_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Parking_id_seq" OWNER TO postgres;
+
+--
+-- Name: Parking_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Parking_id_seq" OWNED BY public."Parking".id;
+
+
+--
 -- Name: RentRequest; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -444,8 +495,8 @@ ALTER SEQUENCE public."RentRequest_id_seq" OWNED BY public."RentRequest".id;
 --
 
 CREATE TABLE public."Renter" (
-    "rentRoomId" integer,
-    "userId" integer NOT NULL
+    "userId" integer NOT NULL,
+    "rentRoomId" integer
 );
 
 
@@ -461,7 +512,8 @@ CREATE TABLE public."Renting" (
     "accommodationId" integer NOT NULL,
     "ownerId" integer NOT NULL,
     "roomId" integer NOT NULL,
-    status public."RentingStatus" NOT NULL
+    status public."RentingStatus" NOT NULL,
+    "requestRole" public."Role" DEFAULT 'USER'::public."Role" NOT NULL
 );
 
 
@@ -532,8 +584,9 @@ ALTER SEQUENCE public."Review_id_seq" OWNED BY public."Review".id;
 CREATE TABLE public."Room" (
     id integer NOT NULL,
     "accommodationId" integer NOT NULL,
+    "roomName" text DEFAULT ''::text NOT NULL,
     status public."RoomStatus" NOT NULL,
-    "roomName" text DEFAULT ''::text NOT NULL
+    "personNumber" integer DEFAULT 0 NOT NULL
 );
 
 
@@ -574,7 +627,7 @@ CREATE TABLE public."User" (
     name text NOT NULL,
     "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "updatedAt" timestamp(3) without time zone NOT NULL,
-    avatar text DEFAULT 'https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png'::text NOT NULL
+    avatar text DEFAULT 'https://obedient-veil-production.up.railway.app/public/default-avatar.png'::text NOT NULL
 );
 
 
@@ -600,6 +653,46 @@ ALTER TABLE public."User_id_seq" OWNER TO postgres;
 --
 
 ALTER SEQUENCE public."User_id_seq" OWNED BY public."User".id;
+
+
+--
+-- Name: Wifi; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Wifi" (
+    id integer NOT NULL,
+    "roomId" integer NOT NULL,
+    name text NOT NULL,
+    password text NOT NULL,
+    speed text NOT NULL,
+    "purchaseStatus" public."ServiceStatus" NOT NULL,
+    price integer NOT NULL,
+    "startDate" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public."Wifi" OWNER TO postgres;
+
+--
+-- Name: Wifi_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Wifi_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Wifi_id_seq" OWNER TO postgres;
+
+--
+-- Name: Wifi_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Wifi_id_seq" OWNED BY public."Wifi".id;
 
 
 --
@@ -654,6 +747,13 @@ ALTER TABLE ONLY public."MessageSection" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: Parking id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Parking" ALTER COLUMN id SET DEFAULT nextval('public."Parking_id_seq"'::regclass);
+
+
+--
 -- Name: RentRequest id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -689,12 +789,19 @@ ALTER TABLE ONLY public."User" ALTER COLUMN id SET DEFAULT nextval('public."User
 
 
 --
+-- Name: Wifi id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Wifi" ALTER COLUMN id SET DEFAULT nextval('public."Wifi_id_seq"'::regclass);
+
+
+--
 -- Data for Name: Accommodation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."Accommodation" (id, name, "addressNumber", "addressStreet", "addressDistrict", "addressCity", area, price, "ownerId", description, thumbnail, images, utilities) FROM stdin;
-2	Nhà trọ Penthouse	14	Nguyễn Bỉnh Khiêm	Quận 1	Hồ Chí Minh	34.8	2400000	12	Nhà trọ phong cách quý tộc đỉnh cao	https://images.cenhomes.vn/2020/03/1585033152-can-ho-mau-eurowindow-river-park.jpg	{https://e8rbh6por3n.exactdn.com/sites/uploads/2020/05/chung-cu-la-gi-thumbnail.jpg?strip=all&lossy=1&ssl=1,https://noithatviet24h.vn/wp-content/uploads/2020/08/hinh-anh-can-ho-chung-cu-dep-3.jpg,https://digistay.co/wp-content/uploads/2018/07/nha-tro-cho-thue.jpg,https://datnenthuongmai.com/img/uploads/tin-tuc/kinh%20ngiem/nha-tro.jpg,https://xaydungtienthanh.vn/wp-content/uploads/2019/12/xay-nha-tro-cap-4.jpg}	{"Miễn phí wifi 2 tháng đầu","Giảm giá phòng 15% 6 tháng"}
 3	Nhà trọ Sadora	13	Mai Chí Thọ	Quận 2	Hồ Chí Minh	34.7	2800000	11	Nhà trọ đắt đỏ quận 2	https://mogi.vn/news/wp-content/uploads/2020/03/tim-phong-tro.jpg	{https://timescityminhkhai.com/wp-content/uploads/sites/7/2020/10/phong-tro-cho-thue.jpg}	{"Miễn phí wifi 2 tháng đầu","Giảm giá phòng 15% 6 tháng"}
+2	Nhà trọ Penthouse	14	Nguyễn Bỉnh Khiêm	Quận 1	Hồ Chí Minh	34.8	2400000	12	Nhà trọ phong cách quý tộc đỉnh cao	https://images.cenhomes.vn/2020/03/1585033152-can-ho-mau-eurowindow-river-park.jpg	{https://e8rbh6por3n.exactdn.com/sites/uploads/2020/05/chung-cu-la-gi-thumbnail.jpg?strip=all&lossy=1&ssl=1,https://noithatviet24h.vn/wp-content/uploads/2020/08/hinh-anh-can-ho-chung-cu-dep-3.jpg,https://digistay.co/wp-content/uploads/2018/07/nha-tro-cho-thue.jpg,https://datnenthuongmai.com/img/uploads/tin-tuc/kinh%20ngiem/nha-tro.jpg,https://xaydungtienthanh.vn/wp-content/uploads/2019/12/xay-nha-tro-cap-4.jpg}	{"Miễn phí wifi 2 tháng đầu","Giảm giá phòng 15% 6 tháng"}
 1	Nhà Trọ Phát Lộc	123	Trần Não	Quận 2	Hồ Chí Minh	23.5	1200000	10	Đây là mô tả cho nhà trọ này	https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg	{https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg,https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2013-7.jpg}	{"Miễn phí wifi 2 tháng đầu","Giảm giá phòng 15% 6 tháng"}
 \.
 
@@ -729,11 +836,19 @@ COPY public."Owner" ("userId") FROM stdin;
 
 
 --
+-- Data for Name: Parking; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Parking" (id, "renterId", "roomId", "licensePlate", name, "purchaseStatus", "startDate") FROM stdin;
+\.
+
+
+--
 -- Data for Name: RentRequest; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."RentRequest" (id, "renterId", "ownerId", "accommodationId", status) FROM stdin;
-91	13	12	2	WAITING
+94	13	11	3	WAITING
 \.
 
 
@@ -741,10 +856,10 @@ COPY public."RentRequest" (id, "renterId", "ownerId", "accommodationId", status)
 -- Data for Name: Renter; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Renter" ("rentRoomId", "userId") FROM stdin;
-\N	14
-\N	15
-6	13
+COPY public."Renter" ("userId", "rentRoomId") FROM stdin;
+13	\N
+14	\N
+15	\N
 \.
 
 
@@ -752,8 +867,7 @@ COPY public."Renter" ("rentRoomId", "userId") FROM stdin;
 -- Data for Name: Renting; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Renting" (id, "renterId", "accommodationId", "ownerId", "roomId", status) FROM stdin;
-1	13	1	10	6	CHECKOUT
+COPY public."Renting" (id, "renterId", "accommodationId", "ownerId", "roomId", status, "requestRole") FROM stdin;
 \.
 
 
@@ -769,9 +883,10 @@ COPY public."Review" (id, "userId", "accommodationId", rating) FROM stdin;
 -- Data for Name: Room; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Room" (id, "accommodationId", status, "roomName") FROM stdin;
-6	1	RENTING	H-342
-7	1	AVAILABLE	G-566
+COPY public."Room" (id, "accommodationId", "roomName", status, "personNumber") FROM stdin;
+8	3	A-234	AVAILABLE	0
+9	3	B-2456	AVAILABLE	0
+10	3	C-5632	AVAILABLE	0
 \.
 
 
@@ -783,9 +898,17 @@ COPY public."User" (id, role, email, phone, password, name, "createdAt", "update
 13	USER	lehao@gmail.com	3480205205	$2b$10$NPedP7UFLL85uyp.OGAtzuM.JJ189m9.atZgWW17vwwv5DaZj.Tqe	lehao	2022-12-09 03:23:36.073	2022-12-09 03:23:36.073	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
 14	USER	danhong@gmail.com	123987054	$2b$10$wJbtfvGB456eRIQncLq09u6Pp9Rf9ipkceGIkGHmuxGLuGe4bgDvW	danhong	2022-12-09 03:23:48.588	2022-12-09 03:23:48.588	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
 15	USER	phucnguyen@gmail.com	4575092022	$2b$10$u/EV4e9aUziDh06nYCMoPucepmH.K.yPVI.3WlYDaGhRTj0rZTQL6	phucnguyen	2022-12-09 03:24:26.146	2022-12-09 03:24:26.146	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
-10	ADMIN	baonguyen@gmail.com	0934186549	$2b$10$zc1yvLI/ZezIgcNq4OA1g.XpEdqt1.R2muoIzJmNzF0op5A9NFMWC	baonguyen	2022-12-09 03:22:48.005	2022-12-09 04:09:16.934	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
-11	ADMIN	trungtran@gmail.com	0345128458	$2b$10$srTUbp..5fZijY45POAR9.nAuILpBmzkyC3ZQhoplS3.l5B9zNOHu	trungtran	2022-12-09 03:23:10.004	2022-12-09 04:09:16.934	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
-12	ADMIN	duyenle@gmail.com	5683925463	$2b$10$pzu/mz4MIVldW8ijz3S/oen..Q/xvpKn28FDMjFIelI.cg08MmkHW	duyenle	2022-12-09 03:23:22.158	2022-12-09 04:09:16.934	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
+11	ADMIN	trungtran@gmail.com	0345128458	$2b$10$srTUbp..5fZijY45POAR9.nAuILpBmzkyC3ZQhoplS3.l5B9zNOHu	Trần Quang Trung	2022-12-09 03:23:10.004	2022-12-12 05:46:40.42	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
+10	ADMIN	baonguyen@gmail.com	0934186549	$2b$10$zc1yvLI/ZezIgcNq4OA1g.XpEdqt1.R2muoIzJmNzF0op5A9NFMWC	Bảo Nguyễn	2022-12-09 03:22:48.005	2022-12-12 05:46:48.163	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
+12	ADMIN	duyenle@gmail.com	5683925463	$2b$10$pzu/mz4MIVldW8ijz3S/oen..Q/xvpKn28FDMjFIelI.cg08MmkHW	Lê Thùy Duyên	2022-12-09 03:23:22.158	2022-12-12 05:46:55.868	https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png
+\.
+
+
+--
+-- Data for Name: Wifi; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Wifi" (id, "roomId", name, password, speed, "purchaseStatus", price, "startDate") FROM stdin;
 \.
 
 
@@ -853,17 +976,24 @@ SELECT pg_catalog.setval('public."Message_id_seq"', 3, true);
 
 
 --
+-- Name: Parking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Parking_id_seq"', 1, false);
+
+
+--
 -- Name: RentRequest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."RentRequest_id_seq"', 93, true);
+SELECT pg_catalog.setval('public."RentRequest_id_seq"', 94, true);
 
 
 --
 -- Name: Renting_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Renting_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."Renting_id_seq"', 2, true);
 
 
 --
@@ -877,7 +1007,7 @@ SELECT pg_catalog.setval('public."Review_id_seq"', 2, true);
 -- Name: Room_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Room_id_seq"', 7, true);
+SELECT pg_catalog.setval('public."Room_id_seq"', 10, true);
 
 
 --
@@ -885,6 +1015,13 @@ SELECT pg_catalog.setval('public."Room_id_seq"', 7, true);
 --
 
 SELECT pg_catalog.setval('public."User_id_seq"', 15, true);
+
+
+--
+-- Name: Wifi_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Wifi_id_seq"', 1, false);
 
 
 --
@@ -909,6 +1046,14 @@ ALTER TABLE ONLY public."MessageSection"
 
 ALTER TABLE ONLY public."Message"
     ADD CONSTRAINT "Message_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Parking Parking_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Parking"
+    ADD CONSTRAINT "Parking_pkey" PRIMARY KEY (id);
 
 
 --
@@ -952,6 +1097,14 @@ ALTER TABLE ONLY public."User"
 
 
 --
+-- Name: Wifi Wifi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Wifi"
+    ADD CONSTRAINT "Wifi_pkey" PRIMARY KEY (id);
+
+
+--
 -- Name: _prisma_migrations _prisma_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -985,6 +1138,13 @@ CREATE INDEX "Owner_userId_idx" ON public."Owner" USING btree ("userId");
 --
 
 CREATE UNIQUE INDEX "Owner_userId_key" ON public."Owner" USING btree ("userId");
+
+
+--
+-- Name: Parking_renterId_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX "Parking_renterId_key" ON public."Parking" USING btree ("renterId");
 
 
 --
@@ -1037,6 +1197,13 @@ CREATE UNIQUE INDEX "User_phone_key" ON public."User" USING btree (phone);
 
 
 --
+-- Name: Wifi_roomId_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX "Wifi_roomId_key" ON public."Wifi" USING btree ("roomId");
+
+
+--
 -- Name: _users_in_message_section_AB_unique; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1080,6 +1247,22 @@ ALTER TABLE ONLY public."Message"
 
 ALTER TABLE ONLY public."Owner"
     ADD CONSTRAINT "Owner_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: Parking Parking_renterId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Parking"
+    ADD CONSTRAINT "Parking_renterId_fkey" FOREIGN KEY ("renterId") REFERENCES public."Renter"("userId") ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: Parking Parking_roomId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Parking"
+    ADD CONSTRAINT "Parking_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES public."Room"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -1176,6 +1359,14 @@ ALTER TABLE ONLY public."Review"
 
 ALTER TABLE ONLY public."Room"
     ADD CONSTRAINT "Room_accommodationId_fkey" FOREIGN KEY ("accommodationId") REFERENCES public."Accommodation"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: Wifi Wifi_roomId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Wifi"
+    ADD CONSTRAINT "Wifi_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES public."Room"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --

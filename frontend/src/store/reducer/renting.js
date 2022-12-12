@@ -51,7 +51,6 @@ export const rentingSlice = createSlice({
         state.renting.loading = true;
       })
       .addCase(requestCheckoutRoom.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.renting.loading = false;
         state.renting.data = action.payload;
         state.renting.isSuccess = true;

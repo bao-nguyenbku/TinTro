@@ -12,7 +12,6 @@ import Loading from 'components/loading';
 
 const HomeNav = () => {
   const { currentUser, loading } = useSelector(selectUserState);
-  console.log(currentUser);
   if (loading) {
     return <Loading />
   }

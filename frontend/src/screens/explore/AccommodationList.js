@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect } from 'react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { ScrollView, Box, Text } from 'native-base';
 import { RefreshControl, TouchableOpacity } from 'react-native';
-import { getAllAccommodations, selectAccommodationState } from 'store/reducer/accommodation';
+import { getAllAccommodations, selectAccommodationState, getRecommendAccommodations } from 'store/reducer/accommodation';
 import { useDispatch, useSelector } from 'react-redux';
 import SingleItem from './SingleItem';
 import SearchIcon from './SearchIcon';
@@ -16,6 +16,7 @@ const AccommodationList = (props) => {
   const bottomBarHeight = useBottomTabBarHeight();
   async function fetchAllAccommodationData() {
     dispatch(getAllAccommodations());
+    dispatch(getRecommendAccommodations());
   }
 
   const { accommodations, loading } = useSelector(selectAccommodationState);

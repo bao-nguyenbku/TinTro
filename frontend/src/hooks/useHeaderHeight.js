@@ -1,13 +1,7 @@
-import { useState } from 'react';
-import { Platform, NativeModules } from 'react-native';
+import { useHeaderHeight } from "@react-navigation/elements";
 
-const { StatusBarManager } = NativeModules;
-
-// TODO: Temporary use constant height value. Will update later
-export const useHeaderHeight = () => {
-  const [height] = useState({
-    headerHeight: 90,
-    statusBarHeight: Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT
-  })
-  return height;
-};
+export const useTopHeight = () => {
+  const headerHeight = useHeaderHeight();
+  const statusBar = 20; // iOS status bar height
+  return headerHeight + statusBar;
+}

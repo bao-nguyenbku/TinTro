@@ -64,7 +64,7 @@ model Renter {
   rentRoom    Room?         @relation(fields: [rentRoomId], references: [id])
   rentRoomId  Int?
   Renting     Renting[]
-
+  parking     Parking?
   @@index(userId)
 }
 
@@ -128,9 +128,39 @@ model Room {
   renter          Renter[]
   status          RoomStatus
   Renting         Renting[]
+  wifi            Wifi?
+  parking         Parking[]
   personNumber    Int          @default(0)
 }
 
+model Wifi {
+  id              Int           @id @default(autoincrement())
+  room            Room          @relation(fields: [roomId], references: [id])
+  roomId          Int           @unique
+  name            String
+  password        String
+  speed           String
+  purchaseStatus  ServiceStatus
+  price           Int
+  startDate       DateTime      @default(now())
+}
+enum ServiceStatus {
+  PURCHASED
+  NONE
+}
+model Parking {
+  id              Int           @id @default(autoincrement())
+  renter          Renter        @relation(fields: [renterId], references: [userId])
+  renterId        Int           @unique
+  room            Room          @relation(fields: [roomId], references: [id])
+  roomId          Int
+  licensePlate    String
+  name            String
+  color           String
+  price           Int           @default(0)
+  purchaseStatus  ServiceStatus @default(PURCHASED)
+  startDate       DateTime      @default(now())
+}
 model Review {
   id              Int           @id @default(autoincrement())
   userId          Int
