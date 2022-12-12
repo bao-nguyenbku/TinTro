@@ -5,6 +5,8 @@ import 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import AccountMenu from 'screens/account';
 import AdminRoomStatistics from 'screens/account/AdminRoomStatistics';
+import AdminRequestCheckoutRoomScreen from 'screens/admin-request-checkout-room';
+import CreateCheckoutRequestScreen from 'screens/admin-request-checkout-room/create-checkout-request';
 import RentRequestScreen from 'screens/rent-request';
 
 const Stack = createNativeStackNavigator();
@@ -16,6 +18,27 @@ const adminAccountMenu = [
     }}
     name="AdminRoomStatistics"
     component={AdminRoomStatistics}
+  />,
+  <Stack.Screen
+    name="RentRequestList"
+    component={RentRequestScreen}
+    options={{
+      title: 'Danh sách yêu cầu thuê phòng',
+    }}
+  />,
+  <Stack.Screen
+    name="AdminRequestCheckoutRoom"
+    component={AdminRequestCheckoutRoomScreen}
+    options={{
+      title: 'Yêu cầu trả phòng',
+    }}
+  />,
+  <Stack.Screen
+    name="AdminCreateRequestCheckoutRoom"
+    component={CreateCheckoutRequestScreen}
+    options={{
+      title: 'Tạo yêu cầu trả phòng',
+    }}
   />,
 ];
 
@@ -44,6 +67,7 @@ const AccountNav = () => {
       initialRouteName="AccountMenu"
     >
       <Stack.Screen name="AccountMenu" component={AccountMenu} />
+
       {role === 'ADMIN' ? adminAccountMenu : userAccountMenu}
     </Stack.Navigator>
   );

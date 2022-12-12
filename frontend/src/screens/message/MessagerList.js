@@ -22,7 +22,7 @@ const MessagerList = () => {
   if (loading) return <Loading />;
   if (error) return <Error message={error} />;
 
-  return !messageSections.length ? (
+  return !messageSections.filter((messageSection) => messageSection.messages.length > 0).length ? (
     <Flex alignSelf="center" justifyContent="center" alignItems="center" h="full">
       <Text color="coolGray.500">Bạn không có tin nhắn nào</Text>
     </Flex>

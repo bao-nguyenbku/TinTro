@@ -13,6 +13,11 @@ import { UtilsModule } from './utils/utils.module';
 import { ReviewModule } from './review/review.module';
 import { MessageSectionModule } from './message-section/message-section.module';
 import { MessageModule } from './message/message.module';
+import { AdminAccommodationController } from './admin-accommodation/admin-accommodation.controller';
+import { AdminAccommodationModule } from './admin-accommodation/admin-accommodation.module';
+import { AdminAccommodationService } from './admin-accommodation/admin-accommodation.service';
+import { UtilsService } from './utils/utils.service';
+import { AccommodationService } from './accommodation/accommodation.service';
 import { MulterModule } from '@nestjs/platform-express/multer';
 import { StatisticsModule } from './statistics/statistics.module';
 import { RentingController } from './renting/renting.controller';
@@ -36,11 +41,13 @@ import { RentingService } from './renting/renting.service';
     AccommodationModule,
     UtilsModule,
     ReviewModule,
+    AdminAccommodationModule,
     MulterModule,
     StatisticsModule,
     RentingModule,
   ],
-  controllers: [AppController, UtilsController, RentingController],
-  providers: [AppService, PrismaService, RentingService],
+  controllers: [AppController, UtilsController, AdminAccommodationController, RentingController,],
+  providers: [AppService, PrismaService, AdminAccommodationService, UtilsService, AccommodationService, RentingService,],
+  
 })
 export class AppModule {}

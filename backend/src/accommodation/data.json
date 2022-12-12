@@ -1,5 +1,4 @@
-[
-    {
+[{
         "id": 1,
         "name": "Nhà Trọ Phát Lộc",
         "addressNumber": "123",
@@ -52,14 +51,12 @@
             "https://xaydungtienthanh.vn/wp-content/uploads/2019/12/xay-nha-tro-cap-4.jpg"
         ],
         "utilities": [],
-        "review": [
-            {
-                "id": 1,
-                "userId": 8,
-                "accommodationId": 2,
-                "rating": 4
-            }
-        ],
+        "review": [{
+            "id": 1,
+            "userId": 8,
+            "accommodationId": 2,
+            "rating": 4
+        }],
         "owner": {
             "id": 3,
             "role": "USER",
@@ -72,15 +69,13 @@
             "avatar": "https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png"
         },
         "rooms": [],
-        "rentRequest": [
-            {
-                "id": 60,
-                "renterId": 8,
-                "ownerId": 3,
-                "accommodationId": 2,
-                "status": "WAITING"
-            }
-        ],
+        "rentRequest": [{
+            "id": 60,
+            "renterId": 8,
+            "ownerId": 3,
+            "accommodationId": 2,
+            "status": "WAITING"
+        }],
         "reviewStar": 4
     },
     {
@@ -99,14 +94,12 @@
             "https://timescityminhkhai.com/wp-content/uploads/sites/7/2020/10/phong-tro-cho-thue.jpg"
         ],
         "utilities": [],
-        "review": [
-            {
-                "id": 2,
-                "userId": 2,
-                "accommodationId": 3,
-                "rating": 4
-            }
-        ],
+        "review": [{
+            "id": 2,
+            "userId": 2,
+            "accommodationId": 3,
+            "rating": 4
+        }],
         "owner": {
             "id": 9,
             "role": "USER",
