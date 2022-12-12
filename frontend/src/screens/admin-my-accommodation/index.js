@@ -63,9 +63,10 @@ const AdminMyAccommodation = () => {
     <ScrollView
       refreshControl={<RefreshControl refreshing={accommodation.loading} onRefresh={() => dispatch(fetchAccomodationByOwnerId())} />}
       px={3.5}
+      pb={24}
       zIndex={1}
     >
-      <HStack pt={24} mb={6} alignItems="center" justifyContent="space-between">
+      <HStack pt={24} s mb={6} alignItems="center" justifyContent="space-between">
         <Text fontSize={20}>Phòng trọ của tôi</Text>
         <Pressable onPress={() => navigation.navigate('NewRoomForm')}>
           {({ isPressed, isHovered }) => (

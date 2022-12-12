@@ -16,7 +16,7 @@ const AdminRentRequest = () => {
     }}
     initialRouteName="AdminRentRequestList"
   >
-    <Stack.Screen option={{ title: 'Yêu cầu thuê phòng' }} name="AdminRentRequestList" component={RequestList} />
+    <Stack.Screen name="AdminRentRequestList" component={RequestList} />
   </Stack.Navigator>;
 };
 
