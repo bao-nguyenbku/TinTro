@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { Box, Center, Flex, Heading, HStack, Image, Pressable, ScrollView, Text, VStack } from 'native-base';
 import React, { useEffect } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAccomodationByOwnerId } from 'store/reducer/accommodation';
 
@@ -60,8 +60,12 @@ const AdminMyAccommodation = () => {
   });
 
   return (
-    <ScrollView top={24} pb={6} px={3.5}>
-      <HStack mb={6} alignItems="center" justifyContent="space-between">
+    <ScrollView
+      refreshControl={<RefreshControl refreshing={accommodation.loading} onRefresh={() => dispatch(fetchAccomodationByOwnerId())} />}
+      px={3.5}
+      zIndex={1}
+    >
+      <HStack pt={24} mb={6} alignItems="center" justifyContent="space-between">
         <Text fontSize={20}>Phòng trọ của tôi</Text>
         <Pressable onPress={() => navigation.navigate('NewRoomForm')}>
           {({ isPressed, isHovered }) => (
