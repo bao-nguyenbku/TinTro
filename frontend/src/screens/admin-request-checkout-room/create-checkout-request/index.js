@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Box, VStack, FormControl, CheckIcon, Select, Button, Text } from 'native-base';
+import { Box, VStack, FormControl, CheckIcon, Select, Button, Text, isEmptyObj } from 'native-base';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllRoomByOwner, selectAdminAccommodationState, getAllRenterByRoomId } from 'store/reducer/admin-accommodation';
+import { getAllRoomByOwner, selectAdminAccommodationState, getAllRenterByRoomId, requestRenterCheckoutByOwner } from 'store/reducer/admin-accommodation';
 import Loading from 'components/loading';
 
-const CreateCheckoutRequestScreen = () => {
+const CreateCheckoutRequestScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { rooms, renters } = useSelector(selectAdminAccommodationState);
+  const { rooms, renters, requestCheckout } = useSelector(selectAdminAccommodationState);
   const { loading, data } = rooms;
   const [formValues, setFormValues] = useState({
     roomId: -1,
@@ -19,11 +19,16 @@ const CreateCheckoutRequestScreen = () => {
   useEffect(() => {
     dispatch(getAllRoomByOwner());
   }, [])
+  useEffect(() => {
+    if (requestCheckout.isSuccess &&  !isEmptyObj(requestCheckout.data)) {
+      navigation.navigate('AdminRequestCheckoutRoom');
+    }
+  }, [requestCheckout.isSuccess])
   const handleChooseRenter = (value) => {
     dispatch(getAllRenterByRoomId(value));
   }
   const handleSubmit = () => {
-    console.log(formValues);
+   dispatch(requestRenterCheckoutByOwner(formValues));
   }
   if (loading) {
     return <Loading />
