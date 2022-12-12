@@ -1,7 +1,15 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllAccommodationsService, searchAccommodationByKeywordService, requestRentRoomService, getAllRequestByRenterService, getRecommendAccommodationsService, cancelRentRequestService } from 'services/accommodation';
+import {
+  getAllAccommodationsService,
+  searchAccommodationByKeywordService,
+  requestRentRoomService,
+  getAllRequestByRenterService,
+  getRecommendAccommodationsService,
+  cancelRentRequestService,
+} from 'services/accommodation';
 // import store from 'store';
 import { PRICE_ASCENDING, PRICE_DECENDING, REVIEW_ASCENDING, REVIEW_DECENDING } from 'constants';
+import request from 'utils/axios';
 
 const initialState = {
   accommodations: [],
@@ -34,8 +42,8 @@ const initialState = {
   },
   cancelRequest: {
     loading: false,
-    error: undefined
-  }
+    error: undefined,
+  },
 };
 
 export const accommodationSlice = createSlice({
@@ -54,7 +62,7 @@ export const accommodationSlice = createSlice({
           break;
         }
         case PRICE_DECENDING: {
-          state.searchAccommodations = [...state.searchAccommodations].sort((prev, curr) => curr.price - prev.price)
+          state.searchAccommodations = [...state.searchAccommodations].sort((prev, curr) => curr.price - prev.price);
           break;
         }
         case REVIEW_ASCENDING: {
@@ -69,7 +77,6 @@ export const accommodationSlice = createSlice({
         default:
           break;
       }
-
     },
     resetRentRequest(state) {
       state.rentRequest = {
@@ -77,8 +84,8 @@ export const accommodationSlice = createSlice({
         isSuccess: false,
         error: undefined,
         data: [],
-      }
-    }
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -136,25 +143,34 @@ export const accommodationSlice = createSlice({
       })
       .addCase(cancelRentRequest.fulfilled, (state, _action) => {
         state.cancelRequest.loading = false;
+      })
+      // --------------------- ADMIN FETCH MY ÂCCOMMODATION ---------------------
+      .addCase(fetchAccomodationByOwnerId.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAccomodationByOwnerId.fulfilled, (state, action) => {
+        state.loading = false;
+        state.accommodationDetails = action.payload;
+      })
+      .addCase(fetchAccomodationByOwnerId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 export const selectAccommodationState = createSelector([(state) => state.accommodation], (accommodationState) => accommodationState);
 
-export const getRecommendAccommodations = createAsyncThunk(
-  'accommodation/getRecommendAccommodations',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await getRecommendAccommodationsService();
-      return response.data;
-    } catch (error) {
-      return rejectWithValue({
-        statusCode: error.response.status,
-        message: error.response.message
-      })
-    }
+export const getRecommendAccommodations = createAsyncThunk('accommodation/getRecommendAccommodations', async (_, { rejectWithValue }) => {
+  try {
+    const response = await getRecommendAccommodationsService();
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
   }
-)
+});
 export const getAllAccommodations = createAsyncThunk('accommodation/getAllAccommodations', async (_, { rejectWithValue }) => {
   try {
     const response = await getAllAccommodationsService();
@@ -205,21 +221,40 @@ export const getRentRequestByRenter = createAsyncThunk('accommodation/getRentReq
   }
 });
 
-export const cancelRentRequest = createAsyncThunk(
-  'accommodation/cancelRentRequest',
-  async (requestId, { rejectWithValue, dispatch }) => {
-    try {
-      const response = await cancelRentRequestService(requestId);
-      dispatch(getRentRequestByRenter());
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue({
-        statusCode: error.response.status,
-        message: error.response.message,
-      })
-    }
+export const cancelRentRequest = createAsyncThunk('accommodation/cancelRentRequest', async (requestId, { rejectWithValue, dispatch }) => {
+  try {
+    const response = await cancelRentRequestService(requestId);
+    dispatch(getRentRequestByRenter());
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
   }
-)
+});
+
+export const fetchAccomodationByOwnerId =
+  ('accommodation/fetchMyAccommodation',
+  async (_, { rejectWithValue }) => {
+    try {
+      // FIXME: Change endpoints
+      const response = await request.get(`/admin-accommodation/my-accommodation`);
+      return response.data;
+    } catch (e) {
+      if (e.response) {
+        return rejectWithValue({
+          statusCode: e.response.status,
+          message: e.response.message,
+        });
+      }
+      return rejectWithValue({
+        statusCode: 500,
+        message: 'Internal server error',
+      });
+    }
+  });
+
 export const { resetError, filterByPrice, resetRentRequest } = accommodationSlice.actions;
 export default accommodationSlice.reducer;

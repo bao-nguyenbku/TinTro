@@ -1,11 +1,14 @@
-import { Text, View } from 'react-native';
+
 import React from 'react';
+import { ScrollView, VStack } from 'native-base';
 
 const AdminMyAccommodation = () => {
   return (
-    <View>
-      <Text>AdminMyAccommodation</Text>
-    </View>
+    <ScrollView>
+      <VStack>
+        
+      </VStack>
+    </ScrollView>
   );
 };
 
