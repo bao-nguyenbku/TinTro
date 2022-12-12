@@ -44,6 +44,7 @@ const initialState = {
     loading: false,
     error: undefined,
   },
+  adminRentRequests: [],
 };
 
 export const accommodationSlice = createSlice({
@@ -195,7 +196,7 @@ export const accommodationSlice = createSlice({
       })
       .addCase(getRentRequestsAdmin.fulfilled, (state, action) => {
         state.loading = false;
-        state.rentRequests = action.payload;
+        state.adminRentRequests = action.payload;
       })
       .addCase(getRentRequestsAdmin.rejected, (state, action) => {
         state.loading = false;
