@@ -42,14 +42,10 @@ export class RentingController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/:id/owner-checkout')
-  async ownerRequestCheckout(@Param('id') rentingId: string, @Request() req) {
+  @Post('/owner-checkout')
+  async ownerRequestCheckout(@Request() req, @Body() data: any) {
     if (req.user.role === 'ADMIN') {
-      const ownerId = req.user.id;
-      const result = await this.rentingService.ownerRequestCheckout(
-        parseInt(rentingId),
-      );
-      return result;
+      return this.rentingService.ownerRequestCheckout(data);
     }
     throw new HttpException(
       'This user can not operate this action',

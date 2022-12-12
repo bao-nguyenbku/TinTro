@@ -1,5 +1,6 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getAllRooms, getAllRenterByRoomIdService } from 'services/admin-accommodation';
+import { requestRenterCheckoutByOwnerService } from 'services/renting';
 
 const initialState = {
   rooms: {
@@ -9,6 +10,11 @@ const initialState = {
   renters: {
     loading: false,
     data: []
+  },
+  requestCheckout: {
+    loading: false,
+    isSuccess: false,
+    data: {},
   }
 };
 
@@ -44,12 +50,20 @@ export const adminAccommodationSlice = createSlice({
         state.renters.loading = false;
         state.renters.data = action.payload;
       })
+      .addCase(requestRenterCheckoutByOwner.pending, (state) => {
+        state.requestCheckout.loading = true;
+      })
+      .addCase(requestRenterCheckoutByOwner.fulfilled, (state, action) => {
+        state.requestCheckout.loading = false;
+        state.requestCheckout.isSuccess = true;
+        state.requestCheckout.data = action.payload;
+      })
   },
 });
 export const selectAdminAccommodationState = createSelector([(state) => state.adminAccommodation], (adminAccommodation) => adminAccommodation);
 
 export const getAllRoomByOwner = createAsyncThunk(
-  'renting/requestCheckoutRoom',
+  'renting/getAllRoomByOwner',
   async (_, { rejectWithValue }) => {
     try {
       const response = await getAllRooms();
@@ -67,6 +81,21 @@ export const getAllRenterByRoomId = createAsyncThunk(
   async (roomId, { rejectWithValue }) => {
     try {
       const response = await getAllRenterByRoomIdService(roomId);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue({
+        statusCode: error.response.status,
+        message: error.response.message
+      })
+    }
+  }
+)
+
+export const requestRenterCheckoutByOwner = createAsyncThunk(
+  'renting/requestRenterCheckoutByOwner',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await requestRenterCheckoutByOwnerService(data);
       return response.data;
     } catch (error) {
       return rejectWithValue({

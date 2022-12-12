@@ -46,11 +46,12 @@ export class RentingService {
       }
     }
   }
-  async ownerRequestCheckout(rentingId: number) {
+  async ownerRequestCheckout(data: any) {
+    const { renterId } = data;
     try {
       return await this.prismaService.renting.update({
         where: {
-          id: rentingId,
+          renterId,
         },
         data: {
           status: RentingStatus.CHECKOUT,
@@ -58,7 +59,6 @@ export class RentingService {
         },
       });
     } catch (error) {
-      //TODO Handling error
       throw new Error(error);
     }
   }

@@ -11,3 +11,6 @@ export const requestCheckoutRoomService = ({ rentingId }) => {
 export const getAllCheckoutRequestService = () => {
   return request.get(`${prefix}/all`);
 }
+export const requestRenterCheckoutByOwnerService = (data) => {
+  return request.post(`${prefix}/owner-checkout`, data);
+}
