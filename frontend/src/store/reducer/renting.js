@@ -6,19 +6,19 @@ const initialState = {
     loading: false,
     isSuccess: false,
     error: undefined,
-    data: {}
+    data: {},
   },
   roomInfo: {
     loading: false,
     isSuccess: false,
     error: undefined,
-    data: {}
+    data: {},
   },
   adminRenting: {
     loading: false,
     checkoutRequestList: [],
-    error: undefined
-  }
+    error: undefined,
+  },
 };
 
 export const rentingSlice = createSlice({
@@ -34,9 +34,9 @@ export const rentingSlice = createSlice({
         loading: false,
         isSuccess: false,
         error: undefined,
-        data: {}
+        data: {},
       };
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,27 +62,23 @@ export const rentingSlice = createSlice({
       .addCase(getAllCheckoutRequest.fulfilled, (state, action) => {
         state.adminRenting.loading = false;
         state.adminRenting.checkoutRequestList = action.payload;
-      })
+      });
   },
 });
 export const selectRentingState = createSelector([(state) => state.renting], (renting) => renting);
 
-export const requestCheckoutRoom = createAsyncThunk(
-  'renting/requestCheckoutRoom',
-  async ({ rentingId }, { rejectWithValue }) => {
-    try {
-      const response = await requestCheckoutRoomService({ rentingId });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue({
-        statusCode: error.response.status,
-        message: error.response.message
-      })
-    }
-
+export const requestCheckoutRoom = createAsyncThunk('renting/requestCheckoutRoom', async ({ rentingId }, { rejectWithValue }) => {
+  try {
+    const response = await requestCheckoutRoomService({ rentingId });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
   }
-)
+});
 export const getRoomInfo = createAsyncThunk('accommodation/getRoomInfo', async (_, { rejectWithValue }) => {
   try {
     const response = await getRoomInfoService();
@@ -95,20 +91,19 @@ export const getRoomInfo = createAsyncThunk('accommodation/getRoomInfo', async (
   }
 });
 
-export const getAllCheckoutRequest = createAsyncThunk(
-  'renting/getAllCheckoutRequest',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await getAllCheckoutRequestService();
-      return response.data;
-    } catch (error) {
-      return rejectWithValue({
-        statusCode: error.response.status,
-        message: error.response.message,
-      })
-    }
+export const getAllCheckoutRequest = createAsyncThunk('renting/getAllCheckoutRequest', async (_, { rejectWithValue }) => {
+  try {
+    const response = await getAllCheckoutRequestService();
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
   }
-)
+});
+
+
 
 export const { reset } = rentingSlice.actions;
 export default rentingSlice.reducer;

@@ -177,6 +177,29 @@ export const accommodationSlice = createSlice({
       .addCase(editRoom.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
+      })
+      // --------------------------- DELETE ROOM --------------------
+      .addCase(deleteRoom.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteRoom.fulfilled, (state, _action) => {
+        state.loading = false;
+      })
+      .addCase(deleteRoom.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
+      })
+      // --------------------------- GET RENT REQUESTS ADMIN  --------------------
+      .addCase(getRentRequestsAdmin.pending, (state, _) => {
+        state.loading = true;
+      })
+      .addCase(getRentRequestsAdmin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.rentRequests = action.payload;
+      })
+      .addCase(getRentRequestsAdmin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
       });
   },
 });
@@ -315,6 +338,23 @@ export const deleteRoom = createAsyncThunk('accommodation/deleteRoom', async ({ 
   try {
     const response = await request.delete(`/admin-accommodation/room/${roomId}`);
     if (done) done();
+    return response.data;
+  } catch (error) {
+    if (error.response)
+      return rejectWithValue({
+        statusCode: error.response.status,
+        message: error.response.message,
+      });
+    return rejectWithValue({
+      statusCode: 500,
+      message: error.message,
+    });
+  }
+});
+
+export const getRentRequestsAdmin = createAsyncThunk('accommodation/adminGetRentRequests', async (_, { rejectWithValue }) => {
+  try {
+    const response = await request.get('/admin-accommodation/rent-requests/all');
     return response.data;
   } catch (error) {
     if (error.response)
