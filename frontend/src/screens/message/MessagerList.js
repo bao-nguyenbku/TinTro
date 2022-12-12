@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import message, { fetchMessageSections } from 'store/reducer/message';
+import { fetchMessageSections } from 'store/reducer/message';
 import Loading from 'components/loading';
 import Error from 'components/error';
 import { Avatar, Flex, Heading, HStack, Pressable, ScrollView, Text, VStack } from 'native-base';

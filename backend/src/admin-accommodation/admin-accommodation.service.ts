@@ -3,6 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '~/prisma/prisma.service';
 import { RoomDto } from './dto/room.dto';
 import { AccommodationService } from '~/accommodation/accommodation.service';
+import { updateRoomDto } from './dto/updateRoomDto.dto';
 
 @Injectable()
 export class AdminAccommodationService {
@@ -23,7 +24,11 @@ export class AdminAccommodationService {
               user: true,
             },
           },
-          rooms: true,
+          rooms: {
+            orderBy: {
+              roomName: 'asc',
+            },
+          },
         },
       });
       if (!result) {
@@ -52,7 +57,7 @@ export class AdminAccommodationService {
           data: {
             status: RoomStatus.AVAILABLE,
             roomName: newRoom.roomName,
-            personNumber: newRoom.personNumber,
+            personNumber: Number(newRoom.personNumber),
             accommodationId: existedAccommodaiton.id,
           },
         });
@@ -86,7 +91,7 @@ export class AdminAccommodationService {
     }
   }
 
-  async modifyRoom(roomId: number, modifyRoom: RoomDto) {
+  async modifyRoom(roomId: number, modifyRoom: updateRoomDto) {
     try {
       const existedRoom = await this.findRoombyId(roomId);
       if (existedRoom) {
@@ -94,7 +99,10 @@ export class AdminAccommodationService {
           where: {
             id: roomId,
           },
-          data: modifyRoom,
+          data: {
+            ...modifyRoom,
+            personNumber: Number(modifyRoom.personNumber),
+          },
         });
       } else
         throw new HttpException('Can not find this room', HttpStatus.NOT_FOUND);
@@ -123,6 +131,21 @@ export class AdminAccommodationService {
     try {
       const result = await this.prismaService.rentRequest.findMany({
         where: { ownerId: adminId },
+        include: {
+          renter: {
+            include: {
+              user: {
+                select: {
+                  name: true,
+                  avatar: true,
+                  phone: true,
+                  id: true,
+                  createdAt: true,
+                },
+              },
+            },
+          },
+        },
       });
       return result;
     } catch (error) {
@@ -178,12 +201,44 @@ export class AdminAccommodationService {
             status: RentingStatus.RENTING,
           },
         });
+        // update room status
+        await this.prismaService.room.update({
+          where: { id: roomId },
+          data: {
+            status: RoomStatus.RENTING,
+          },
+        });
+        // delete the rent request of that user
+        await this.deleteRentRequest(adminId, roomId, renterId);
         return result;
       } else
         throw new HttpException('Can not find this room', HttpStatus.NOT_FOUND);
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async deleteRentRequest(adminId: number, roomId: number, renterId: number) {
+    await this.prismaService.rentRequest.deleteMany({
+      where: {
+        AND: [
+          {
+            renterId: renterId,
+          },
+          {
+            ownerId: adminId,
+          },
+        ],
+      },
+    });
+  }
+
+  async deleteRentRequestById(id: number) {
+    await this.prismaService.rentRequest.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 
   async getAllRooms(adminId: number) {
