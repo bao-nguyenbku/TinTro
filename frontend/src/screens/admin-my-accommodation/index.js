@@ -73,18 +73,20 @@ const AdminMyAccommodation = () => {
       </HStack>
       <HStack flexWrap="wrap" space={2}>
         {details.rooms.map((room) => (
-          <Center mb={2} alignItems="center" borderRadius={12} bg="#fff" w="31%">
-            <VStack alignItems="center" justifyContent="center" py={2.5} space={2}>
-              <Box w={84} h={84} alignItems="center" justifyContent="center" bg="success.200" borderRadius="full">
-                <Text isTruncated noOfLines={1}>
-                  {room.roomName}
+          <Pressable w="31%" onPress={() => navigation.navigate('NewRoomForm', { isEdit: true, room })}>
+            <Center mb={2} alignItems="center" borderRadius={12} bg="#fff">
+              <VStack alignItems="center" justifyContent="center" py={2.5} space={2}>
+                <Box w={84} h={84} alignItems="center" justifyContent="center" bg="success.200" borderRadius="full">
+                  <Text isTruncated noOfLines={1}>
+                    {room.roomName}
+                  </Text>
+                </Box>
+                <Text bold color="tertiary.600">
+                  {mapRoomStatusToText(room.status)}
                 </Text>
-              </Box>
-              <Text bold color="tertiary.600">
-                {mapRoomStatusToText(room.status)}
-              </Text>
-            </VStack>
-          </Center>
+              </VStack>
+            </Center>
+          </Pressable>
         ))}
       </HStack>
     </ScrollView>

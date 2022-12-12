@@ -166,6 +166,17 @@ export const accommodationSlice = createSlice({
       .addCase(createNewRoom.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
+      })
+      // --------------------------- EDIT ROOM ------------------------------
+      .addCase(editRoom.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(editRoom.fulfilled, (state, _action) => {
+        state.loading = false;
+      })
+      .addCase(editRoom.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
       });
   },
 });
@@ -270,9 +281,50 @@ export const createNewRoom = createAsyncThunk('accommodation/createNewRoom', asy
     if (done) done();
     return response.data;
   } catch (error) {
+    if (error.response)
+      return rejectWithValue({
+        statusCode: error.response.status,
+        message: error.response.message,
+      });
     return rejectWithValue({
-      statusCode: error.response.status,
-      message: error.response.message,
+      statusCode: 500,
+      message: error.message,
+    });
+  }
+});
+
+export const editRoom = createAsyncThunk('accommodation/editRoom', async ({ values, roomId, done }, { rejectWithValue }) => {
+  try {
+    const response = await request.put(`/admin-accommodation/room/${roomId}`, values);
+    if (done) done();
+    return response.data;
+  } catch (error) {
+    if (error.response)
+      return rejectWithValue({
+        statusCode: error.response.status,
+        message: error.response.message,
+      });
+    return rejectWithValue({
+      statusCode: 500,
+      message: error.message,
+    });
+  }
+});
+
+export const deleteRoom = createAsyncThunk('accommodation/deleteRoom', async ({ roomId, done }, { rejectWithValue }) => {
+  try {
+    const response = await request.delete(`/admin-accommodation/room/${roomId}`);
+    if (done) done();
+    return response.data;
+  } catch (error) {
+    if (error.response)
+      return rejectWithValue({
+        statusCode: error.response.status,
+        message: error.response.message,
+      });
+    return rejectWithValue({
+      statusCode: 500,
+      message: error.message,
     });
   }
 });

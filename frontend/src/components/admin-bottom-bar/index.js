@@ -3,10 +3,11 @@ import React from 'react';
 
 import { ADMIN_ROUTES } from 'navigation';
 import { Ionicons } from '@expo/vector-icons';
-import AdminRentRequest from 'screens/admin-rent-request';
+
 import MessageNav from 'navigation/message';
 import AccountNav from 'navigation/account';
 import AdminExploreNav from 'navigation/adminExplore';
+import AdminRentRequest from 'navigation/adminRentRequest';
 
 const Tab = createBottomTabNavigator();
 
