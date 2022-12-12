@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMessageSections } from 'store/reducer/message';
+import message, { fetchMessageSections } from 'store/reducer/message';
 import Loading from 'components/loading';
 import Error from 'components/error';
 import { Avatar, Flex, Heading, HStack, Pressable, ScrollView, Text, VStack } from 'native-base';
@@ -22,7 +22,7 @@ const MessagerList = () => {
   if (loading) return <Loading />;
   if (error) return <Error message={error} />;
 
-  return !messageSections.length ? (
+  return !messageSections.filter((messageSection) => messageSection.messages.length > 0).length ? (
     <Flex alignSelf="center" justifyContent="center" alignItems="center" h="full">
       <Text color="coolGray.500">Bạn không có tin nhắn nào</Text>
     </Flex>

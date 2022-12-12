@@ -201,6 +201,28 @@ export const accommodationSlice = createSlice({
       .addCase(getRentRequestsAdmin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
+      })
+      // ---------------------- ASSIGN USER TO ROOM  --------------------
+      .addCase(assignUserToRoom.pending, (state, _) => {
+        state.loading = true;
+      })
+      .addCase(assignUserToRoom.fulfilled, (state, _action) => {
+        state.loading = false;
+      })
+      .addCase(assignUserToRoom.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
+      })
+      // ---------------------- DELETE RENT REQUESTS --------------------
+      .addCase(deleteRentRequestById.pending, (state, _) => {
+        state.loading = true;
+      })
+      .addCase(deleteRentRequestById.fulfilled, (state, _action) => {
+        state.loading = false;
+      })
+      .addCase(deleteRentRequestById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
       });
   },
 });
@@ -369,6 +391,48 @@ export const getRentRequestsAdmin = createAsyncThunk('accommodation/adminGetRent
     });
   }
 });
+
+export const assignUserToRoom = createAsyncThunk(
+  'accommodation/assignUserToRoom',
+  async ({ userId, roomId, done }, { rejectWithValue, dispatch }) => {
+    try {
+      await request.put(`/admin-accommodation/room/assign/${roomId}/${userId}`);
+      if (done) done();
+      return dispatch(getRentRequestsAdmin());
+    } catch (error) {
+      if (error.response)
+        return rejectWithValue({
+          statusCode: error.response.status,
+          message: error.response.message,
+        });
+      return rejectWithValue({
+        statusCode: 500,
+        message: error.message,
+      });
+    }
+  }
+);
+
+export const deleteRentRequestById = createAsyncThunk(
+  'accommodation/deleteRentRequestById',
+  async ({ id, done }, { rejectWithValue, dispatch }) => {
+    try {
+      await request.delete(`/admin-accommodation/rent-requests/${id}`);
+      if (done) done();
+      return dispatch(getRentRequestsAdmin());
+    } catch (error) {
+      if (error.response)
+        return rejectWithValue({
+          statusCode: error.response.status,
+          message: error.response.message,
+        });
+      return rejectWithValue({
+        statusCode: 500,
+        message: error.message,
+      });
+    }
+  }
+);
 
 export const selectAccommodationState = createSelector([(state) => state.accommodation], (accommodationState) => accommodationState);
 export const { resetError, filterByPrice, resetRentRequest } = accommodationSlice.actions;
