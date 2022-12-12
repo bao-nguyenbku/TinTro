@@ -8,7 +8,7 @@ import Loading from 'components/loading';
 
 const HomeNav = () => {
   const { currentUser, loading } = useSelector(selectUserState);
-  console.log(currentUser);
+
   if (loading) {
     return <Loading />;
   }
@@ -18,7 +18,7 @@ const HomeNav = () => {
   if (currentUser.role === 'ADMIN') {
     return <AdminBottomBar />;
   }
-  return <Box />
+  return <Box />;
 };
 
 export default HomeNav;

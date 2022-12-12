@@ -236,7 +236,7 @@ export const cancelRentRequest = createAsyncThunk('accommodation/cancelRentReque
 });
 
 export const fetchAccomodationByOwnerId =
-  ('accommodation/fetchMyAccommodation',
+  createAsyncThunk('accommodation/fetchMyAccommodation',
   async (_, { rejectWithValue }) => {
     try {
       // FIXME: Change endpoints
