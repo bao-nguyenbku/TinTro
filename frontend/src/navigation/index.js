@@ -6,6 +6,7 @@ import ParkingScreen from 'screens/my-room/parking';
 import WifiScreen from 'screens/my-room/wifi';
 import RoomMenu from 'screens/my-room/RoomMenu';
 import RegisterParking from 'screens/my-room/parking/register-parking';
+import RegisterWifi from 'screens/my-room/wifi/register-wifi';
 
 export const ROUTES = {
   explore: {
@@ -52,6 +53,11 @@ export const ROUTES = {
         title: 'Wifi',
         label: 'Wifi',
         component: WifiScreen
+      },
+      registerWifi: {
+        title: 'RegisterWifi',
+        label: 'Đăng ký mới',
+        component: RegisterWifi
       }
     },
   },

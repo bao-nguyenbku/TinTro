@@ -5,6 +5,7 @@ import messageReducer from './reducer/message';
 import rentingReducer from './reducer/renting';
 import adminAccommodationReducer from './reducer/admin-accommodation';
 import parkingReducer from './reducer/parking';
+import wifiReducer from './reducer/wifi';
 
 const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
         accommodation: accommodationReducer,
         renting: rentingReducer,
         adminAccommodation: adminAccommodationReducer,
-        parking: parkingReducer
+        parking: parkingReducer,
+        wifi: wifiReducer
     },
 });
 

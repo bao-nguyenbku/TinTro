@@ -20,7 +20,8 @@ const RoomMenu = ({ navigation, stack }) => {
       id: 2,
       title: 'Wifi',
       description: 'Thông tin wifi phòng của bạn',
-      icon: <Ionicons name='wifi-outline' size={24}/>
+      icon: <Ionicons name='wifi-outline' size={24}/>,
+      onPress: () => navigation.navigate(stack?.wifi?.title),
     }
   ]
   const dispatch = useDispatch();

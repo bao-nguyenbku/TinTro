@@ -38,24 +38,6 @@ const MyRoomScreen = (props) => {
         )
       })}
     </Stack.Navigator>
-    // <ScrollView
-    //   refreshControl={
-    //     <RefreshControl 
-    //       onRefresh={() => dispatch(getRoomInfo())}
-    //     />
-    //   }
-    // >
-    //   <Box
-    //     alignItems='center'
-    //     justifyContent='center'
-    //     flex={1}
-    //     width='full'
-    //     marginTop='200px'
-    //     px='4'
-    //   >
-    //     <CheckoutMenuItem data={data} />
-    //   </Box >
-    // </ScrollView>
   )
 }
 

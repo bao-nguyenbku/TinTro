@@ -1,4 +1,6 @@
-import { Controller, Post, Get, Request, Body } from '@nestjs/common';
+import { Controller, Post, Get, Request, Body, Param } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common/decorators';
+import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { PrismaService } from '~/prisma/prisma.service';
 import { WifiService } from './wifi.service';
 
@@ -8,20 +10,21 @@ export class WifiController {
     private readonly wifiService: WifiService,
     private readonly prismaService: PrismaService,
   ) {}
-  @Post('/create')
-  async registerWifi(@Request() req, @Body() data: any) {
-    const { roomId } = data;
-    // const existedRoom = await this.prismaService.room.findUnique({
-    //   where: {
-    //     id: roomId,
-    //   },
-    // });
-    // if (existedRoom) {
-    //   return await this.wifiService.registerWifi({
-    //     ...data,
-    //     roomId: parseInt(roomId),
-    //     name: existedRoom.roomName,
-    //   });
-    // }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/:roomId')
+  async getWifiInfo(@Param('roomId') roomId: string) {
+    return await this.wifiService.getWifiInfo(parseInt(roomId));
+  }
+  @Post('/:roomId/create')
+  async registerWifi(
+    @Request() req,
+    @Body() createData,
+    @Param('roomId') roomId: string,
+  ) {
+    return await this.wifiService.registerWifi({
+      ...createData,
+      roomId: parseInt(roomId),
+    });
   }
 }
