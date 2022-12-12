@@ -155,10 +155,20 @@ export const accommodationSlice = createSlice({
       .addCase(fetchAccomodationByOwnerId.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      // ---------------------- ADD NEW ROOM --------------------------------
+      .addCase(createNewRoom.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createNewRoom.fulfilled, (state, _action) => {
+        state.loading = false;
+      })
+      .addCase(createNewRoom.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
       });
   },
 });
-export const selectAccommodationState = createSelector([(state) => state.accommodation], (accommodationState) => accommodationState);
 
 export const getRecommendAccommodations = createAsyncThunk('accommodation/getRecommendAccommodations', async (_, { rejectWithValue }) => {
   try {
@@ -235,26 +245,38 @@ export const cancelRentRequest = createAsyncThunk('accommodation/cancelRentReque
   }
 });
 
-export const fetchAccomodationByOwnerId =
-  createAsyncThunk('accommodation/fetchMyAccommodation',
-  async (_, { rejectWithValue }) => {
-    try {
-      // FIXME: Change endpoints
-      const response = await request.get(`/admin-accommodation/my-accommodation`);
-      return response.data;
-    } catch (e) {
-      if (e.response) {
-        return rejectWithValue({
-          statusCode: e.response.status,
-          message: e.response.message,
-        });
-      }
+export const fetchAccomodationByOwnerId = createAsyncThunk('accommodation/fetchMyAccommodation', async (_, { rejectWithValue }) => {
+  try {
+    // FIXME: Change endpoints
+    const response = await request.get(`/admin-accommodation/my-accommodation`);
+    return response.data;
+  } catch (e) {
+    if (e.response) {
       return rejectWithValue({
-        statusCode: 500,
-        message: 'Internal server error',
+        statusCode: e.response.status,
+        message: e.response.message,
       });
     }
-  });
+    return rejectWithValue({
+      statusCode: 500,
+      message: 'Internal server error',
+    });
+  }
+});
 
+export const createNewRoom = createAsyncThunk('accommodation/createNewRoom', async ({ values, done }, { rejectWithValue }) => {
+  try {
+    const response = await request.post('/admin-accommodation/room', values);
+    if (done) done();
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
+  }
+});
+
+export const selectAccommodationState = createSelector([(state) => state.accommodation], (accommodationState) => accommodationState);
 export const { resetError, filterByPrice, resetRentRequest } = accommodationSlice.actions;
 export default accommodationSlice.reducer;

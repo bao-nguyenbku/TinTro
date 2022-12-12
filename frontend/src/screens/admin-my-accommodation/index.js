@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { Box, Center, Flex, Heading, HStack, Image, ScrollView, Text, VStack } from 'native-base';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { Box, Center, Flex, Heading, HStack, Image, Pressable, ScrollView, Text, VStack } from 'native-base';
 import React, { useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -47,9 +47,10 @@ const AdminMyAccommodation = () => {
   const accommodation = useSelector((state) => state.accommodation);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   useEffect(() => {
     dispatch(fetchAccomodationByOwnerId());
-  }, [dispatch]);
+  }, [dispatch, isFocused]);
 
   const details = accommodation.accommodationDetails;
   navigation.setOptions({
@@ -59,19 +60,25 @@ const AdminMyAccommodation = () => {
   });
 
   return (
-    <ScrollView top={24} pb={6} px={4}>
+    <ScrollView top={24} pb={6} px={3.5}>
       <HStack mb={6} alignItems="center" justifyContent="space-between">
         <Text fontSize={20}>Phòng trọ của tôi</Text>
-        <Box>
-          <AntDesign name="pluscircle" size={24} color="#059669" />
-        </Box>
+        <Pressable onPress={() => navigation.navigate('NewRoomForm')}>
+          {({ isPressed, isHovered }) => (
+            <Box bg={isPressed || isHovered ? 'muted.200' : 'transparent'}>
+              <AntDesign name="pluscircle" size={24} color="#059669" />
+            </Box>
+          )}
+        </Pressable>
       </HStack>
-      <HStack>
+      <HStack flexWrap="wrap" space={2}>
         {details.rooms.map((room) => (
-          <Center alignItems="center" borderRadius={12} bg="#fff" w="1/3">
+          <Center mb={2} alignItems="center" borderRadius={12} bg="#fff" w="31%">
             <VStack alignItems="center" justifyContent="center" py={2.5} space={2}>
               <Box w={84} h={84} alignItems="center" justifyContent="center" bg="success.200" borderRadius="full">
-                <Text>{room.roomName}</Text>
+                <Text isTruncated noOfLines={1}>
+                  {room.roomName}
+                </Text>
               </Box>
               <Text bold color="tertiary.600">
                 {mapRoomStatusToText(room.status)}
