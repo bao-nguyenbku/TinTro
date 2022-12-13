@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma, RentingStatus, Role } from '@prisma/client';
 import { PrismaService } from '~/prisma/prisma.service';
-import { RequestCheckoutRoomDto } from '~/accommodation/dto/request-checkout-room.dto';
+// import { RequestCheckoutRoomDto } from '~/accommodation/dto/request-checkout-room.dto';
 
 @Injectable()
 export class RentingService {
@@ -31,6 +31,7 @@ export class RentingService {
         },
         data: {
           status: RentingStatus.CHECKOUT,
+          requestRole: Role.USER,
         },
       });
       return prismaResult;
@@ -136,6 +137,17 @@ export class RentingService {
           );
         }
       }
+    }
+  }
+  async acceptCheckoutRoom(rentingId: number) {
+    try {
+      return await this.prismaService.renting.delete({
+        where: {
+          id: rentingId,
+        },
+      });
+    } catch (error) {
+      throw new Error(error.message || 'Unknown error');
     }
   }
 }

@@ -9,6 +9,7 @@ const SingleItem = (props) => {
       flexDirection='row'
       height='100px'
       p='3'
+      rounded='xl'
     >
       <Box>
         <Text fontWeight='700' fontSize='2xl'>Phòng {item.room.roomName}</Text>

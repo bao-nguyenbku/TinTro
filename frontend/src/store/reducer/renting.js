@@ -1,5 +1,5 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getRoomInfoService, requestCheckoutRoomService, getAllCheckoutRequestService, requestCancelCheckoutRoomService } from 'services/renting';
+import { getRoomInfoService, requestCheckoutRoomService, getAllCheckoutRequestService, requestCancelCheckoutRoomService, acceptCheckoutRoomService } from 'services/renting';
 
 const initialState = {
   renting: {
@@ -64,7 +64,7 @@ export const rentingSlice = createSlice({
       .addCase(getAllCheckoutRequest.fulfilled, (state, action) => {
         state.adminRenting.loading = false;
         state.adminRenting.checkoutRequestList = action.payload;
-      });
+      })
   },
 });
 export const selectRentingState = createSelector([(state) => state.renting], (renting) => renting);
@@ -105,6 +105,18 @@ export const getRoomInfo = createAsyncThunk('accommodation/getRoomInfo', async (
 export const getAllCheckoutRequest = createAsyncThunk('renting/getAllCheckoutRequest', async (_, { rejectWithValue }) => {
   try {
     const response = await getAllCheckoutRequestService();
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
+  }
+});
+export const acceptCheckoutRoom = createAsyncThunk('renting/acceptCheckoutRoom', async (rentingId, { rejectWithValue, dispatch }) => {
+  try {
+    const response = await acceptCheckoutRoomService(rentingId);
+    dispatch(getAllCheckoutRequest());
     return response.data;
   } catch (error) {
     return rejectWithValue({

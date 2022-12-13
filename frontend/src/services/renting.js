@@ -17,7 +17,9 @@ export const getAllCheckoutRequestService = () => {
 export const requestRenterCheckoutByOwnerService = (data) => {
   return request.post(`${prefix}/owner-checkout`, data);
 }
-
+export const acceptCheckoutRoomService = (rentingId) => {
+  return request.get(`${prefix}/${rentingId}/delete`);
+}
 export const requestCancelCheckoutRoomService = ({ rentingId }) => {
   return request.get(`${prefix}/${rentingId}/cancel-checkout`);
 }
