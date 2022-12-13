@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Box, HStack, Text } from 'native-base';
+import { Box, HStack, Text, Pressable } from 'native-base';
 import { formatCurrency } from 'utils/utils';
-import { Pressable } from 'react-native';
+
 
 const wifiPackage = [
   {
@@ -34,14 +34,16 @@ const ChoosePackage = (props) => {
     <HStack
       flexDirection='row'
       w='full'
-      h='20'
-      space='2'
+      marginLeft='-2'
+      flexWrap='wrap'
     >
       {wifiPackage.map((item, index) => {
         return (
           <Pressable
             key={item.speed}
-            flex={1}
+            width='150px'
+            height='20'
+            margin='2'
             onPress={() => handleChange(index)}
           >
             <Box

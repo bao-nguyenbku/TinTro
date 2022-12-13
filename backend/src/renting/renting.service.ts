@@ -62,7 +62,6 @@ export class RentingService {
       throw new Error(error);
     }
   }
-
   async getAllCheckoutRequest() {
     try {
       const prismaResult = await this.prismaService.renting.findMany({
@@ -90,6 +89,17 @@ export class RentingService {
       });
     } catch (error) {
       throw new Error(error);
+    }
+  }
+  async getAllRenterByRoomId(roomId: number) {
+    try {
+      return await this.prismaService.renting.findMany({
+        where: {
+          roomId,
+        },
+      });
+    } catch (error) {
+      throw new Error(error.message || 'Unknown error');
     }
   }
 }

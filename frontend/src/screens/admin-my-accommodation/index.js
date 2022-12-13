@@ -50,7 +50,7 @@ const AdminMyAccommodation = () => {
   const isFocused = useIsFocused();
   useEffect(() => {
     dispatch(fetchAccomodationByOwnerId());
-  }, [dispatch, isFocused]);
+  }, [isFocused]);
 
   const details = accommodation.accommodationDetails;
   navigation.setOptions({
@@ -78,7 +78,7 @@ const AdminMyAccommodation = () => {
       </HStack>
       <HStack flexWrap="wrap" space={2}>
         {details.rooms.map((room) => (
-          <Pressable w="31%" onPress={() => navigation.navigate('NewRoomForm', { isEdit: true, room })}>
+          <Pressable key={room.id} w="31%" onPress={() => navigation.navigate('NewRoomForm', { isEdit: true, room })}>
             <Center mb={2} alignItems="center" borderRadius={12} bg="#fff">
               <VStack alignItems="center" justifyContent="center" py={2.5} space={2}>
                 <Box w={84} h={84} alignItems="center" justifyContent="center" bg="success.200" borderRadius="full">

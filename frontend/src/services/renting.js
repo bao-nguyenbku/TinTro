@@ -5,6 +5,9 @@ const prefix = '/renting';
 export const getRoomInfoService = () => {
   return request.get(`${prefix}`);
 }
+export const getAllRenterByRoomIdService = (roomId) => {
+  return request.get(`${prefix}/rooms/${roomId}`);
+}
 export const requestCheckoutRoomService = ({ rentingId }) => {
   return request.get(`${prefix}/${rentingId}/checkout`);
 }

@@ -40,6 +40,14 @@ export class RentingController {
     );
     return result;
   }
+  @UseGuards(JwtAuthGuard)
+  @Get('/rooms/:roomId')
+  async getAllRenterByRoomId(@Param('roomId') roomId: string) {
+    const result = await this.rentingService.getAllRenterByRoomId(
+      parseInt(roomId),
+    );
+    return result;
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('/owner-checkout')

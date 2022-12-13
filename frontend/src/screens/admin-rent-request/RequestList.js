@@ -49,7 +49,7 @@ const UserRequestCard = ({ id, name, phone, createdAt, avatar, navigation, detai
               </Center>
             )}
           </Pressable>
-          <Pressable onPress={() => {}}>
+          <Pressable onPress={() => { }}>
             {({ isPressed }) => (
               <Center w={42} h={42} borderRadius={12} bg={isPressed ? '#fff' : 'warmGray.100'}>
                 <Ionicons name="call" size={24} color="#737373" />
@@ -146,30 +146,32 @@ const RequestList = () => {
   // eslint-disable-next-line no-nested-ternary
   return accommodation.loading ? (
     <Loading />
-  ) : accommodation.adminRentRequests.length ? (
-    <ScrollView refreshControl={<RefreshControl refreshing={accommodation.loading} onRefresh={() => dispatch(getRentRequestsAdmin())} />}>
-      <VStack px={3.5} pt={4}>
-        {accommodation.adminRentRequests.map((rentRequest) => (
-          <UserRequestCard
-            key={rentRequest.id}
-            rentRequestId={rentRequest.id}
-            name={rentRequest.renter.user.name}
-            avatar={rentRequest.renter.user.avatar}
-            phone={rentRequest.renter.user.phone}
-            createdAt={rentRequest.renter.user.createdAt}
-            id={rentRequest.renter.user.id}
-            navigation={navigation}
-            details={accommodation.accommodationDetails}
-            dispatch={dispatch}
-          />
-        ))}
-      </VStack>
-    </ScrollView>
   ) : (
-    <Flex alignItems="center" h="full">
-      Không có yêu cầu thuê phòng
-    </Flex>
-  );
+    <ScrollView refreshControl={<RefreshControl refreshing={accommodation.loading} onRefresh={() => dispatch(getRentRequestsAdmin())} />}>
+      {accommodation.adminRentRequests.length ? (
+        <VStack px={3.5} pt={4}>
+          {accommodation.adminRentRequests.map((rentRequest) => (
+            <UserRequestCard
+              key={rentRequest.id}
+              rentRequestId={rentRequest.id}
+              name={rentRequest.renter.user.name}
+              avatar={rentRequest.renter.user.avatar}
+              phone={rentRequest.renter.user.phone}
+              createdAt={rentRequest.renter.user.createdAt}
+              id={rentRequest.renter.user.id}
+              navigation={navigation}
+              details={accommodation.accommodationDetails}
+              dispatch={dispatch}
+            />
+          ))}
+        </VStack>
+      ) : (
+        <Flex alignItems="center" h="full">
+          Không có yêu cầu thuê phòng
+        </Flex>
+      )}
+    </ScrollView>
+  )
 };
 
 export default RequestList;

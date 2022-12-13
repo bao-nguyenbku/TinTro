@@ -1,6 +1,6 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllRooms, getAllRenterByRoomIdService } from 'services/admin-accommodation';
-import { requestRenterCheckoutByOwnerService } from 'services/renting';
+import { getAllRooms } from 'services/admin-accommodation';
+import { requestRenterCheckoutByOwnerService, getAllRenterByRoomIdService } from 'services/renting';
 
 const initialState = {
   rooms: {
@@ -64,23 +64,10 @@ export const selectAdminAccommodationState = createSelector([(state) => state.ad
 
 export const getAllRoomByOwner = createAsyncThunk(
   'renting/getAllRoomByOwner',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
+    const adminId = getState().user.currentUser.id;
     try {
-      const response = await getAllRooms();
-      return response.data;
-    } catch (error) {
-      return rejectWithValue({
-        statusCode: error.response.status,
-        message: error.response.message
-      })
-    }
-  }
-)
-export const getAllRenterByRoomId = createAsyncThunk(
-  'renting/getAllRenterByRoomId',
-  async (roomId, { rejectWithValue }) => {
-    try {
-      const response = await getAllRenterByRoomIdService(roomId);
+      const response = await getAllRooms(adminId);
       return response.data;
     } catch (error) {
       return rejectWithValue({
@@ -105,5 +92,20 @@ export const requestRenterCheckoutByOwner = createAsyncThunk(
     }
   }
 )
+export const getAllRenterByRoomId = createAsyncThunk(
+  'renting/getAllRenterByRoomId',
+  async (roomId, { rejectWithValue }) => {
+    try {
+      const response = await getAllRenterByRoomIdService(roomId);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue({
+        statusCode: error.response.status,
+        message: error.response.message
+      })
+    }
+  }
+)
+
 export const { reset } = adminAccommodationSlice.actions;
 export default adminAccommodationSlice.reducer;

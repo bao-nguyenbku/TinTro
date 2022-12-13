@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Center, Image, Pressable, ScrollView, Text, useToast, VStack } from 'native-base';
+import { RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { authMe } from 'store/reducer/user';
 import * as ImagePicker from 'expo-image-picker';
 import sendFileRequest from 'utils/sendFileRequest';
 import CustomToast from 'components/custom-toast';
@@ -58,7 +59,14 @@ const AccountMenu = (props) => {
   };
 
   return (
-    <ScrollView mb={12}>
+    <ScrollView mb={12}
+      refreshControl={
+        <RefreshControl
+          refreshing={user.loading}
+          onRefresh={() => dispatch(authMe())}
+        />
+      }
+    >
       <VStack py={4}>
         <Center>
           <Pressable onPress={pickImage}>

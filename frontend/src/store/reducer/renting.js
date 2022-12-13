@@ -71,7 +71,6 @@ export const requestCheckoutRoom = createAsyncThunk('renting/requestCheckoutRoom
     const response = await requestCheckoutRoomService({ rentingId });
     return response.data;
   } catch (error) {
-    console.log(error);
     return rejectWithValue({
       statusCode: error.response.status,
       message: error.response.message,
@@ -101,8 +100,6 @@ export const getAllCheckoutRequest = createAsyncThunk('renting/getAllCheckoutReq
     });
   }
 });
-
-
 
 export const { reset } = rentingSlice.actions;
 export default rentingSlice.reducer;

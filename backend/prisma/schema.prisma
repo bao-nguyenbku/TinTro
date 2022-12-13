@@ -115,7 +115,7 @@ model Renting {
   ownerId         Int
   room            Room          @relation(fields: [roomId], references: [id])
   roomId          Int
-  status          RentingStatus
+  status          RentingStatus @default(RENTING)
   requestRole     Role          @default(USER)
 }
 
