@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { Box, Center, Flex, Heading, HStack, Image, Pressable, ScrollView, Text, VStack } from 'native-base';
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { Dimensions, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAccomodationByOwnerId } from 'store/reducer/accommodation';
@@ -53,11 +53,24 @@ const AdminMyAccommodation = () => {
   }, [isFocused]);
 
   const details = accommodation.accommodationDetails;
-  navigation.setOptions({
-    headerShown: true,
-    headerTintColor: '#fff',
-    header: () => <HeaderAdminMyAccomodation details={details} />,
-  });
+  useLayoutEffect(() => {
+    if (details.thumbnail) {
+      navigation.setOptions({
+        headerShown: true,
+        headerTintColor: '#fff',
+        header: () => <HeaderAdminMyAccomodation details={details} />,
+      });
+    
+    }
+    return () => {
+      navigation.setOptions({
+        headerShown: undefined,
+        headerTintColor: undefined,
+        header: undefined,
+      })
+    };
+  }, [details])
+  
 
   return (
     <ScrollView

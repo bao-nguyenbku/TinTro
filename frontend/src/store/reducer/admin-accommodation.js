@@ -48,7 +48,6 @@ export const adminAccommodationSlice = createSlice({
         state.renters.loading = true;
       })
       .addCase(getAllRenterByRoomId.fulfilled, (state, action) => {
-        console.log('50:', action.payload);
         state.renters.loading = false;
         state.renters.data = action.payload;
       })
