@@ -25,8 +25,10 @@ const RoomMenu = ({ navigation, stack }) => {
     }
   ]
   const dispatch = useDispatch();
-  const { roomInfo } = useSelector(selectRentingState);
+  const { roomInfo, renting } = useSelector(selectRentingState);
   const { loading, data } = roomInfo;
+  console.log(roomInfo);
+
   useEffect(() => {
     dispatch(getRoomInfo());
   }, [])
@@ -60,10 +62,23 @@ const RoomMenu = ({ navigation, stack }) => {
           >
             <Text fontSize='xl' fontWeight='700'>Phòng {data?.room?.roomName}</Text>
             <Text>Tình trạng: <Text color='tertiary.600' fontWeight='700'>Đang thuê</Text></Text>
+            {data?.status === 'CHECKOUT' && (
+              <Box
+                bgColor='danger.100'
+                w='full'
+                rounded='xl'
+                py='8'
+                marginTop='8'
+                alignItems='center'
+              >
+                <Text fontWeight='700' fontSize='lg' color='danger.600'>Bạn đã gửi yêu cầu trả phòng</Text>
+              </Box>
+            )}
           </Box>
           <VStack
             bgColor='white'
             p='4'
+            marginTop='8'
             space='4'
             roundedTop='2xl'
           >

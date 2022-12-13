@@ -1,11 +1,12 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getRoomInfoService, requestCheckoutRoomService, getAllCheckoutRequestService } from 'services/renting';
+import { getRoomInfoService, requestCheckoutRoomService, getAllCheckoutRequestService, requestCancelCheckoutRoomService } from 'services/renting';
 
 const initialState = {
   renting: {
     loading: false,
     isSuccess: false,
     error: undefined,
+    action: '',
     data: {},
   },
   roomInfo: {
@@ -34,6 +35,7 @@ export const rentingSlice = createSlice({
         loading: false,
         isSuccess: false,
         error: undefined,
+        action: '',
         data: {},
       };
     },
@@ -52,7 +54,8 @@ export const rentingSlice = createSlice({
       })
       .addCase(requestCheckoutRoom.fulfilled, (state, action) => {
         state.renting.loading = false;
-        state.renting.data = action.payload;
+        state.renting.data = action.payload.data;
+        state.renting.action = action.payload.action;
         state.renting.isSuccess = true;
       })
       .addCase(getAllCheckoutRequest.pending, (state) => {
@@ -66,10 +69,20 @@ export const rentingSlice = createSlice({
 });
 export const selectRentingState = createSelector([(state) => state.renting], (renting) => renting);
 
-export const requestCheckoutRoom = createAsyncThunk('renting/requestCheckoutRoom', async ({ rentingId }, { rejectWithValue }) => {
+export const requestCheckoutRoom = createAsyncThunk('renting/requestCheckoutRoom', async ({ rentingId, action }, { rejectWithValue, dispatch }) => {
   try {
-    const response = await requestCheckoutRoomService({ rentingId });
-    return response.data;
+    let response;
+    if (action === 'REQUEST') {
+      response = await requestCheckoutRoomService({ rentingId });
+    }
+    if (action === 'CANCEL') {
+      response = await requestCancelCheckoutRoomService({ rentingId });
+    }
+    dispatch(getRoomInfo());
+    return {
+      data: response.data,
+      action,
+    };
   } catch (error) {
     return rejectWithValue({
       statusCode: error.response.status,

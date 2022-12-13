@@ -1,6 +1,7 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getAllRooms } from 'services/admin-accommodation';
 import { requestRenterCheckoutByOwnerService, getAllRenterByRoomIdService } from 'services/renting';
+import { getAllCheckoutRequest } from './renting';
 
 const initialState = {
   rooms: {
@@ -47,6 +48,7 @@ export const adminAccommodationSlice = createSlice({
         state.renters.loading = true;
       })
       .addCase(getAllRenterByRoomId.fulfilled, (state, action) => {
+        console.log('50:', action.payload);
         state.renters.loading = false;
         state.renters.data = action.payload;
       })
@@ -80,9 +82,10 @@ export const getAllRoomByOwner = createAsyncThunk(
 
 export const requestRenterCheckoutByOwner = createAsyncThunk(
   'renting/requestRenterCheckoutByOwner',
-  async (data, { rejectWithValue }) => {
+  async (data, { rejectWithValue, dispatch }) => {
     try {
       const response = await requestRenterCheckoutByOwnerService(data);
+      dispatch(getAllCheckoutRequest());
       return response.data;
     } catch (error) {
       return rejectWithValue({
