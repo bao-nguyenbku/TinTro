@@ -8,7 +8,6 @@ import SingleItem from './SingleItem';
 import SearchIcon from './SearchIcon';
 import RecommendAccommodation from './RecommendAccommodation';
 
-
 const AccommodationList = (props) => {
   const { navigation, stack } = props;
   const { accommodationDetails } = stack;
@@ -25,34 +24,36 @@ const AccommodationList = (props) => {
   }, [dispatch]);
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <SearchIcon {...props} />
+      headerRight: () => <SearchIcon {...props} />,
     });
-  }, [navigation]);
+  }, [navigation, props]);
   return (
-      <ScrollView 
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={() => fetchAllAccommodationData()} />}
-        contentContainerStyle={{paddingBottom: bottomBarHeight}}
-      >
-          <RecommendAccommodation navigation={navigation} {...props}/>
-          <Box paddingX="2" marginTop='8'>
-            <Text fontSize='xl' fontWeight='700'>Tiềm năng</Text>
-            {accommodations.length > 0 &&
-              accommodations.map((item) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate(accommodationDetails.title, {
-                        item,
-                      })
-                    }
-                    key={item.id}
-                  >
-                    <SingleItem data={item} />
-                  </TouchableOpacity>
-                );
-              })}
-          </Box>
-      </ScrollView>
+    <ScrollView
+      refreshControl={<RefreshControl refreshing={loading} onRefresh={() => fetchAllAccommodationData()} />}
+      contentContainerStyle={{ paddingBottom: bottomBarHeight }}
+    >
+      <RecommendAccommodation navigation={navigation} {...props} />
+      <Box paddingX="2" marginTop="8">
+        <Text fontSize="xl" fontWeight="700">
+          Tiềm năng
+        </Text>
+        {accommodations.length > 0 &&
+          accommodations.map((item) => {
+            return (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(accommodationDetails.title, {
+                    item,
+                  })
+                }
+                key={item.id}
+              >
+                <SingleItem data={item} />
+              </TouchableOpacity>
+            );
+          })}
+      </Box>
+    </ScrollView>
   );
 };
 

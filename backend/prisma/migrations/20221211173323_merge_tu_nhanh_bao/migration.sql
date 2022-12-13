@@ -92,6 +92,7 @@ CREATE TABLE "Renting" (
     "ownerId" INTEGER NOT NULL,
     "roomId" INTEGER NOT NULL,
     "status" "RentingStatus" NOT NULL,
+    "requestRole" "Role" NOT NULL DEFAULT 'USER',
 
     CONSTRAINT "Renting_pkey" PRIMARY KEY ("id")
 );
@@ -100,8 +101,11 @@ CREATE TABLE "Renting" (
 CREATE TABLE "Room" (
     "id" SERIAL NOT NULL,
     "accommodationId" INTEGER NOT NULL,
-    "roomName" TEXT NOT NULL DEFAULT '',
+    "roomName" TEXT DEFAULT '',
     "status" "RoomStatus" NOT NULL,
+    "personNumber" INTEGER NOT NULL,
+    "price" INTEGER NOT NULL,
+    "utility" TEXT NOT NULL,
 
     CONSTRAINT "Room_pkey" PRIMARY KEY ("id")
 );

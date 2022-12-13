@@ -8,6 +8,7 @@ import CustomToast from 'components/custom-toast';
 import UserMenu from './UserMenu';
 import AdminMenu from './AdminMenu';
 
+
 const mapRoleToText = (role) => {
   switch (role) {
     case 'USER':

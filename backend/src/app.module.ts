@@ -11,7 +11,6 @@ import { AccommodationModule } from './accommodation/accommodation.module';
 import { UtilsController } from './utils/utils.controller';
 import { UtilsModule } from './utils/utils.module';
 import { ReviewModule } from './review/review.module';
-
 import { MessageSectionModule } from './message-section/message-section.module';
 import { MessageModule } from './message/message.module';
 import { AdminAccommodationController } from './admin-accommodation/admin-accommodation.controller';
@@ -20,6 +19,7 @@ import { AdminAccommodationService } from './admin-accommodation/admin-accommoda
 import { UtilsService } from './utils/utils.service';
 import { AccommodationService } from './accommodation/accommodation.service';
 import { MulterModule } from '@nestjs/platform-express/multer';
+import { StatisticsModule } from './statistics/statistics.module';
 import { RentingController } from './renting/renting.controller';
 import { RentingModule } from './renting/renting.module';
 import { RentingService } from './renting/renting.service';
@@ -49,6 +49,7 @@ import { ParkingModule } from './parking/parking.module';
     ReviewModule,
     AdminAccommodationModule,
     MulterModule,
+    StatisticsModule,
     RentingModule,
     WifiModule,
     ParkingModule,

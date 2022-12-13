@@ -111,7 +111,7 @@ const CreateCheckoutRequestScreen = ({ navigation }) => {
               paddingLeft: 8,
               borderColor: '#D4D4D4',
               borderWidth: 1,
-              borderRadius: 4
+              borderRadius: 4,
               // flex: 1,
             }}
           />
@@ -131,7 +131,7 @@ const CreateCheckoutRequestScreen = ({ navigation }) => {
         <Text color='white' fontWeight='bold'>Gửi yêu cầu</Text>
       </Button>
     </Box>
-  )
-}
+  );
+};
 
 export default CreateCheckoutRequestScreen;
