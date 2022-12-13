@@ -64,10 +64,12 @@ export const getWifiInfo = createAsyncThunk('wifi/getWifiInfo', async (_, { reje
 export const registerWifi = createAsyncThunk('wifi/registerWifi', async (createData, { rejectWithValue, getState, dispatch }) => {
   try {
     dispatch(getRoomInfo());
-    const roomId = getState().renting.roomInfo.data.roomId;
+    const { roomId } = getState().renting.roomInfo.data;
+    const { roomName } = getState().renting.roomInfo.data.room;
     const response = await registerWifiService({
       roomId,
-      ...createData
+      ...createData,
+      name: roomName
     });
     return response.data;
   } catch (error) {

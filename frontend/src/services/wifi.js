@@ -6,7 +6,7 @@ export const getWifiInfoService = (roomId) => {
   return request.get(`${prefix}/${roomId}`);
 }
 export const registerWifiService = (createData) => {
-  return request.post(`${prefix}/create`, createData);
+  return request.post(`${prefix}/${createData.roomId}/create`, createData);
 }
 
 export const deleteWifiService = (wifiId) => {

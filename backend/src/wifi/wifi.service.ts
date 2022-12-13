@@ -6,6 +6,7 @@ import { Prisma, ServiceStatus } from '@prisma/client';
 export class WifiService {
   constructor(private readonly prismaService: PrismaService) {}
   async registerWifi(registerData) {
+    console.log(registerData);
     try {
       const result = await this.prismaService.wifi.create({
         data: {
@@ -20,6 +21,19 @@ export class WifiService {
         throw new HttpException('Error unknown', HttpStatus.BAD_REQUEST);
       }
       throw new Error(error);
+    }
+  }
+  async deleteWifi(wifiId: number) {
+    try {
+      return await this.prismaService.wifi.delete({
+        where: {
+          id: wifiId,
+        },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      }
     }
   }
   async getWifiInfo(roomId: number) {

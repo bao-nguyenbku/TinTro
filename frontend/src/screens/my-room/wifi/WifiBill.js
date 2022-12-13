@@ -3,7 +3,7 @@ import { Box, Text } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import { formatDate } from "utils/formatDate"; 
 import { useDispatch } from "react-redux";
-import { deleteParking } from "store/reducer/parking";
+import { deleteWifi } from "store/reducer/wifi";
 import { formatCurrency } from "utils/utils";
 import DeleteRegister from "./DeleteRegister";
 
@@ -11,7 +11,7 @@ const ParkingBill = (props) => {
   const { data } = props;
   const dispatch = useDispatch();
   const handleDelete = () => {
-    dispatch(deleteParking(data.id));
+    dispatch(deleteWifi(data.id));
   }
   return (
     <Box
@@ -40,15 +40,27 @@ const ParkingBill = (props) => {
       </Box>
       <Box
         marginTop='4'
-        marginBottom='20'
       >
-        <Text>Giá</Text>
+        <Text>Giá gói</Text>
         <Box
           bgColor='blueGray.100'
           rounded='xl'
           p='4'
         >
           <Text fontSize='md' fontWeight='700'>{formatCurrency(data.price)}</Text>
+        </Box>
+      </Box>
+      <Box
+        marginTop='4'
+        marginBottom='20'
+      >
+        <Text>Dung lượng</Text>
+        <Box
+          bgColor='blueGray.100'
+          rounded='xl'
+          p='4'
+        >
+          <Text fontSize='md' fontWeight='700'>{data.speed}</Text>
         </Box>
       </Box>
       <DeleteRegister 

@@ -1,5 +1,5 @@
 import { Controller, Post, Get, Request, Body, Param } from '@nestjs/common';
-import { UseGuards } from '@nestjs/common/decorators';
+import { Delete, UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { PrismaService } from '~/prisma/prisma.service';
 import { WifiService } from './wifi.service';
@@ -16,6 +16,8 @@ export class WifiController {
   async getWifiInfo(@Param('roomId') roomId: string) {
     return await this.wifiService.getWifiInfo(parseInt(roomId));
   }
+
+  @UseGuards(JwtAuthGuard)
   @Post('/:roomId/create')
   async registerWifi(
     @Request() req,
@@ -26,5 +28,11 @@ export class WifiController {
       ...createData,
       roomId: parseInt(roomId),
     });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:id/delete')
+  async deleteWifi(@Param('id') wifiId: string) {
+    return await this.wifiService.deleteWifi(parseInt(wifiId));
   }
 }
