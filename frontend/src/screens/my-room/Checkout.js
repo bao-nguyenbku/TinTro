@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import ConfirmModal from 'components/confirm-modal';
 import { CONFIRM_MODAL } from 'constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { requestCheckoutRoom, selectRentingState, reset, getRoomInfo } from 'store/reducer/renting';
+import { requestCheckoutRoom, selectRentingState, reset } from 'store/reducer/renting';
 
 const CheckoutButton = (props) => {
   const { data } = props;
@@ -30,18 +30,17 @@ const CheckoutButton = (props) => {
       if (action === 'REQUEST') {
         setButtonProps({
           title: 'Hủy yêu cầu trả phòng',
-          action: 'CANCEL'
+          action: 'CANCEL',
         });
         toast.show({
           title: 'Yêu cầu trả phòng thành công',
           description: 'Vui lòng đợi chủ trọ xác nhận cho bạn',
           placement: 'top',
         });
-      }
-      else if (action === 'CANCEL') {
+      } else if (action === 'CANCEL') {
         setButtonProps({
           title: 'Yêu cầu trả phòng',
-          action: 'REQUEST'
+          action: 'REQUEST',
         });
         toast.show({
           title: 'Hủy yêu cầu thành công',
@@ -64,11 +63,11 @@ const CheckoutButton = (props) => {
         <Button
           onPress={onOpen}
           bgColor={buttonProps.disable ? 'danger.600:alpha.60' : 'danger.600'}
-          roundedTop='0'
-          roundedBottom='2xl'
-          p='5'
-          w='full'
-          alignItems='center'
+          roundedTop="0"
+          roundedBottom="2xl"
+          p="5"
+          w="full"
+          alignItems="center"
           isLoading={loading}
           _pressed={{
             opacity: 0.8,
@@ -84,12 +83,9 @@ const CheckoutButton = (props) => {
         onOpen={onOpen}
         onClose={onClose}
         headerTitle="Xác nhận yêu cầu"
-        content={buttonProps.action === 'REQUEST' 
-          ? "Bạn có chắc chắn muốn trả phòng?"
-          : "Bạn chắc chắn muốn hủy yêu cầu này"
-        }
+        content={buttonProps.action === 'REQUEST' ? 'Bạn có chắc chắn muốn trả phòng?' : 'Bạn chắc chắn muốn hủy yêu cầu này'}
         cancelTitle="Hủy"
-        saveTitle='Đồng ý'
+        saveTitle="Đồng ý"
         onConfirm={onConfirm}
         status={CONFIRM_MODAL.DELETE}
       />
