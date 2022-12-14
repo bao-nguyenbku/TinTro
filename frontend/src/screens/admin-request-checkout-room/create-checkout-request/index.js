@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, VStack, FormControl, CheckIcon, Select, Button, Text, isEmptyObj } from 'native-base';
+import { Box, VStack, FormControl, CheckIcon, Select, Button, Text, isEmptyObj, WarningOutlineIcon } from 'native-base';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,26 +10,61 @@ const CreateCheckoutRequestScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { rooms, renters, requestCheckout } = useSelector(selectAdminAccommodationState);
   const { loading, data } = rooms;
-  const [formValues, setFormValues] = useState({
-    roomId: -1,
-    renterId: -1,
-    phoneNumber: 0
-  })
   const bottomBarHeight = useBottomTabBarHeight();
+  const [formValues, setFormValues] = useState({
+    roomId: undefined,
+    renterId: undefined,
+    phoneNumber: undefined
+  })
+  const [errors, setErrors] = useState({
+    room: '',
+    renter: '',
+    phoneNumber: '',
+    isPass: false
+  })
+
+  const handleChooseRenter = (value) => {
+    dispatch(getAllRenterByRoomId(value));
+  }
+
+  const validateSubmitForm = (values) => {
+    const tmpErrors = {
+      room: '',
+      renter: '',
+      phoneNumber: '',
+      isPass: false
+    };
+    if (!values.roomId) {
+      tmpErrors.room = 'You must select a room';
+    }
+    if (!values.renter) {
+      tmpErrors.renter = 'You must select a renter';
+    }
+    if (!values.phoneNumber) {
+      tmpErrors.phoneNumber = 'Your must enter phone number of renter';
+    }
+    setErrors(tmpErrors);
+    return tmpErrors.isPass;
+  }
+
+  const handleSubmit = () => {
+    validateSubmitForm(formValues);
+    //  dispatch(requestRenterCheckoutByOwner(formValues));
+
+  }
+  useEffect(() => {
+    if (errors.isPass) {
+      console.log('yeah ok');
+    }
+  }, [errors])
   useEffect(() => {
     dispatch(getAllRoomByOwner());
   }, [])
   useEffect(() => {
-    if (requestCheckout.isSuccess &&  !isEmptyObj(requestCheckout.data)) {
+    if (requestCheckout.isSuccess && !isEmptyObj(requestCheckout.data)) {
       navigation.navigate('AdminRequestCheckoutRoom');
     }
   }, [requestCheckout.isSuccess])
-  const handleChooseRenter = (value) => {
-    dispatch(getAllRenterByRoomId(value));
-  }
-  const handleSubmit = () => {
-   dispatch(requestRenterCheckoutByOwner(formValues));
-  }
   if (loading) {
     return <Loading />
   }
@@ -67,9 +102,9 @@ const CreateCheckoutRequestScreen = ({ navigation }) => {
               )
             })}
           </Select>
-          {/* <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-            Please make a selection!
-          </FormControl.ErrorMessage> */}
+          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+            {errors.room}
+          </FormControl.ErrorMessage>
         </FormControl>
         <FormControl w="3/4" maxW="300" isRequired isInvalid>
           <FormControl.Label>Chọn người thuê</FormControl.Label>
@@ -94,6 +129,9 @@ const CreateCheckoutRequestScreen = ({ navigation }) => {
               })}
             </Select>
           )}
+          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+            {errors.renter}
+          </FormControl.ErrorMessage>
         </FormControl>
         <FormControl w="3/4" maxW="300" isRequired isInvalid>
           <FormControl.Label>Số điện thoại</FormControl.Label>
@@ -115,6 +153,9 @@ const CreateCheckoutRequestScreen = ({ navigation }) => {
               // flex: 1,
             }}
           />
+          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+            {errors.phoneNumber}
+          </FormControl.ErrorMessage>
         </FormControl>
       </VStack>
       <Button
@@ -125,6 +166,7 @@ const CreateCheckoutRequestScreen = ({ navigation }) => {
         _pressed={{
           opacity: 0.8
         }}
+        isLoading={requestCheckout.loading}
         onPress={handleSubmit}
         height='50px'
       >
