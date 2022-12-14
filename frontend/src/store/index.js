@@ -3,13 +3,19 @@ import accommodationReducer from './reducer/accommodation';
 import userReducer from './reducer/user';
 import messageReducer from './reducer/message';
 import rentingReducer from './reducer/renting';
+import adminAccommodationReducer from './reducer/admin-accommodation';
+import parkingReducer from './reducer/parking';
+import wifiReducer from './reducer/wifi';
 
 const store = configureStore({
     reducer: {
         user: userReducer,
         message: messageReducer,
         accommodation: accommodationReducer,
-        renting: rentingReducer
+        renting: rentingReducer,
+        adminAccommodation: adminAccommodationReducer,
+        parking: parkingReducer,
+        wifi: wifiReducer
     },
 });
 

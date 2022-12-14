@@ -1,11 +1,12 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getRoomInfoService, requestCheckoutRoomService, getAllCheckoutRequestService } from 'services/renting';
+import { getRoomInfoService, requestCheckoutRoomService, getAllCheckoutRequestService, requestCancelCheckoutRoomService, acceptCheckoutRoomService } from 'services/renting';
 
 const initialState = {
   renting: {
     loading: false,
     isSuccess: false,
     error: undefined,
+    action: '',
     data: {},
   },
   roomInfo: {
@@ -34,6 +35,7 @@ export const rentingSlice = createSlice({
         loading: false,
         isSuccess: false,
         error: undefined,
+        action: '',
         data: {},
       };
     },
@@ -51,9 +53,9 @@ export const rentingSlice = createSlice({
         state.renting.loading = true;
       })
       .addCase(requestCheckoutRoom.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.renting.loading = false;
-        state.renting.data = action.payload;
+        state.renting.data = action.payload.data;
+        state.renting.action = action.payload.action;
         state.renting.isSuccess = true;
       })
       .addCase(getAllCheckoutRequest.pending, (state) => {
@@ -62,17 +64,26 @@ export const rentingSlice = createSlice({
       .addCase(getAllCheckoutRequest.fulfilled, (state, action) => {
         state.adminRenting.loading = false;
         state.adminRenting.checkoutRequestList = action.payload;
-      });
+      })
   },
 });
 export const selectRentingState = createSelector([(state) => state.renting], (renting) => renting);
 
-export const requestCheckoutRoom = createAsyncThunk('renting/requestCheckoutRoom', async ({ rentingId }, { rejectWithValue }) => {
+export const requestCheckoutRoom = createAsyncThunk('renting/requestCheckoutRoom', async ({ rentingId, action }, { rejectWithValue, dispatch }) => {
   try {
-    const response = await requestCheckoutRoomService({ rentingId });
-    return response.data;
+    let response;
+    if (action === 'REQUEST') {
+      response = await requestCheckoutRoomService({ rentingId });
+    }
+    if (action === 'CANCEL') {
+      response = await requestCancelCheckoutRoomService({ rentingId });
+    }
+    dispatch(getRoomInfo());
+    return {
+      data: response.data,
+      action,
+    };
   } catch (error) {
-    console.log(error);
     return rejectWithValue({
       statusCode: error.response.status,
       message: error.response.message,
@@ -102,8 +113,18 @@ export const getAllCheckoutRequest = createAsyncThunk('renting/getAllCheckoutReq
     });
   }
 });
-
-
+export const acceptCheckoutRoom = createAsyncThunk('renting/acceptCheckoutRoom', async (rentingId, { rejectWithValue, dispatch }) => {
+  try {
+    const response = await acceptCheckoutRoomService(rentingId);
+    dispatch(getAllCheckoutRequest());
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
+  }
+});
 
 export const { reset } = rentingSlice.actions;
 export default rentingSlice.reducer;

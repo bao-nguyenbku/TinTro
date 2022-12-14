@@ -6,7 +6,7 @@ const CheckoutRequestButton = ({ navigation }) => {
    
       <Button
         bgColor='tertiary.600'
-        width='95%'
+        width='full'
         mx='auto'
         _pressed={{
           opacity: 0.8

@@ -75,8 +75,8 @@ const AdminMenu = ({ setLoading, loading, dispatch, navigation }) => {
           {({ isPressed }) => (
             <Flex backgroundColor={isPressed ? 'muted.100' : '#fff'} alignItems="center" justifyContent="space-between" direction="row">
               <HStack alignItems="center" space={4} direction="row">
-                <Box borderRadius="full" p={1.5} bgColor="danger.100">
-                  <MaterialCommunityIcons color="red" name="logout" size={24} />
+                <Box borderRadius="full" p={1.5} bgColor="danger.100" alignItems='center' justifyContent='center'>
+                  <Ionicons name='log-out-outline' size={24} color='#F43F5E'/>
                 </Box>
                 <VStack space={1}>
                   <Text color="danger.500" fontSize="sm" bold>

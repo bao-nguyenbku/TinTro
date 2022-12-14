@@ -4,7 +4,7 @@ import ConfirmModal from 'components/confirm-modal';
 import Loading from 'components/loading';
 import { Avatar, Button, Center, Flex, Heading, HStack, Menu, Pressable, ScrollView, Text, useDisclose, useToast, VStack } from 'native-base';
 import React, { useEffect } from 'react';
-import { RefreshControl } from 'react-native-gesture-handler';
+import { RefreshControl, Linking } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { assignUserToRoom, deleteRentRequestById, getRentRequestsAdmin } from 'store/reducer/accommodation';
@@ -16,7 +16,7 @@ const UserRequestCard = ({ id, name, phone, createdAt, avatar, navigation, detai
   const toast = useToast();
   const [position] = React.useState('auto');
   return (
-    <VStack bg="#fff" space={6} px={3} py={4}>
+    <VStack bg="white" space='4' rounded='xl' justifyContent='space-between' px='3' pt='3'>
       <HStack justifyContent="space-between">
         <HStack space={3}>
           <Avatar source={{ uri: avatar }} />
@@ -45,11 +45,13 @@ const UserRequestCard = ({ id, name, phone, createdAt, avatar, navigation, detai
           >
             {({ isPressed }) => (
               <Center w={42} h={42} borderRadius={12} bg={isPressed ? '#fff' : 'warmGray.100'}>
-                <Ionicons name="chatbubble-ellipses-outline" size={24} color="#737373" />
+                <Ionicons name="chatbubble-ellipses" size={24} color="#737373" />
               </Center>
             )}
           </Pressable>
-          <Pressable onPress={() => {}}>
+          <Pressable onPress={() => { 
+            Linking.openURL(`tel://${phone}`)
+          }}>
             {({ isPressed }) => (
               <Center w={42} h={42} borderRadius={12} bg={isPressed ? '#fff' : 'warmGray.100'}>
                 <Ionicons name="call" size={24} color="#737373" />
@@ -62,7 +64,7 @@ const UserRequestCard = ({ id, name, phone, createdAt, avatar, navigation, detai
       <HStack justifyContent="space-between">
         <VStack>
           <Text color="muted.500">Đã yêu cầu lúc:</Text>
-          <Text color="muted.500">{formatDate(createdAt, 'DD-MM-YYYY HH:ss')}</Text>
+          <Text color="muted.500">{formatDate(createdAt, 'DD-MM-YYYY hh:mmA')}</Text>
         </VStack>
         <HStack space={2}>
           <Button isLoading={loading} onPress={onOpen} variant="ghost" _text={{ color: 'danger.500' }}>
@@ -146,30 +148,32 @@ const RequestList = () => {
   // eslint-disable-next-line no-nested-ternary
   return accommodation.loading ? (
     <Loading />
-  ) : accommodation.adminRentRequests.length ? (
-    <ScrollView refreshControl={<RefreshControl refreshing={accommodation.loading} onRefresh={() => dispatch(getRentRequestsAdmin())} />}>
-      <VStack px={3.5} pt={4}>
-        {accommodation.adminRentRequests.map((rentRequest) => (
-          <UserRequestCard
-            key={rentRequest.id}
-            rentRequestId={rentRequest.id}
-            name={rentRequest.renter.user.name}
-            avatar={rentRequest.renter.user.avatar}
-            phone={rentRequest.renter.user.phone}
-            createdAt={rentRequest.renter.user.createdAt}
-            id={rentRequest.renter.user.id}
-            navigation={navigation}
-            details={accommodation.accommodationDetails}
-            dispatch={dispatch}
-          />
-        ))}
-      </VStack>
-    </ScrollView>
   ) : (
-    <Flex alignItems="center" h="full">
-      Không có yêu cầu thuê phòng
-    </Flex>
-  );
+    <ScrollView refreshControl={<RefreshControl refreshing={accommodation.loading} onRefresh={() => dispatch(getRentRequestsAdmin())} />}>
+      {accommodation.adminRentRequests.length ? (
+        <VStack px='4' pt='4'>
+          {accommodation.adminRentRequests.map((rentRequest) => (
+            <UserRequestCard
+              key={rentRequest.id}
+              rentRequestId={rentRequest.id}
+              name={rentRequest.renter.user.name}
+              avatar={rentRequest.renter.user.avatar}
+              phone={rentRequest.renter.user.phone}
+              createdAt={rentRequest.renter.user.createdAt}
+              id={rentRequest.renter.user.id}
+              navigation={navigation}
+              details={accommodation.accommodationDetails}
+              dispatch={dispatch}
+            />
+          ))}
+        </VStack>
+      ) : (
+        <Flex alignItems="center" h="full">
+          Không có yêu cầu thuê phòng
+        </Flex>
+      )}
+    </ScrollView>
+  )
 };
 
 export default RequestList;

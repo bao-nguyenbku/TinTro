@@ -40,16 +40,36 @@ export class RentingController {
     );
     return result;
   }
+  @UseGuards(JwtAuthGuard)
+  @Get('/:id/delete')
+  async acceptCheckoutRoom(@Param('id') rentingId: string) {
+    const result = await this.rentingService.acceptCheckoutRoom(
+      parseInt(rentingId),
+    );
+    return result;
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('/:id/cancel-checkout')
+  async requestCancelCheckoutRoom(@Param('id') rentingId: string) {
+    const result = await this.rentingService.cancelRequestCheckoutRoom(
+      parseInt(rentingId),
+    );
+    return result;
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('/rooms/:roomId')
+  async getAllRenterByRoomId(@Param('roomId') roomId: string) {
+    const result = await this.rentingService.getAllRenterByRoomId(
+      parseInt(roomId),
+    );
+    return result;
+  }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/:id/owner-checkout')
-  async ownerRequestCheckout(@Param('id') rentingId: string, @Request() req) {
+  @Post('/owner-checkout')
+  async ownerRequestCheckout(@Request() req, @Body() data: any) {
     if (req.user.role === 'ADMIN') {
-      const ownerId = req.user.id;
-      const result = await this.rentingService.ownerRequestCheckout(
-        parseInt(rentingId),
-      );
-      return result;
+      return this.rentingService.ownerRequestCheckout(data);
     }
     throw new HttpException(
       'This user can not operate this action',

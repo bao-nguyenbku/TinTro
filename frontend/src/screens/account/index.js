@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Center, Image, Pressable, ScrollView, Text, useToast, VStack } from 'native-base';
+import { RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { authMe } from 'store/reducer/user';
 import * as ImagePicker from 'expo-image-picker';
 import sendFileRequest from 'utils/sendFileRequest';
 import CustomToast from 'components/custom-toast';
+import Loading from 'components/loading';
 import UserMenu from './UserMenu';
 import AdminMenu from './AdminMenu';
 
@@ -49,6 +51,7 @@ const AccountMenu = (props) => {
         await sendFileRequest.post('/users/upload-avatar', formData);
         toast.show({
           render: () => <CustomToast title="Cập nhật ảnh đại diện thành công." status="success" />,
+          placement: 'top'
         });
         setImage(result.assets[0].uri);
       } catch (err) {
@@ -56,9 +59,18 @@ const AccountMenu = (props) => {
       }
     }
   };
-
+  if (user.loading) {
+    return <Loading />
+  }
   return (
-    <ScrollView mb={12}>
+    <ScrollView mb={12}
+      refreshControl={
+        <RefreshControl
+          refreshing={user.loading}
+          onRefresh={() => dispatch(authMe())}
+        />
+      }
+    >
       <VStack py={4}>
         <Center>
           <Pressable onPress={pickImage}>
@@ -77,8 +89,8 @@ const AccountMenu = (props) => {
           <Text color="muted.500">{user.currentUser.role ? mapRoleToText(user.currentUser.role) : 'Khách'}</Text>
         </Center>
 
-        {user.currentUser.role === 'USER' && <UserMenu loading={loading} setLoading={setLoading} dispatch={dispatch} {...props}/>}
-        {user.currentUser.role === 'ADMIN' && <AdminMenu loading={loading} setLoading={setLoading} dispatch={dispatch} {...props}/>}
+        {user.currentUser.role === 'USER' && <UserMenu loading={loading} setLoading={setLoading} dispatch={dispatch} {...props} />}
+        {user.currentUser.role === 'ADMIN' && <AdminMenu loading={loading} setLoading={setLoading} dispatch={dispatch} {...props} />}
       </VStack>
     </ScrollView>
   );

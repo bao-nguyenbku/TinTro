@@ -23,6 +23,12 @@ import { StatisticsModule } from './statistics/statistics.module';
 import { RentingController } from './renting/renting.controller';
 import { RentingModule } from './renting/renting.module';
 import { RentingService } from './renting/renting.service';
+import { WifiController } from './wifi/wifi.controller';
+import { WifiService } from './wifi/wifi.service';
+import { WifiModule } from './wifi/wifi.module';
+import { ParkingController } from './parking/parking.controller';
+import { ParkingService } from './parking/parking.service';
+import { ParkingModule } from './parking/parking.module';
 
 @Module({
   imports: [
@@ -45,9 +51,26 @@ import { RentingService } from './renting/renting.service';
     MulterModule,
     StatisticsModule,
     RentingModule,
+    WifiModule,
+    ParkingModule,
   ],
-  controllers: [AppController, UtilsController, AdminAccommodationController, RentingController,],
-  providers: [AppService, PrismaService, AdminAccommodationService, UtilsService, AccommodationService, RentingService,],
-  
+  controllers: [
+    AppController,
+    UtilsController,
+    AdminAccommodationController,
+    RentingController,
+    WifiController,
+    ParkingController,
+  ],
+  providers: [
+    AppService,
+    PrismaService,
+    AdminAccommodationService,
+    UtilsService,
+    AccommodationService,
+    RentingService,
+    WifiService,
+    ParkingService,
+  ],
 })
 export class AppModule {}

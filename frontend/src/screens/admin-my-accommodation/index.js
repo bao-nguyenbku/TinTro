@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { Box, Center, Flex, Heading, HStack, Image, Pressable, ScrollView, Text, VStack } from 'native-base';
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { Dimensions, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAccomodationByOwnerId } from 'store/reducer/accommodation';
@@ -25,7 +25,7 @@ const HeaderAdminMyAccomodation = ({ details }) => {
   return (
     <VStack px={4} h="165px">
       <Center>
-        <Image source={{ uri: details.thumbnail }} alt={details.name} size={width} position="absolute" />
+        <Image source={{ uri: details.thumbnail }} alt={details.name} size={width} position="absolute" blurRadius={2}/>
       </Center>
       <VStack px={4} bg="#fff" py={2} borderRadius={12} height="3/4" zIndex={2} top={100}>
         <Center w="full" mb={4}>
@@ -50,14 +50,27 @@ const AdminMyAccommodation = () => {
   const isFocused = useIsFocused();
   useEffect(() => {
     dispatch(fetchAccomodationByOwnerId());
-  }, [dispatch, isFocused]);
+  }, [isFocused]);
 
   const details = accommodation.accommodationDetails;
-  navigation.setOptions({
-    headerShown: true,
-    headerTintColor: '#fff',
-    header: () => <HeaderAdminMyAccomodation details={details} />,
-  });
+  useLayoutEffect(() => {
+    if (details.thumbnail) {
+      navigation.setOptions({
+        headerShown: true,
+        headerTintColor: '#fff',
+        header: () => <HeaderAdminMyAccomodation details={details} />,
+      });
+    
+    }
+    return () => {
+      navigation.setOptions({
+        headerShown: undefined,
+        headerTintColor: undefined,
+        header: undefined,
+      })
+    };
+  }, [details])
+  
 
   return (
     <ScrollView
@@ -78,15 +91,15 @@ const AdminMyAccommodation = () => {
       </HStack>
       <HStack flexWrap="wrap" space={2}>
         {details.rooms.map((room) => (
-          <Pressable w="31%" onPress={() => navigation.navigate('NewRoomForm', { isEdit: true, room })}>
+          <Pressable key={room.id} w="31%" onPress={() => navigation.navigate('NewRoomForm', { isEdit: true, room })}>
             <Center mb={2} alignItems="center" borderRadius={12} bg="#fff">
               <VStack alignItems="center" justifyContent="center" py={2.5} space={2}>
-                <Box w={84} h={84} alignItems="center" justifyContent="center" bg="success.200" borderRadius="full">
-                  <Text isTruncated noOfLines={1}>
+                <Box w={84} h={84} alignItems="center" justifyContent="center" bg={room.status === 'AVAILABLE' ? "success.200" : "error.100"} borderRadius="full">
+                  <Text isTruncated fontWeight='700' noOfLines={1} color={room.status === 'AVAILABLE' ? 'tertiary.600' : 'error.600'}>
                     {room.roomName}
                   </Text>
                 </Box>
-                <Text bold color="tertiary.600">
+                <Text bold color={room.status === 'AVAILABLE' ? "tertiary.600" : "error.600"}>
                   {mapRoomStatusToText(room.status)}
                 </Text>
               </VStack>

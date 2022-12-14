@@ -8,7 +8,6 @@ import Loading from 'components/loading';
 
 const HomeNav = () => {
   const { currentUser, loading } = useSelector(selectUserState);
-
   if (loading) {
     return <Loading />;
   }

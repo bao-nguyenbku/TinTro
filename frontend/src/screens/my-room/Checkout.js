@@ -4,45 +4,55 @@ import { TouchableOpacity } from 'react-native';
 import ConfirmModal from 'components/confirm-modal';
 import { CONFIRM_MODAL } from 'constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { requestCheckoutRoom, selectRentingState, reset } from 'store/reducer/renting';
+import { requestCheckoutRoom, selectRentingState, reset, getRoomInfo } from 'store/reducer/renting';
 
 const CheckoutButton = (props) => {
   const { data } = props;
   const dispatch = useDispatch();
   const { renting } = useSelector(selectRentingState);
-  const { loading, isSuccess } = renting;
+  const { loading, action, isSuccess } = renting;
   const toast = useToast();
   const { onOpen, isOpen, onClose } = useDisclose();
   const [buttonProps, setButtonProps] = useState({
-    disable: false,
+    action: 'REQUEST',
     title: 'Yêu cầu trả phòng',
   });
   useEffect(() => {
     if (data.status === 'CHECKOUT') {
       setButtonProps({
-        disable: true,
+        action: 'CANCEL',
         title: 'Hủy yêu cầu trả phòng',
       });
     }
   }, [data.status]);
-
   useEffect(() => {
     if (isSuccess) {
-      setButtonProps({
-        title: 'Hủy yêu cầu trả phòng',
-        disable: true,
-      });
-      toast.show({
-        title: 'Yêu cầu trả phòng thành công',
-        description: 'Vui lòng đợi chủ trọ xác nhận cho bạn',
-        placement: 'top',
-      });
+      if (action === 'REQUEST') {
+        setButtonProps({
+          title: 'Hủy yêu cầu trả phòng',
+          action: 'CANCEL'
+        });
+        toast.show({
+          title: 'Yêu cầu trả phòng thành công',
+          description: 'Vui lòng đợi chủ trọ xác nhận cho bạn',
+          placement: 'top',
+        });
+      }
+      else if (action === 'CANCEL') {
+        setButtonProps({
+          title: 'Yêu cầu trả phòng',
+          action: 'REQUEST'
+        });
+        toast.show({
+          title: 'Hủy yêu cầu thành công',
+          placement: 'top',
+        });
+      }
     }
     return () => dispatch(reset());
-  }, [isSuccess, toast, dispatch]);
-
+  }, [isSuccess]);
   const onConfirm = () => {
-    dispatch(requestCheckoutRoom({ rentingId: data.id }));
+    dispatch(requestCheckoutRoom({ rentingId: data.id, action: buttonProps.action }));
   };
   return (
     <>
@@ -54,12 +64,12 @@ const CheckoutButton = (props) => {
         <Button
           onPress={onOpen}
           bgColor={buttonProps.disable ? 'danger.600:alpha.60' : 'danger.600'}
-          rounded="xl"
-          p="5"
-          w="full"
-          alignItems="center"
+          roundedTop='0'
+          roundedBottom='2xl'
+          p='5'
+          w='full'
+          alignItems='center'
           isLoading={loading}
-          disabled={buttonProps.disable}
           _pressed={{
             opacity: 0.8,
           }}
@@ -74,9 +84,12 @@ const CheckoutButton = (props) => {
         onOpen={onOpen}
         onClose={onClose}
         headerTitle="Xác nhận yêu cầu"
-        content="Bạn có chắc chắn muốn trả phòng?"
+        content={buttonProps.action === 'REQUEST' 
+          ? "Bạn có chắc chắn muốn trả phòng?"
+          : "Bạn chắc chắn muốn hủy yêu cầu này"
+        }
         cancelTitle="Hủy"
-        saveTitle="Trả phòng"
+        saveTitle='Đồng ý'
         onConfirm={onConfirm}
         status={CONFIRM_MODAL.DELETE}
       />

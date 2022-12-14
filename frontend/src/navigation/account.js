@@ -11,47 +11,6 @@ import RentRequestScreen from 'screens/rent-request';
 
 const Stack = createNativeStackNavigator();
 
-const adminAccountMenu = [
-  <Stack.Screen
-    options={{
-      title: 'Thống kê',
-    }}
-    name="AdminRoomStatistics"
-    component={AdminRoomStatistics}
-  />,
-  <Stack.Screen
-    name="RentRequestList"
-    component={RentRequestScreen}
-    options={{
-      title: 'Danh sách yêu cầu thuê phòng',
-    }}
-  />,
-  <Stack.Screen
-    name="AdminRequestCheckoutRoom"
-    component={AdminRequestCheckoutRoomScreen}
-    options={{
-      title: 'Yêu cầu trả phòng',
-    }}
-  />,
-  <Stack.Screen
-    name="AdminCreateRequestCheckoutRoom"
-    component={CreateCheckoutRequestScreen}
-    options={{
-      title: 'Tạo yêu cầu trả phòng',
-    }}
-  />,
-];
-
-const userAccountMenu = [
-  <Stack.Screen
-    name="RentRequestList"
-    component={RentRequestScreen}
-    options={{
-      title: 'Danh sách yêu cầu thuê phòng',
-    }}
-  />,
-];
-
 const AccountNav = () => {
   const user = useSelector((state) => state.user);
   const role = user.currentUser.role;
@@ -68,7 +27,49 @@ const AccountNav = () => {
     >
       <Stack.Screen name="AccountMenu" component={AccountMenu} />
 
-      {role === 'ADMIN' ? adminAccountMenu : userAccountMenu}
+      {role === 'ADMIN'
+        ? (
+          <>
+            <Stack.Screen
+              options={{
+                title: 'Thống kê'
+              }}
+              name="AdminRoomStatistics"
+              component={AdminRoomStatistics}
+            />
+            <Stack.Screen
+              name="RentRequestList"
+              component={RentRequestScreen}
+              options={{
+                title: 'Danh sách yêu cầu thuê phòng',
+              }}
+            />
+            <Stack.Screen
+              name="AdminRequestCheckoutRoom"
+              component={AdminRequestCheckoutRoomScreen}
+              options={{
+                title: 'Yêu cầu trả phòng',
+              }}
+            />
+            <Stack.Screen
+              name="AdminCreateRequestCheckoutRoom"
+              component={CreateCheckoutRequestScreen}
+              options={{
+                title: 'Tạo yêu cầu trả phòng',
+              }}
+            />
+          </>
+        )
+        : (
+          <Stack.Screen
+            name="RentRequestList"
+            component={RentRequestScreen}
+            options={{
+              title: 'Danh sách yêu cầu thuê phòng',
+            }}
+          />
+        )
+      }
     </Stack.Navigator>
   );
 };
