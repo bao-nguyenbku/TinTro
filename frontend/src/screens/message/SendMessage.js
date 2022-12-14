@@ -11,7 +11,7 @@ import { disableBottomTabBar } from 'utils/utils';
 import { Platform, RefreshControl } from 'react-native';
 import { useTopHeight } from 'hooks/useHeaderHeight';
 
-const socketUrl = `${process.env.WS_BASE_URL || 'ws://obedient-veil-production.up.railway.app'}/message`;
+const socketUrl = `https://obedient-veil-production.up.railway.app/message`;
 
 const SendMessage = ({ route }) => {
   const { fromId } = route.params;
@@ -66,9 +66,12 @@ const SendMessage = ({ route }) => {
         socketRef.current = socket;
       });
     }
-    // !xu ly disconnect socket
+
     return () => {
       disableBottomTabBar(navigation, { action: 'clean' });
+      socketRef.current?.off('connect');
+      socketRef.current?.off('client-all-past-messages');
+      socketRef.current?.off('client-receive-message');
       socketRef.current?.disconnect();
     };
   }, [isFocus, dispatch, fromId, messageSectionId, navigation]);
