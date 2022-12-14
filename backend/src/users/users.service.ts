@@ -101,9 +101,15 @@ export class UsersService {
     });
 
     userWithMessageSections.messageSections.sort((a, b) => {
-      const aDate = new Date(a.messages[0].createdAt);
-      const bDate = new Date(b.messages[0].createdAt);
-      return bDate.getTime() - aDate.getTime();
+      const aDate =
+        a.messages.length > 0 && a.messages[0]?.createdAt
+          ? new Date(a.messages[0]?.createdAt)
+          : null;
+      const bDate =
+        b.messages.length > 0 && b.messages[0]?.createdAt
+          ? new Date(b.messages[0]?.createdAt)
+          : null;
+      return aDate && bDate ? bDate.getTime() - aDate.getTime() : 1;
     });
 
     return userWithMessageSections;

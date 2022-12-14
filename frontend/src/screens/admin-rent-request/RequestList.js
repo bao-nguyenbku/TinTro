@@ -16,7 +16,7 @@ const UserRequestCard = ({ id, name, phone, createdAt, avatar, navigation, detai
   const toast = useToast();
   const [position] = React.useState('auto');
   return (
-    <VStack bg="white" space='4' rounded='xl' justifyContent='space-between' px='3' pt='3'>
+    <VStack bg="white" space="4" rounded="xl" justifyContent="space-between" px="3" pt="3">
       <HStack justifyContent="space-between">
         <HStack space={3}>
           <Avatar source={{ uri: avatar }} />
@@ -38,8 +38,8 @@ const UserRequestCard = ({ id, name, phone, createdAt, avatar, navigation, detai
                   fromId: id,
                   avatar,
                   name,
-                  initial: false,
                 },
+                initial: false,
               });
             }}
           >
@@ -49,9 +49,11 @@ const UserRequestCard = ({ id, name, phone, createdAt, avatar, navigation, detai
               </Center>
             )}
           </Pressable>
-          <Pressable onPress={() => { 
-            Linking.openURL(`tel://${phone}`)
-          }}>
+          <Pressable
+            onPress={() => {
+              Linking.openURL(`tel://${phone}`);
+            }}
+          >
             {({ isPressed }) => (
               <Center w={42} h={42} borderRadius={12} bg={isPressed ? '#fff' : 'warmGray.100'}>
                 <Ionicons name="call" size={24} color="#737373" />
@@ -151,7 +153,7 @@ const RequestList = () => {
   ) : (
     <ScrollView refreshControl={<RefreshControl refreshing={accommodation.loading} onRefresh={() => dispatch(getRentRequestsAdmin())} />}>
       {accommodation.adminRentRequests.length ? (
-        <VStack px='4' pt='4'>
+        <VStack px="4" pt="4">
           {accommodation.adminRentRequests.map((rentRequest) => (
             <UserRequestCard
               key={rentRequest.id}
@@ -173,7 +175,7 @@ const RequestList = () => {
         </Flex>
       )}
     </ScrollView>
-  )
+  );
 };
 
 export default RequestList;

@@ -52,8 +52,8 @@ const AccommodationDetailsScreen = (props) => {
         fromId: owner?.id,
         avatar: owner?.avatar,
         name: owner?.name,
-        initial: false,
       },
+      initial: false,
     });
   };
 

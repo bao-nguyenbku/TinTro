@@ -13,7 +13,7 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
   app.useGlobalPipes(new ValidationPipe());
-  app.use(morgan('dev'));
+  // app.use(morgan('dev'));
   const config = new DocumentBuilder()
     .setTitle('TinTro')
     .setDescription('The TinTro API description')
