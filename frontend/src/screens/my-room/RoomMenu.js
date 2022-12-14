@@ -5,15 +5,15 @@ import { selectRentingState, getRoomInfo } from 'store/reducer/renting';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from 'components/loading';
 import { Ionicons } from '@expo/vector-icons';
-import CheckoutButton from './Checkout';
 import { useContainerHeight } from 'hooks/useContainerHeight';
+import CheckoutButton from './Checkout';
 
 const isUserRequest = (data) => {
-  return data?.status === 'CHECKOUT'  && data?.requestRole === 'USER';
-}
+  return data?.status === 'CHECKOUT' && data?.requestRole === 'USER';
+};
 const isAdminRequest = (data) => {
-  return data?.status === 'CHECKOUT'  && data?.requestRole === 'ADMIN';
-}
+  return data?.status === 'CHECKOUT' && data?.requestRole === 'ADMIN';
+};
 const RoomMenu = ({ navigation, stack }) => {
   const menus = [
     {
@@ -38,21 +38,14 @@ const RoomMenu = ({ navigation, stack }) => {
   useEffect(() => {
     dispatch(getRoomInfo());
   }, []);
-  
+
   if (loading) {
     return <Loading />;
   }
   return (
     <ScrollView flex={1} refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
       {isEmptyObj(data) ? (
-        <Box 
-          flex={1} 
-          alignItems="center" 
-          justifyContent="center"
-          position='absolute'
-          top={Math.floor(containerHeight / 2)}
-          width='full'
-        >
+        <Box flex={1} alignItems="center" justifyContent="center" position="absolute" top={Math.floor(containerHeight / 2)} width="full">
           <Text>Bạn chưa thuê phòng nào</Text>
         </Box>
       ) : (
@@ -81,9 +74,7 @@ const RoomMenu = ({ navigation, stack }) => {
               </Box>
             )}
           </Box>
-          <VStack bgColor="white" p="4" marginTop="8" space="4" roundedTop="2xl"
-            roundedBottom={isAdminRequest(data) && 'xl'}
-          >
+          <VStack bgColor="white" p="4" marginTop="8" space="4" roundedTop="2xl" roundedBottom={isAdminRequest(data) && 'xl'}>
             {menus.map((menuItem) => {
               return (
                 <TouchableOpacity key={menuItem.id} onPress={menuItem.onPress}>
@@ -107,9 +98,7 @@ const RoomMenu = ({ navigation, stack }) => {
               );
             })}
           </VStack>
-          {isAdminRequest(data) ? <Box /> : (
-            <CheckoutButton data={data} />
-          )}
+          {isAdminRequest(data) ? <Box /> : <CheckoutButton data={data} />}
         </Box>
       )}
     </ScrollView>
