@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
-    "prepare": "cd .. &&  husky install frontend/.husky"
+    "prepare": "cd .. &&  husky install frontend/.husky",
+    "build:apk": "npx eas build -p android --profile preview"
   },
   "lint-staged": {
     "*{.jsx,.js}": [
