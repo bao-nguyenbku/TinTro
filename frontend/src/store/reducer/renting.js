@@ -125,6 +125,18 @@ export const acceptCheckoutRoom = createAsyncThunk('renting/acceptCheckoutRoom',
     });
   }
 });
+export const cancelRequestCheckoutByOwner = createAsyncThunk('renting/cancelRequestCheckoutByOwner', async (rentingId, { rejectWithValue, dispatch }) => {
+  try {
+    const response = await requestCancelCheckoutRoomService({ rentingId, role: 'ADMIN' });
+    dispatch(getAllCheckoutRequest());
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
+  }
+});
 export const acceptOwnerRequestCheckout = createAsyncThunk('renting/acceptOwnerRequestCheckout', async (rentingId, { rejectWithValue, dispatch }) => {
   try {
     dispatch(acceptCheckoutRoom(rentingId));

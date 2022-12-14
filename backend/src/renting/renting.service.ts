@@ -116,7 +116,7 @@ export class RentingService {
       throw new Error(error.message || 'Unknown error');
     }
   }
-  async cancelRequestCheckoutRoom(rentingId: number) {
+  async cancelRequestCheckoutRoom(rentingId: number, role: string) {
     try {
       const prismaResult = await this.prismaService.renting.update({
         where: {
@@ -124,6 +124,7 @@ export class RentingService {
         },
         data: {
           status: RentingStatus.RENTING,
+          requestRole: role === Role.ADMIN ? Role.USER : Role.ADMIN,
         },
       });
       return prismaResult;

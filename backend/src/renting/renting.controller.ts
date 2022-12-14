@@ -55,10 +55,15 @@ export class RentingController {
     return result;
   }
   @UseGuards(JwtAuthGuard)
-  @Get('/:id/cancel-checkout')
-  async requestCancelCheckoutRoom(@Param('id') rentingId: string) {
+  @Post('/:id/cancel-checkout')
+  async requestCancelCheckoutRoom(
+    @Param('id') rentingId: string,
+    @Body() requestData,
+  ) {
+    const { role } = requestData;
     const result = await this.rentingService.cancelRequestCheckoutRoom(
       parseInt(rentingId),
+      role,
     );
     return result;
   }

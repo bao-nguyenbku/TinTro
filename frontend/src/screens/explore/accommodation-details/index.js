@@ -27,7 +27,6 @@ const AccommodationDetailsScreen = (props) => {
   const { rentRequest } = useSelector(selectAccommodationState);
   const { roomInfo } = useSelector(selectRentingState);
   const rentRequestLoading = rentRequest.loading;
-  console.log(roomInfo);
   useEffect(() => {
     dispatch(getRentRequestByRenter(item?.id));
     dispatch(getRoomInfo());

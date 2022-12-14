@@ -5,7 +5,6 @@ const SingleItem = (props) => {
   const { item } = props;
   return (
     <Box
-      bgColor='white'
       flexDirection='row'
       height='100px'
       p='3'
