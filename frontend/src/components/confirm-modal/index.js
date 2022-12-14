@@ -30,7 +30,7 @@ const ConfirmModal = (props) => {
               }}
               bgColor={status}
             >
-              <Text>{saveTitle}</Text>
+              <Text color='white'>{saveTitle}</Text>
             </Button>
           </Button.Group>
         </Modal.Footer>

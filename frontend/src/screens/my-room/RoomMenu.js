@@ -3,10 +3,10 @@ import { Box, isEmptyObj, ScrollView, Text, VStack } from 'native-base';
 import { TouchableOpacity, RefreshControl } from 'react-native';
 import { selectRentingState, getRoomInfo } from 'store/reducer/renting';
 import { useDispatch, useSelector } from 'react-redux';
+import { useContainerHeight } from 'hooks/useContainerHeight';
 import Loading from 'components/loading';
 import { Ionicons } from '@expo/vector-icons';
 import CheckoutButton from './Checkout';
-import { useContainerHeight } from 'hooks/useContainerHeight';
 
 const isUserRequest = (data) => {
   return data?.status === 'CHECKOUT'  && data?.requestRole === 'USER';
@@ -45,7 +45,7 @@ const RoomMenu = ({ navigation, stack }) => {
   console.log(data);
   return (
     <ScrollView flex={1} refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
-      {data ? (
+      {isEmptyObj(data) ? (
         <Box 
           flex={1} 
           marginTop={Math.floor(containerHeight / 2)}
