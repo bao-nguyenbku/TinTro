@@ -213,7 +213,7 @@ function RegisterScreen() {
           </Flex>
 
           {/* Footer */}
-          <Flex mt={12} justifyContent="center" alignItems="center" w="100%" px={3.5}>
+          <Flex height="1/4" mt={12} justifyContent="center" alignItems="center" w="100%" px={3.5}>
             <Text color="text.500">
               {' '}
               Đã có tài khoản?{' '}
@@ -230,8 +230,6 @@ function RegisterScreen() {
         </VStack>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
-
-
   )
 }
 

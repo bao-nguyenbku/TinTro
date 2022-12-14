@@ -73,6 +73,7 @@ const SendMessage = ({ route }) => {
       socketRef.current?.off('client-all-past-messages');
       socketRef.current?.off('client-receive-message');
       socketRef.current?.disconnect();
+      dispatch(setMessages({ messagees: [] }));
     };
   }, [isFocus, dispatch, fromId, messageSectionId, navigation]);
 

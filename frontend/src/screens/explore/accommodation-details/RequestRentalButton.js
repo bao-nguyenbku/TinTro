@@ -23,10 +23,12 @@ const RequestRentalButton = (props) => {
   });
 
   useEffect(() => {
-    if (!isEmptyObj(rentRequestData)
-      && rentRequestLoading === false
-      && Array.isArray(rentRequestData)
-      && rentRequestData.some(reqData => reqData.accommodationId === item.id)) {
+    if (
+      !isEmptyObj(rentRequestData) &&
+      rentRequestLoading === false &&
+      Array.isArray(rentRequestData) &&
+      rentRequestData.some((reqData) => reqData.accommodationId === item.id)
+    ) {
       setButtonProps({
         title: 'Đã gửi yêu cầu thuê phòng',
         disable: true,
@@ -43,13 +45,16 @@ const RequestRentalButton = (props) => {
       setButtonProps({
         title: 'Đã gửi yêu cầu thuê phòng',
         disable: true,
-      })
+      });
       toast.show({
         onCloseComplete: () => dispatch(resetError()),
-        render: () => <CustomToast description='Chủ trọ sẽ liên lạc với bạn khi yêu cầu được duyệt' title='Yêu cầu thuê phòng thành công!' status='success' />,
+        render: () => (
+          <CustomToast description="Chủ trọ sẽ liên lạc với bạn khi yêu cầu được duyệt" title="Yêu cầu thuê phòng thành công!" status="success" />
+        ),
         placement: 'top',
-      })
+      });
     }
+
 
     return () =>
       dispatch(resetRentRequest())
@@ -60,7 +65,9 @@ const RequestRentalButton = (props) => {
   return (
     <>
       <TouchableOpacity>
-        {roomInfo.data && roomInfo.data?.accommodationId === item.id && roomInfo.data?.status === 'RENTING' ? <Box /> : (
+        {roomInfo.data && roomInfo.data?.accommodationId === item.id && roomInfo.data?.status === 'RENTING' ? (
+          <Box />
+        ) : (
           <Button
             bgColor="tertiary.600"
             height="16"
@@ -74,7 +81,9 @@ const RequestRentalButton = (props) => {
               opacity: 0.8,
             }}
           >
-            <Text color='white' fontSize='xl' fontWeight='bold'>Yêu cầu thuê phòng</Text>
+
+           <Text color='white' fontSize='xl' fontWeight='bold'>Yêu cầu thuê phòng</Text>
+
           </Button>
         )}
       </TouchableOpacity>

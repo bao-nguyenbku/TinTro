@@ -9,11 +9,11 @@ import { Ionicons } from '@expo/vector-icons';
 import CheckoutButton from './Checkout';
 
 const isUserRequest = (data) => {
-  return data?.status === 'CHECKOUT'  && data?.requestRole === 'USER';
-}
+  return data?.status === 'CHECKOUT' && data?.requestRole === 'USER';
+};
 const isAdminRequest = (data) => {
-  return data?.status === 'CHECKOUT'  && data?.requestRole === 'ADMIN';
-}
+  return data?.status === 'CHECKOUT' && data?.requestRole === 'ADMIN';
+};
 const RoomMenu = ({ navigation, stack }) => {
   const menus = [
     {
@@ -38,7 +38,7 @@ const RoomMenu = ({ navigation, stack }) => {
   useEffect(() => {
     dispatch(getRoomInfo());
   }, []);
-  
+
   if (loading) {
     return <Loading />;
   }
@@ -81,9 +81,7 @@ const RoomMenu = ({ navigation, stack }) => {
               </Box>
             )}
           </Box>
-          <VStack bgColor="white" p="4" marginTop="8" space="4" roundedTop="2xl"
-            roundedBottom={isAdminRequest(data) && 'xl'}
-          >
+          <VStack bgColor="white" p="4" marginTop="8" space="4" roundedTop="2xl" roundedBottom={isAdminRequest(data) && 'xl'}>
             {menus.map((menuItem) => {
               return (
                 <TouchableOpacity key={menuItem.id} onPress={menuItem.onPress}>
@@ -107,9 +105,7 @@ const RoomMenu = ({ navigation, stack }) => {
               );
             })}
           </VStack>
-          {isAdminRequest(data) ? <Box /> : (
-            <CheckoutButton data={data} />
-          )}
+          {isAdminRequest(data) ? <Box /> : <CheckoutButton data={data} />}
         </Box>
       )}
     </ScrollView>
