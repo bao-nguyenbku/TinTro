@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from 'components/loading';
 import { Ionicons } from '@expo/vector-icons';
 import CheckoutButton from './Checkout';
+import { useContainerHeight } from 'hooks/useContainerHeight';
 
 const isUserRequest = (data) => {
   return data?.status === 'CHECKOUT'  && data?.requestRole === 'USER';
@@ -33,6 +34,7 @@ const RoomMenu = ({ navigation, stack }) => {
   const dispatch = useDispatch();
   const { roomInfo } = useSelector(selectRentingState);
   const { loading, data } = roomInfo;
+  const containerHeight = useContainerHeight();
   useEffect(() => {
     dispatch(getRoomInfo());
   }, []);
@@ -41,9 +43,16 @@ const RoomMenu = ({ navigation, stack }) => {
     return <Loading />;
   }
   return (
-    <ScrollView refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
+    <ScrollView flex={1} refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
       {isEmptyObj(data) ? (
-        <Box flex={1} alignItems="center" justifyContent="center">
+        <Box 
+          flex={1} 
+          alignItems="center" 
+          justifyContent="center"
+          position='absolute'
+          top={Math.floor(containerHeight / 2)}
+          width='full'
+        >
           <Text>Bạn chưa thuê phòng nào</Text>
         </Box>
       ) : (
