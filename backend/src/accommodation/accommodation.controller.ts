@@ -111,19 +111,24 @@ export class AccommodationController {
     @Request() req,
     // @Body() requestRentRoom: { email: string },
   ) {
-    const renterId = req.user.id;
-    const existedAccommodaiton =
-      await this.accommodationService.findAccommodationById(
-        parseInt(accommodationId),
-      );
-    // const existedRenter = await this.usersService.findByEmail(email);
-    const { ownerId, id } = existedAccommodaiton;
-    const result = await this.accommodationService.createRequestRentRoom({
-      ownerId,
-      renterId,
-      accommodationId: id,
-    });
-    return result;
+    try {
+      const renterId = req.user.id;
+      const existedAccommodaiton =
+        await this.accommodationService.findAccommodationById(
+          parseInt(accommodationId),
+        );
+      // const existedRenter = await this.usersService.findByEmail(email);
+      const { ownerId, id } = existedAccommodaiton;
+      const result = await this.accommodationService.createRequestRentRoom({
+        ownerId,
+        renterId,
+        accommodationId: id,
+      });
+      return result;
+    } catch (error) {
+      Logger.error(error);
+      throw error;
+    }
   }
 
   @UseGuards(JwtAuthGuard)
