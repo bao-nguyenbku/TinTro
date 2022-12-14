@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native';
 import { Box, Text, Image, ScrollView } from 'native-base';
 import { getRentRequestByRenter, selectAccommodationState } from 'store/reducer/accommodation';
+import { getRoomInfo, selectRentingState } from 'store/reducer/renting';
 import Loading from 'components/loading';
 import { disableBottomTabBar } from 'utils/utils';
 import { useNavigation } from '@react-navigation/native';
@@ -14,16 +15,23 @@ import RequestRentalButton from './RequestRentalButton';
 import ImageGallery from './ImageGallery';
 import Utility from './Utility';
 
+const isCurrentRenting = (roomInfo, item) => {
+  return roomInfo.data?.accommodationId === item.id && roomInfo.data?.status === 'RENTING';
+}
+
 const AccommodationDetailsScreen = (props) => {
   const navigation = useNavigation();
   const { route } = props;
   const item = route.params ? route.params.item : undefined;
   const dispatch = useDispatch();
   const { rentRequest } = useSelector(selectAccommodationState);
+  const { roomInfo } = useSelector(selectRentingState);
   const rentRequestLoading = rentRequest.loading;
+  console.log(roomInfo);
   useEffect(() => {
     dispatch(getRentRequestByRenter(item?.id));
-  }, [item?.id, dispatch]);
+    dispatch(getRoomInfo());
+  }, [item?.id]);
   useEffect(() => {
     disableBottomTabBar(navigation);
     return () =>
@@ -87,7 +95,10 @@ const AccommodationDetailsScreen = (props) => {
         </Box>
       </ScrollView>
       <Box px='4'>
-        <RequestRentalButton item={item} />
+        {!isCurrentRenting(roomInfo, item) && (
+          <RequestRentalButton item={item} />
+        )}
+        
       </Box>
     </SafeAreaView>
   );

@@ -32,29 +32,29 @@ const CreateCheckoutRequestScreen = ({ navigation }) => {
       room: '',
       renter: '',
       phoneNumber: '',
-      isPass: false
+      isPass: true,
     };
     if (!values.roomId) {
       tmpErrors.room = 'You must select a room';
+      tmpErrors.isPass = false;
     }
-    if (!values.renter) {
+    if (!values.renterId) {
       tmpErrors.renter = 'You must select a renter';
+      tmpErrors.isPass = false;
     }
     if (!values.phoneNumber) {
       tmpErrors.phoneNumber = 'Your must enter phone number of renter';
+      tmpErrors.isPass = false;
     }
     setErrors(tmpErrors);
-    return tmpErrors.isPass;
   }
 
   const handleSubmit = () => {
     validateSubmitForm(formValues);
-    //  dispatch(requestRenterCheckoutByOwner(formValues));
-
   }
   useEffect(() => {
     if (errors.isPass) {
-      console.log('yeah ok');
+       dispatch(requestRenterCheckoutByOwner(formValues));
     }
   }, [errors])
   useEffect(() => {
@@ -96,7 +96,7 @@ const CreateCheckoutRequestScreen = ({ navigation }) => {
               return (
                 <Select.Item
                   key={item.id}
-                  label={item.roomName}
+                  label={`${item.roomName} ${item.status === 'AVAILABLE' ? '(trống)' : '(đang thuê)'}`}
                   value={item.id}
                 />
               )

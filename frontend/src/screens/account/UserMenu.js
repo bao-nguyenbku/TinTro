@@ -18,7 +18,7 @@ const UserMenu = ({ setLoading, loading, dispatch, navigation }) => {
       title: 'Yêu cầu trả phòng từ quản trị viên',
       description: 'Quản trị viên yêu cầu xác nhận trả phòng',
       icon: <Ionicons name="checkmark-circle-outline" size={24} color="black" />,
-      onPress: () => {},
+      onPress: () => navigation.navigate('AcceptCheckoutFromAdmin'),
     },
     {
       id: 3,

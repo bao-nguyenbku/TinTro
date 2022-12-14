@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { Button, useDisclose, isEmptyObj, useToast } from 'native-base';
+import { Button, useDisclose, isEmptyObj, useToast, Box } from 'native-base';
 import ConfirmModal from 'components/confirm-modal';
 import { requestRentRoom, selectAccommodationState, resetError, resetRentRequest } from 'store/reducer/accommodation';
+import { selectRentingState } from 'store/reducer/renting';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomToast from 'components/custom-toast';
 
@@ -11,6 +12,7 @@ const RequestRentalButton = (props) => {
   const { isOpen, onOpen, onClose } = useDisclose();
   const toast = useToast();
   const { rentRequest } = useSelector(selectAccommodationState);
+  const { roomInfo } = useSelector(selectRentingState);
   const rentRequestData = rentRequest.data;
   const rentRequestLoading = rentRequest.loading;
   const { error, isSuccess } = rentRequest;
@@ -59,7 +61,8 @@ const RequestRentalButton = (props) => {
         placement: 'top'
       })}
       <TouchableOpacity>
-        <Button
+        {roomInfo.data && roomInfo.data?.accommodationId === item.id && roomInfo.data?.status === 'RENTING' ? <Box /> : (
+          <Button
           bgColor="tertiary.600"
           height="16"
           _text={{
@@ -79,6 +82,7 @@ const RequestRentalButton = (props) => {
         >
           {buttonProps.title}
         </Button>
+        )}
       </TouchableOpacity>
       <ConfirmModal
         isOpen={isOpen}

@@ -125,6 +125,18 @@ export const acceptCheckoutRoom = createAsyncThunk('renting/acceptCheckoutRoom',
     });
   }
 });
+export const acceptOwnerRequestCheckout = createAsyncThunk('renting/acceptOwnerRequestCheckout', async (rentingId, { rejectWithValue, dispatch }) => {
+  try {
+    dispatch(acceptCheckoutRoom(rentingId));
+    dispatch(getRoomInfo());
+    return null;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
+  }
+});
 
 export const { reset } = rentingSlice.actions;
 export default rentingSlice.reducer;

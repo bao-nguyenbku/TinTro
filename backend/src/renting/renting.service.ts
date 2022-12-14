@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma, RentingStatus, Role } from '@prisma/client';
+import { Prisma, RentingStatus, Role, RoomStatus } from '@prisma/client';
 import { PrismaService } from '~/prisma/prisma.service';
 // import { RequestCheckoutRoomDto } from '~/accommodation/dto/request-checkout-room.dto';
 
@@ -148,6 +148,21 @@ export class RentingService {
       });
     } catch (error) {
       throw new Error(error.message || 'Unknown error');
+    }
+  }
+  async updateRoomStatus(data: { roomId: number; status: RoomStatus }) {
+    const { roomId, status } = data;
+    try {
+      return await this.prismaService.room.update({
+        where: {
+          id: roomId,
+        },
+        data: {
+          status,
+        },
+      });
+    } catch (error) {
+      throw new Error(error.mesage || 'Unknown error');
     }
   }
 }
