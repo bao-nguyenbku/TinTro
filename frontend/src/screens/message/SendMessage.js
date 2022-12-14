@@ -5,13 +5,13 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { pushMessage, sendMessage, setMessages } from 'store/reducer/message';
 import { getToken } from 'utils/token';
-import { WS_BASE_URL } from '@env';
+
 import { io } from 'socket.io-client';
 import { disableBottomTabBar } from 'utils/utils';
 import { Platform, RefreshControl } from 'react-native';
 import { useTopHeight } from 'hooks/useHeaderHeight';
 
-const socketUrl = `${WS_BASE_URL}/message`;
+const socketUrl = `${process.env.WS_BASE_URL || 'ws://obedient-veil-production.up.railway.app'}/message`;
 
 const SendMessage = ({ route }) => {
   const { fromId } = route.params;
