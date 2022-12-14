@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { Button, useDisclose, isEmptyObj, useToast, Box } from 'native-base';
+import { Button, useDisclose, isEmptyObj, useToast, Box, Text } from 'native-base';
 import ConfirmModal from 'components/confirm-modal';
 import { requestRentRoom, selectAccommodationState, resetError, resetRentRequest } from 'store/reducer/accommodation';
 import { selectRentingState } from 'store/reducer/renting';
@@ -33,7 +33,11 @@ const RequestRentalButton = (props) => {
       });
     }
   }, [item.id, rentRequestData, rentRequestLoading]);
-
+  // toast.show({
+  //   onCloseComplete: () => dispatch(resetError()),
+  //   render: () => <CustomToast description={error.message} title='Xin lỗi bạn' status='error' />,
+  //   placement: 'top'
+  // })
   useEffect(() => {
     if (isSuccess) {
       setButtonProps({
@@ -47,7 +51,7 @@ const RequestRentalButton = (props) => {
       })
     }
 
-    return () => 
+    return () =>
       dispatch(resetRentRequest())
   }, [isSuccess, toast, dispatch])
   const onConfirm = () => {
@@ -55,33 +59,23 @@ const RequestRentalButton = (props) => {
   };
   return (
     <>
-      {error && toast.show({
-        onCloseComplete: () => dispatch(resetError()),
-        render: () => <CustomToast description={error.message} title='Xin lỗi bạn' status='error' />,
-        placement: 'top'
-      })}
       <TouchableOpacity>
         {roomInfo.data && roomInfo.data?.accommodationId === item.id && roomInfo.data?.status === 'RENTING' ? <Box /> : (
           <Button
-          bgColor="tertiary.600"
-          height="16"
-          _text={{
-            color: 'white',
-            fontSize: 'xl',
-            fontWeight: 'bold',
-          }}
-          isDisabled={buttonProps.disable}
-          _disabled={{
-            opacity: 0.4,
-          }}
-          isLoading={rentRequestLoading}
-          onPress={onOpen}
-          _pressed={{
-            opacity: 0.8,
-          }}
-        >
-          {buttonProps.title}
-        </Button>
+            bgColor="tertiary.600"
+            height="16"
+            isDisabled={buttonProps.disable}
+            _disabled={{
+              opacity: 0.4,
+            }}
+            isLoading={rentRequestLoading}
+            onPress={onOpen}
+            _pressed={{
+              opacity: 0.8,
+            }}
+          >
+            <Text color='white' fontSize='xl' fontWeight='bold'>Yêu cầu thuê phòng</Text>
+          </Button>
         )}
       </TouchableOpacity>
       <ConfirmModal

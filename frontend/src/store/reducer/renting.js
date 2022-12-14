@@ -47,7 +47,7 @@ export const rentingSlice = createSlice({
       })
       .addCase(getRoomInfo.fulfilled, (state, action) => {
         state.roomInfo.loading = false;
-        state.roomInfo.data = action.payload;
+        state.roomInfo.data = action.payload || {};
       })
       .addCase(requestCheckoutRoom.pending, (state) => {
         state.renting.loading = true;

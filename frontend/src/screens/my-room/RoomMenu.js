@@ -42,15 +42,15 @@ const RoomMenu = ({ navigation, stack }) => {
   if (loading) {
     return <Loading />;
   }
+  console.log(data);
   return (
     <ScrollView flex={1} refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
-      {isEmptyObj(data) ? (
+      {data ? (
         <Box 
           flex={1} 
+          marginTop={Math.floor(containerHeight / 2)}
           alignItems="center" 
           justifyContent="center"
-          position='absolute'
-          top={Math.floor(containerHeight / 2)}
           width='full'
         >
           <Text>Bạn chưa thuê phòng nào</Text>
