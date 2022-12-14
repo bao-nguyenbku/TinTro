@@ -16,7 +16,7 @@ import Utility from './Utility';
 const AccommodationDetailsScreen = (props) => {
   const navigation = useNavigation();
   const { route } = props;
-  const item =  route.params ? route.params.item : undefined;
+  const item = route.params ? route.params.item : undefined;
   const dispatch = useDispatch();
   const { rentRequest } = useSelector(selectAccommodationState);
   const rentRequestLoading = rentRequest.loading;
@@ -44,8 +44,8 @@ const AccommodationDetailsScreen = (props) => {
         fromId: owner?.id,
         avatar: owner?.avatar,
         name: owner?.name,
-        initial: false,
       },
+      initial: false,
     });
   };
 
@@ -74,7 +74,7 @@ const AccommodationDetailsScreen = (props) => {
             <CommonInfo item={item} />
             <OwnerContact item={item} handlePressMessageIcon={handlePressMessageIcon} />
             <Description item={item} />
-            <Utility item={item}/>
+            <Utility item={item} />
             <ImageGallery images={item?.images} />
           </Box>
         </ScrollView>
