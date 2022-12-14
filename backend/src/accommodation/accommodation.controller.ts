@@ -127,6 +127,8 @@ export class AccommodationController {
       return result;
     } catch (error) {
       Logger.error(error);
+      Logger.error(error?.message);
+      Logger.error('Error from user' + req.user.id);
       throw error;
     }
   }
