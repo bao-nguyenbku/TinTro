@@ -97,11 +97,11 @@ model Accommodation {
 model RentRequest {
   id              Int           @id @default(autoincrement())
   renter          Renter        @relation(fields: [renterId], references: [userId])
-  renterId        Int
+  renterId        Int           @unique
   owner           Owner         @relation(fields: [ownerId], references: [userId])
   ownerId         Int
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id])
-  accommodationId Int           @unique
+  accommodationId Int           
   status          RequestStatus
 }
 
