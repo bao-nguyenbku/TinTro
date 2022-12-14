@@ -8,7 +8,6 @@ module.exports = function (api) {
         {
           rootPathPrefix: '~',
           rootPathSuffix: 'src',
-          z,
         },
       ],
       [
