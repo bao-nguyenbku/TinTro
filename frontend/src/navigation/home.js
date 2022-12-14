@@ -1,15 +1,13 @@
 import React from 'react';
-
 import { useSelector } from 'react-redux';
+import { Box } from 'native-base';
 import { selectUserState } from 'store/reducer/user';
-
 import UserBottomBar from 'components/user-bottom-bar';
 import AdminBottomBar from 'components/admin-bottom-bar';
 import Loading from 'components/loading';
 
 const HomeNav = () => {
   const { currentUser, loading } = useSelector(selectUserState);
-  console.log(currentUser);
   if (loading) {
     return <Loading />;
   }
@@ -19,7 +17,7 @@ const HomeNav = () => {
   if (currentUser.role === 'ADMIN') {
     return <AdminBottomBar />;
   }
-  return null;
+  return <Box />;
 };
 
 export default HomeNav;

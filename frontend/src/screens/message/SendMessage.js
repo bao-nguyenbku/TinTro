@@ -9,13 +9,14 @@ import { WS_BASE_URL } from '@env';
 import { io } from 'socket.io-client';
 import { disableBottomTabBar } from 'utils/utils';
 import { Platform, RefreshControl } from 'react-native';
-import { useHeaderHeight } from 'hooks/useHeaderHeight';
+import { useTopHeight } from 'hooks/useHeaderHeight';
 
 const socketUrl = `${WS_BASE_URL}/message`;
 
 const SendMessage = ({ route }) => {
   const { fromId } = route.params;
   const messageSectionId = route.params?.messageSectionId;
+  const topHeight = useTopHeight();
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -24,7 +25,6 @@ const SendMessage = ({ route }) => {
   const allMessagesFromSection = message.messages;
   const navigation = useNavigation();
   const socketRef = useRef();
-  const { headerHeight, statusBarHeight } = useHeaderHeight();
   const scrollRef = useRef();
   // *This function will handle send websocket message *//
 
@@ -84,7 +84,7 @@ const SendMessage = ({ route }) => {
     <KeyboardAvoidingView
       onTouchStart={() => {}}
       flex={1}
-      keyboardVerticalOffset={Platform.OS === 'ios' && headerHeight + statusBarHeight}
+      keyboardVerticalOffset={Platform.OS === 'ios' && topHeight}
       behavior={Platform.OS === 'ios' && 'padding'}
     >
       <VStack px={2}>

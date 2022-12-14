@@ -1,19 +1,25 @@
 import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getRoomInfoService, requestCheckoutRoomService } from 'services/renting';
+import { getRoomInfoService, requestCheckoutRoomService, getAllCheckoutRequestService, requestCancelCheckoutRoomService, acceptCheckoutRoomService } from 'services/renting';
 
 const initialState = {
   renting: {
     loading: false,
     isSuccess: false,
     error: undefined,
-    data: {}
+    action: '',
+    data: {},
   },
   roomInfo: {
     loading: false,
     isSuccess: false,
     error: undefined,
-    data: {}
-  }
+    data: {},
+  },
+  adminRenting: {
+    loading: false,
+    checkoutRequestList: [],
+    error: undefined,
+  },
 };
 
 export const rentingSlice = createSlice({
@@ -29,9 +35,10 @@ export const rentingSlice = createSlice({
         loading: false,
         isSuccess: false,
         error: undefined,
-        data: {}
+        action: '',
+        data: {},
       };
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -46,31 +53,43 @@ export const rentingSlice = createSlice({
         state.renting.loading = true;
       })
       .addCase(requestCheckoutRoom.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.renting.loading = false;
-        state.renting.data = action.payload;
+        state.renting.data = action.payload.data;
+        state.renting.action = action.payload.action;
         state.renting.isSuccess = true;
+      })
+      .addCase(getAllCheckoutRequest.pending, (state) => {
+        state.adminRenting.loading = true;
+      })
+      .addCase(getAllCheckoutRequest.fulfilled, (state, action) => {
+        state.adminRenting.loading = false;
+        state.adminRenting.checkoutRequestList = action.payload;
       })
   },
 });
 export const selectRentingState = createSelector([(state) => state.renting], (renting) => renting);
 
-export const requestCheckoutRoom = createAsyncThunk(
-  'renting/requestCheckoutRoom',
-  async ({ rentingId }, { rejectWithValue }) => {
-    try {
-      const response = await requestCheckoutRoomService({ rentingId });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue({
-        statusCode: error.response.status,
-        message: error.response.message
-      })
+export const requestCheckoutRoom = createAsyncThunk('renting/requestCheckoutRoom', async ({ rentingId, action }, { rejectWithValue, dispatch }) => {
+  try {
+    let response;
+    if (action === 'REQUEST') {
+      response = await requestCheckoutRoomService({ rentingId });
     }
-
+    if (action === 'CANCEL') {
+      response = await requestCancelCheckoutRoomService({ rentingId });
+    }
+    dispatch(getRoomInfo());
+    return {
+      data: response.data,
+      action,
+    };
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
   }
-)
+});
 export const getRoomInfo = createAsyncThunk('accommodation/getRoomInfo', async (_, { rejectWithValue }) => {
   try {
     const response = await getRoomInfoService();
@@ -83,7 +102,29 @@ export const getRoomInfo = createAsyncThunk('accommodation/getRoomInfo', async (
   }
 });
 
-
+export const getAllCheckoutRequest = createAsyncThunk('renting/getAllCheckoutRequest', async (_, { rejectWithValue }) => {
+  try {
+    const response = await getAllCheckoutRequestService();
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
+  }
+});
+export const acceptCheckoutRoom = createAsyncThunk('renting/acceptCheckoutRoom', async (rentingId, { rejectWithValue, dispatch }) => {
+  try {
+    const response = await acceptCheckoutRoomService(rentingId);
+    dispatch(getAllCheckoutRequest());
+    return response.data;
+  } catch (error) {
+    return rejectWithValue({
+      statusCode: error.response.status,
+      message: error.response.message,
+    });
+  }
+});
 
 export const { reset } = rentingSlice.actions;
 export default rentingSlice.reducer;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar, Box, Pressable, Text } from 'native-base';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Linking } from 'react-native';
 
 const OwnerContact = (props) => {
   const { item, handlePressMessageIcon } = props;
@@ -40,7 +41,9 @@ const OwnerContact = (props) => {
             )}
           </Pressable>
 
-          <Pressable>
+          <Pressable
+            onPress={() => Linking.openURL(`tel://${owner?.phone}`)}
+          >
             {({ isPressed }) => (
               <Box
                 bgColor={isPressed ? 'tertiary.200' : 'coolGray.100'}

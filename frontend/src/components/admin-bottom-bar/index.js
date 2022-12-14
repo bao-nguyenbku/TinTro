@@ -1,11 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import AdminMyAccommodation from 'screens/admin-my-accommodation';
+
 import { ADMIN_ROUTES } from 'navigation';
 import { Ionicons } from '@expo/vector-icons';
-import AdminRentRequest from 'screens/admin-rent-request';
+
 import MessageNav from 'navigation/message';
 import AccountNav from 'navigation/account';
+import AdminExploreNav from 'navigation/adminExplore';
+import AdminRentRequest from 'navigation/adminRentRequest';
 
 const Tab = createBottomTabNavigator();
 
@@ -51,7 +53,7 @@ const AdminBottomBar = () => {
         let TabScreen;
         switch (ADMIN_ROUTES[tabScreen].title) {
           case ADMIN_ROUTES.myAccomm.title: {
-            TabScreen = AdminMyAccommodation;
+            TabScreen = AdminExploreNav;
             break;
           }
           case ADMIN_ROUTES.request.title: {

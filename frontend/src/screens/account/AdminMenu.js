@@ -1,12 +1,10 @@
 import { AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import { Box, Flex, HStack, Pressable, Text, VStack } from 'native-base';
 import React from 'react';
 import { setCurrentUser } from 'store/reducer/user';
 import { deleteToken } from 'utils/token';
 
-const AdminMenu = ({ setLoading, loading, dispatch }) => {
-  const navigation = useNavigation();
+const AdminMenu = ({ setLoading, loading, dispatch, navigation }) => {
   const menu = [
     {
       id: 1,
@@ -20,7 +18,7 @@ const AdminMenu = ({ setLoading, loading, dispatch }) => {
       title: 'Yêu cầu trả phòng',
       description: 'Quản lý yêu cầu trả phòng',
       icon: <FontAwesome5 name="check-circle" size={24} color="black" />,
-      onPress: () => {},
+      onPress: () => navigation.navigate('AdminRequestCheckoutRoom'),
     },
     {
       id: 3,
@@ -77,8 +75,8 @@ const AdminMenu = ({ setLoading, loading, dispatch }) => {
           {({ isPressed }) => (
             <Flex backgroundColor={isPressed ? 'muted.100' : '#fff'} alignItems="center" justifyContent="space-between" direction="row">
               <HStack alignItems="center" space={4} direction="row">
-                <Box borderRadius="full" p={1.5} bgColor="danger.100">
-                  <MaterialCommunityIcons color="red" name="logout" size={24} />
+                <Box borderRadius="full" p={1.5} bgColor="danger.100" alignItems='center' justifyContent='center'>
+                  <Ionicons name='log-out-outline' size={24} color='#F43F5E'/>
                 </Box>
                 <VStack space={1}>
                   <Text color="danger.500" fontSize="sm" bold>

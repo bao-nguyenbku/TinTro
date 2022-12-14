@@ -48,7 +48,6 @@ export class AccommodationService {
       throw new Error(error);
     }
   }
-
   async findAccommodationById(id: number): Promise<AccommodationResponseDto> {
     try {
       const result = await this.prismaService.accommodation.findUnique({
