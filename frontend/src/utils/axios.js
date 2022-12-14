@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { API_BASE_URL } from '@env';
+import { API_BASE_URL, PRODUCTION_API_BASE_URL } from '@env';
 import { getToken } from './token';
 
 const request = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: PRODUCTION_API_BASE_URL || API_BASE_URL,
   headers: {
     Accept: '*/*',
     Connection: 'keep-alive',

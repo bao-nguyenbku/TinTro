@@ -25,9 +25,8 @@ const RoomMenu = ({ navigation, stack }) => {
     }
   ]
   const dispatch = useDispatch();
-  const { roomInfo, renting } = useSelector(selectRentingState);
+  const { roomInfo } = useSelector(selectRentingState);
   const { loading, data } = roomInfo;
-  console.log(roomInfo);
 
   useEffect(() => {
     dispatch(getRoomInfo());

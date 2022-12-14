@@ -1,4 +1,4 @@
-import { AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { Box, Flex, HStack, Pressable, Text, VStack } from 'native-base';
 import React from 'react';
 import { setCurrentUser } from 'store/reducer/user';
@@ -31,19 +31,19 @@ const AdminMenu = ({ setLoading, loading, dispatch, navigation }) => {
       id: 4,
       title: 'Thống kê',
       description: 'Xem thống kê số lượng phòng, hóa đơn...',
-      icon: <Ionicons name="ios-albums-outline" size={24} color="black" />,
+      icon: <Ionicons name="stats-chart-outline" size={24} color="black" />,
       onPress: () => navigation.navigate('AdminRoomStatistics'),
     },
   ];
 
   return (
-    <Box pt={2.5} px={6}>
+    <Box pt={2.5} px='4'>
       <VStack borderRadius={12} space={8} px={4} py={6} bgColor="#fff">
         {menu.map((item) => (
           <Pressable key={item.id} onPress={item.onPress}>
             {({ isPressed }) => (
               <Flex backgroundColor={isPressed ? 'muted.100' : '#fff'} alignItems="center" justifyContent="space-between" direction="row">
-                <HStack alignItems="center" space={4} direction="row">
+                <HStack alignItems="center" space='3' direction="row">
                   <Box borderRadius="full" p={1.5} bgColor="blueGray.100">
                     {item.icon}
                   </Box>
