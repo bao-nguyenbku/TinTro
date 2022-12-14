@@ -10,7 +10,6 @@ import Loading from 'components/loading';
 import UserMenu from './UserMenu';
 import AdminMenu from './AdminMenu';
 
-
 const mapRoleToText = (role) => {
   switch (role) {
     case 'USER':
@@ -43,7 +42,7 @@ const AccountMenu = (props) => {
       const fileExtension = uri.substr(uri.lastIndexOf('.') + 1);
 
       formData.append('file', {
-        name: `${new Date()}_avatar`,
+        name: `${new Date()}_avatar.${fileExtension}`,
         uri,
         type: `image/${fileExtension}`,
       });
@@ -51,7 +50,7 @@ const AccountMenu = (props) => {
         await sendFileRequest.post('/users/upload-avatar', formData);
         toast.show({
           render: () => <CustomToast title="Cập nhật ảnh đại diện thành công." status="success" />,
-          placement: 'top'
+          placement: 'top',
         });
         setImage(result.assets[0].uri);
       } catch (err) {
@@ -60,17 +59,10 @@ const AccountMenu = (props) => {
     }
   };
   if (user.loading) {
-    return <Loading />
+    return <Loading />;
   }
   return (
-    <ScrollView mb={12}
-      refreshControl={
-        <RefreshControl
-          refreshing={user.loading}
-          onRefresh={() => dispatch(authMe())}
-        />
-      }
-    >
+    <ScrollView mb={12} refreshControl={<RefreshControl refreshing={user.loading} onRefresh={() => dispatch(authMe())} />}>
       <VStack py={4}>
         <Center>
           <Pressable onPress={pickImage}>

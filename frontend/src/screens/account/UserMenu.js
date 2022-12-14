@@ -1,4 +1,4 @@
-import { AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { Box, Flex, HStack, Pressable, Text, VStack } from 'native-base';
 import React from 'react';
 import { setCurrentUser } from 'store/reducer/user';
@@ -39,14 +39,20 @@ const UserMenu = ({ setLoading, loading, dispatch, navigation }) => {
   ];
 
   return (
-    <Box pt={2.5} px='4'>
+    <Box pt={2.5} px="4">
       <VStack borderRadius={12} space={8} px={4} py={6} bgColor="#fff">
         {menu.map((item) => (
           <Pressable key={item.id} onPress={item.onPress}>
             {({ isPressed }) => (
-              <Flex backgroundColor={isPressed ? 'muted.100' : '#fff'} alignItems="center" justifyContent="space-between" direction="row" rounded='xl'>
-                <HStack alignItems="center" space='3' direction="row">
-                  <Box borderRadius="full" p={1.5} bgColor="blueGray.100" alignItems='center'>
+              <Flex
+                backgroundColor={isPressed ? 'muted.100' : '#fff'}
+                alignItems="center"
+                justifyContent="space-between"
+                direction="row"
+                rounded="xl"
+              >
+                <HStack alignItems="center" space="3" direction="row">
+                  <Box borderRadius="full" p={1.5} bgColor="blueGray.100" alignItems="center">
                     {item.icon}
                   </Box>
                   <VStack space={1}>
@@ -75,10 +81,10 @@ const UserMenu = ({ setLoading, loading, dispatch, navigation }) => {
           isloading={loading}
         >
           {({ isPressed }) => (
-            <Flex backgroundColor={isPressed ? 'muted.100' : '#fff'} alignItems="center" justifyContent="space-between" direction="row" rounded='xl'>
+            <Flex backgroundColor={isPressed ? 'muted.100' : '#fff'} alignItems="center" justifyContent="space-between" direction="row" rounded="xl">
               <HStack alignItems="center" space={4} direction="row">
                 <Box borderRadius="full" p={1.5} bgColor="danger.100">
-                  <Ionicons name='log-out-outline' size={24} color='#F43F5E'/>
+                  <Ionicons name="log-out-outline" size={24} color="#F43F5E" />
                 </Box>
                 <VStack space={1}>
                   <Text color="danger.500" fontSize="sm" bold>

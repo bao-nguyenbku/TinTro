@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Box, Button, Center, Flex, Divider, Heading, Input, Pressable, Text, VStack, FormControl, ScrollView, KeyboardAvoidingView } from 'native-base';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Divider,
+  Heading,
+  Input,
+  Pressable,
+  Text,
+  VStack,
+  FormControl,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'native-base';
 import { Platform } from 'react-native';
 import { useTopHeight } from 'hooks/useHeaderHeight';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
@@ -42,11 +56,7 @@ function RegisterScreen() {
   });
 
   return (
-    <KeyboardAvoidingView
-      flex={1}
-      behavior={Platform.OS === 'ios' && 'padding'}
-      keyboardVerticalOffset={Platform.OS === 'ios' && topHeight}
-    >
+    <KeyboardAvoidingView flex={1} behavior={Platform.OS === 'ios' && 'padding'} keyboardVerticalOffset={Platform.OS === 'ios' && topHeight}>
       <ScrollView>
         <VStack w="100%" space={3} alignItems="center">
           {/* Header */}
@@ -211,7 +221,7 @@ function RegisterScreen() {
           </Flex>
 
           {/* Footer */}
-          <Flex mt={12} justifyContent="center" alignItems="center" w="100%" px={3.5}>
+          <Flex height="1/4" mt={12} justifyContent="center" alignItems="center" w="100%" px={3.5}>
             <Text color="text.500">
               {' '}
               Đã có tài khoản?{' '}
