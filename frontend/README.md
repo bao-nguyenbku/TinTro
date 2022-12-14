@@ -45,3 +45,6 @@ Use `rejectWithValue` method from thunkAPI. Error format:
   message: 'Can not found your resources';
 }
 ```
+
+## DEMO
+Link: [Expo TinTro](https://expo.dev/@baonguyen.bku/TinTro?serviceType=classic&distribution=expo-go)

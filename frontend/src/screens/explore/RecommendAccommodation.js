@@ -17,6 +17,8 @@ const RecommendAccommodation = (props) => {
   }, [dispatch])
   if (loading)
     return <Loading />
+  if (recommendAccommodations && recommendAccommodations.length === 0)
+    return <Box />
   return (
     <LinearGradient
       colors={['#059669', 'transparent']}

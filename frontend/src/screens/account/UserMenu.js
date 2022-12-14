@@ -17,7 +17,7 @@ const UserMenu = ({ setLoading, loading, dispatch, navigation }) => {
       id: 2,
       title: 'Yêu cầu trả phòng từ quản trị viên',
       description: 'Quản trị viên yêu cầu xác nhận trả phòng',
-      icon: <FontAwesome5 name="check-circle" size={24} color="black" />,
+      icon: <Ionicons name="checkmark-circle-outline" size={24} color="black" />,
       onPress: () => {},
     },
     {
@@ -31,7 +31,7 @@ const UserMenu = ({ setLoading, loading, dispatch, navigation }) => {
       id: 4,
       title: 'Yêu cầu thuê phòng',
       description: 'Xem các yêu cầu thuê phòng đang duyệt',
-      icon: <MaterialCommunityIcons name="chat-question" size={24} color="black" />,
+      icon: <Ionicons name="radio-outline" size={24} color="black" />,
       onPress: () => {
         navigation.navigate('RentRequestList');
       },
@@ -39,14 +39,14 @@ const UserMenu = ({ setLoading, loading, dispatch, navigation }) => {
   ];
 
   return (
-    <Box pt={2.5} px={6}>
+    <Box pt={2.5} px='4'>
       <VStack borderRadius={12} space={8} px={4} py={6} bgColor="#fff">
         {menu.map((item) => (
           <Pressable key={item.id} onPress={item.onPress}>
             {({ isPressed }) => (
-              <Flex backgroundColor={isPressed ? 'muted.100' : '#fff'} alignItems="center" justifyContent="space-between" direction="row">
-                <HStack alignItems="center" space={4} direction="row">
-                  <Box borderRadius="full" p={1.5} bgColor="blueGray.100">
+              <Flex backgroundColor={isPressed ? 'muted.100' : '#fff'} alignItems="center" justifyContent="space-between" direction="row" rounded='xl'>
+                <HStack alignItems="center" space='3' direction="row">
+                  <Box borderRadius="full" p={1.5} bgColor="blueGray.100" alignItems='center'>
                     {item.icon}
                   </Box>
                   <VStack space={1}>
@@ -75,10 +75,10 @@ const UserMenu = ({ setLoading, loading, dispatch, navigation }) => {
           isloading={loading}
         >
           {({ isPressed }) => (
-            <Flex backgroundColor={isPressed ? 'muted.100' : '#fff'} alignItems="center" justifyContent="space-between" direction="row">
+            <Flex backgroundColor={isPressed ? 'muted.100' : '#fff'} alignItems="center" justifyContent="space-between" direction="row" rounded='xl'>
               <HStack alignItems="center" space={4} direction="row">
                 <Box borderRadius="full" p={1.5} bgColor="danger.100">
-                  <MaterialCommunityIcons color="red" name="logout" size={24} />
+                  <Ionicons name='log-out-outline' size={24} color='#F43F5E'/>
                 </Box>
                 <VStack space={1}>
                   <Text color="danger.500" fontSize="sm" bold>
