@@ -7,6 +7,7 @@ import AccountMenu from 'screens/account';
 import AdminRoomStatistics from 'screens/account/AdminRoomStatistics';
 import AdminRequestCheckoutRoomScreen from 'screens/admin-request-checkout-room';
 import CreateCheckoutRequestScreen from 'screens/admin-request-checkout-room/create-checkout-request';
+import AcceptCheckoutFromAdmin from 'screens/accept-checkout-from-admin';
 import RentRequestScreen from 'screens/rent-request';
 
 const Stack = createNativeStackNavigator();
@@ -61,13 +62,22 @@ const AccountNav = () => {
           </>
         )
         : (
-          <Stack.Screen
-            name="RentRequestList"
-            component={RentRequestScreen}
-            options={{
-              title: 'Danh sách yêu cầu thuê phòng',
-            }}
-          />
+          <>
+            <Stack.Screen
+              name="RentRequestList"
+              component={RentRequestScreen}
+              options={{
+                title: 'Danh sách yêu cầu thuê phòng',
+              }}
+            />
+            <Stack.Screen
+              name="AcceptCheckoutFromAdmin"
+              component={AcceptCheckoutFromAdmin}
+              options={{
+                title: 'Yêu cầu trả phòng từ chủ trọ',
+              }}
+            />
+          </>
         )
       }
     </Stack.Navigator>

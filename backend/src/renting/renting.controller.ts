@@ -13,7 +13,7 @@ import {
 import { JwtAuthGuard } from '~/auth/jwt-auth.guard';
 import { Roles } from '~/auth/role.decorator';
 import { RentingService } from './renting.service';
-import { Role } from '@prisma/client';
+import { Role, RoomStatus } from '@prisma/client';
 // import { RequestCheckoutRoomDto } from './dto/request-checkout-room.dto';
 
 @Controller('renting')
@@ -46,13 +46,24 @@ export class RentingController {
     const result = await this.rentingService.acceptCheckoutRoom(
       parseInt(rentingId),
     );
+    const updateRoomData = {
+      roomId: result.roomId,
+      status: RoomStatus.AVAILABLE,
+    };
+    // Update room status
+    await this.rentingService.updateRoomStatus(updateRoomData);
     return result;
   }
   @UseGuards(JwtAuthGuard)
-  @Get('/:id/cancel-checkout')
-  async requestCancelCheckoutRoom(@Param('id') rentingId: string) {
+  @Post('/:id/cancel-checkout')
+  async requestCancelCheckoutRoom(
+    @Param('id') rentingId: string,
+    @Body() requestData,
+  ) {
+    const { role } = requestData;
     const result = await this.rentingService.cancelRequestCheckoutRoom(
       parseInt(rentingId),
+      role,
     );
     return result;
   }

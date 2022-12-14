@@ -5,16 +5,7 @@ import CustomHeader from 'components/header';
 const Stack = createNativeStackNavigator();
 
 const MyRoomScreen = (props) => {
-  // const dispatch = useDispatch();
   const { stack } = props;
-  // const { roomInfo } = useSelector(selectRentingState);
-  // const { loading, data } = roomInfo;
-  // useEffect(() => {
-  //   dispatch(getRoomInfo());
-  // }, [])
-  // if (loading) {
-  //   return <Loading />
-  // }
   return (
     <Stack.Navigator
       initialRouteName={stack.roomMenu.title}

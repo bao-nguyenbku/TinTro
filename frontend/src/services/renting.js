@@ -20,6 +20,6 @@ export const requestRenterCheckoutByOwnerService = (data) => {
 export const acceptCheckoutRoomService = (rentingId) => {
   return request.get(`${prefix}/${rentingId}/delete`);
 }
-export const requestCancelCheckoutRoomService = ({ rentingId }) => {
-  return request.get(`${prefix}/${rentingId}/cancel-checkout`);
+export const requestCancelCheckoutRoomService = ({ rentingId, role = 'USER' }) => {
+  return request.post(`${prefix}/${rentingId}/cancel-checkout`, { role });
 }

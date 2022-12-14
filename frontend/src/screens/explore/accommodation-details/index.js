@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native';
 import { Box, Text, Image, ScrollView } from 'native-base';
 import { getRentRequestByRenter, selectAccommodationState } from 'store/reducer/accommodation';
+import { getRoomInfo, selectRentingState } from 'store/reducer/renting';
 import Loading from 'components/loading';
 import { disableBottomTabBar } from 'utils/utils';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import CommonInfo from './CommonInfo';
 import OwnerContact from './OwnerContact';
 import Description from './Description';
@@ -13,16 +15,22 @@ import RequestRentalButton from './RequestRentalButton';
 import ImageGallery from './ImageGallery';
 import Utility from './Utility';
 
+const isCurrentRenting = (roomInfo, item) => {
+  return roomInfo.data?.accommodationId === item.id && roomInfo.data?.status === 'RENTING';
+}
+
 const AccommodationDetailsScreen = (props) => {
   const navigation = useNavigation();
   const { route } = props;
   const item = route.params ? route.params.item : undefined;
   const dispatch = useDispatch();
   const { rentRequest } = useSelector(selectAccommodationState);
+  const { roomInfo } = useSelector(selectRentingState);
   const rentRequestLoading = rentRequest.loading;
   useEffect(() => {
     dispatch(getRentRequestByRenter(item?.id));
-  }, [item?.id, dispatch]);
+    dispatch(getRoomInfo());
+  }, [item?.id]);
   useEffect(() => {
     disableBottomTabBar(navigation);
     return () =>
@@ -52,11 +60,11 @@ const AccommodationDetailsScreen = (props) => {
   return (
     <SafeAreaView
       style={{
-        flex: 1,
+        flex: 1
       }}
     >
-      <Box flex={1} padding="5">
-        <ScrollView>
+      <ScrollView>
+        <Box flex={1} p='4'>
           <Box bgColor="transparent">
             <Box height="222px">
               <Image
@@ -67,6 +75,12 @@ const AccommodationDetailsScreen = (props) => {
                 size="full"
                 rounded="12"
               />
+              <Box alignItems="center" flexDirection="row" position="absolute" top={1} right={1} bgColor="black:alpha.40" rounded="xl" p="1">
+                <Ionicons name="star-sharp" size={20} color="#FACC15" />
+                <Text marginLeft="4px" color="white">
+                  {item?.reviewStar}
+                </Text>
+              </Box>
             </Box>
             <Text fontSize="2xl" fontWeight="700" marginTop="2">
               {item?.name}
@@ -77,8 +91,13 @@ const AccommodationDetailsScreen = (props) => {
             <Utility item={item} />
             <ImageGallery images={item?.images} />
           </Box>
-        </ScrollView>
-        <RequestRentalButton item={item} />
+        </Box>
+      </ScrollView>
+      <Box px='4'>
+        {!isCurrentRenting(roomInfo, item) && (
+          <RequestRentalButton item={item} />
+        )}
+        
       </Box>
     </SafeAreaView>
   );

@@ -6,7 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from 'components/loading';
 import { Ionicons } from '@expo/vector-icons';
 import CheckoutButton from './Checkout';
+import { useContainerHeight } from 'hooks/useContainerHeight';
 
+const isUserRequest = (data) => {
+  return data?.status === 'CHECKOUT'  && data?.requestRole === 'USER';
+}
+const isAdminRequest = (data) => {
+  return data?.status === 'CHECKOUT'  && data?.requestRole === 'ADMIN';
+}
 const RoomMenu = ({ navigation, stack }) => {
   const menus = [
     {
@@ -27,16 +34,25 @@ const RoomMenu = ({ navigation, stack }) => {
   const dispatch = useDispatch();
   const { roomInfo } = useSelector(selectRentingState);
   const { loading, data } = roomInfo;
+  const containerHeight = useContainerHeight();
   useEffect(() => {
     dispatch(getRoomInfo());
   }, []);
+  
   if (loading) {
     return <Loading />;
   }
   return (
-    <ScrollView refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
+    <ScrollView flex={1} refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
       {isEmptyObj(data) ? (
-        <Box flex={1} alignItems="center" justifyContent="center">
+        <Box 
+          flex={1} 
+          alignItems="center" 
+          justifyContent="center"
+          position='absolute'
+          top={Math.floor(containerHeight / 2)}
+          width='full'
+        >
           <Text>Bạn chưa thuê phòng nào</Text>
         </Box>
       ) : (
@@ -47,11 +63,17 @@ const RoomMenu = ({ navigation, stack }) => {
             </Text>
             <Text>
               Tình trạng:{' '}
-              <Text color="tertiary.600" fontWeight="700">
-                Đang thuê
-              </Text>
+              {isAdminRequest(data) ? (
+                <Text color="danger.600" fontWeight="700">
+                  Chủ trọ yêu cầu trả phòng
+                </Text>
+              ) : (
+                <Text color="tertiary.600" fontWeight="700">
+                  Đang thuê
+                </Text>
+              )}
             </Text>
-            {data?.status === 'CHECKOUT' && (
+            {isUserRequest(data) && (
               <Box bgColor="danger.100" w="full" rounded="xl" py="8" marginTop="8" alignItems="center">
                 <Text fontWeight="700" fontSize="lg" color="danger.600">
                   Bạn đã gửi yêu cầu trả phòng
@@ -59,7 +81,9 @@ const RoomMenu = ({ navigation, stack }) => {
               </Box>
             )}
           </Box>
-          <VStack bgColor="white" p="4" marginTop="8" space="4" roundedTop="2xl">
+          <VStack bgColor="white" p="4" marginTop="8" space="4" roundedTop="2xl"
+            roundedBottom={isAdminRequest(data) && 'xl'}
+          >
             {menus.map((menuItem) => {
               return (
                 <TouchableOpacity key={menuItem.id} onPress={menuItem.onPress}>
@@ -83,7 +107,9 @@ const RoomMenu = ({ navigation, stack }) => {
               );
             })}
           </VStack>
-          <CheckoutButton data={data} />
+          {isAdminRequest(data) ? <Box /> : (
+            <CheckoutButton data={data} />
+          )}
         </Box>
       )}
     </ScrollView>
