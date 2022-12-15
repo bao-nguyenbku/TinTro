@@ -48,3 +48,5 @@ Use `rejectWithValue` method from thunkAPI. Error format:
 
 ## DEMO
 Link: [Expo TinTro](https://expo.dev/@baonguyen.bku/TinTro?serviceType=classic&distribution=expo-go)
+
+// "projectId": "e93ac21f-03ab-409b-a0d1-06ccb114bb11"
