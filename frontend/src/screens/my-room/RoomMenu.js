@@ -45,13 +45,7 @@ const RoomMenu = ({ navigation, stack }) => {
   return (
     <ScrollView flex={1} refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
       {isEmptyObj(data) ? (
-        <Box 
-          flex={1} 
-          marginTop={Math.floor(containerHeight / 2)}
-          alignItems="center" 
-          justifyContent="center"
-          width='full'
-        >
+        <Box flex={1} marginTop={Math.floor(containerHeight / 2)} alignItems="center" justifyContent="center" width="full">
           <Text>Bạn chưa thuê phòng nào</Text>
         </Box>
       ) : (

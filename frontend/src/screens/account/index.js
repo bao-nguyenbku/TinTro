@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Center, Image, Pressable, ScrollView, Text, useToast, VStack } from 'native-base';
+import { Avatar, Center, Pressable, ScrollView, Text, useToast, VStack } from 'native-base';
 import { RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { authMe } from 'store/reducer/user';
@@ -66,7 +66,7 @@ const AccountMenu = (props) => {
       <VStack py={4}>
         <Center>
           <Pressable onPress={pickImage}>
-            <Image
+            <Avatar
               size={127}
               borderRadius={127}
               source={{
