@@ -93,8 +93,12 @@ const AccommodationDetailsScreen = (props) => {
           </Box>
         </Box>
       </ScrollView>
-      <Box pb={4} px="4">
-        {!isCurrentRenting(roomInfo, item) && <RequestRentalButton item={item} />}
+
+      <Box p='4'>
+        {!isCurrentRenting(roomInfo, item) && (
+          <RequestRentalButton item={item} />
+        )}
+
       </Box>
     </SafeAreaView>
   );

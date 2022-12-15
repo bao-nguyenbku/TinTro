@@ -42,7 +42,6 @@ const RoomMenu = ({ navigation, stack }) => {
   if (loading) {
     return <Loading />;
   }
-
   return (
     <ScrollView flex={1} refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
       {isEmptyObj(data) ? (
