@@ -117,7 +117,7 @@ export const accommodationSlice = createSlice({
       .addCase(requestRentRoom.fulfilled, (state, action) => {
         state.rentRequest.loading = false;
         state.rentRequest.isSuccess = true;
-        state.rentRequest.data = action.payload;
+        state.rentRequest.data = [action.payload];
       })
       .addCase(requestRentRoom.rejected, (state, action) => {
         state.rentRequest.loading = false;
@@ -128,9 +128,8 @@ export const accommodationSlice = createSlice({
         state.rentRequest.loading = true;
       })
       .addCase(getRentRequestByRenter.fulfilled, (state, action) => {
-        const rentRequest = action.payload;
         state.rentRequest.loading = false;
-        state.rentRequest.data = rentRequest;
+        state.rentRequest.data = action.payload;
       })
       .addCase(getRecommendAccommodations.pending, (state) => {
         state.loading = true;

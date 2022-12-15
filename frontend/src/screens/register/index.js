@@ -1,21 +1,7 @@
 import React, { useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Divider,
-  Heading,
-  Input,
-  Pressable,
-  Text,
-  VStack,
-  FormControl,
-  ScrollView,
-  KeyboardAvoidingView,
-} from 'native-base';
-import { Platform } from 'react-native';
+import { Box, Button, Center, Flex, Divider, Heading, Input, Pressable, Text, VStack, FormControl, ScrollView, KeyboardAvoidingView } from 'native-base';
+import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 import { useTopHeight } from 'hooks/useHeaderHeight';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -56,8 +42,14 @@ function RegisterScreen() {
   });
 
   return (
-    <KeyboardAvoidingView flex={1} behavior={Platform.OS === 'ios' && 'padding'} keyboardVerticalOffset={Platform.OS === 'ios' && topHeight}>
-      <ScrollView>
+    <KeyboardAvoidingView
+      flex={1}
+      behavior={Platform.OS === 'ios' && 'padding'}
+      keyboardVerticalOffset={Platform.OS === 'ios' && topHeight}
+    >
+      <TouchableWithoutFeedback
+        onPress={Keyboard.dismiss}
+      >
         <VStack w="100%" space={3} alignItems="center">
           {/* Header */}
           <Center mt={12} w="100%" h="1/6">
@@ -236,9 +228,9 @@ function RegisterScreen() {
             </Text>
           </Flex>
         </VStack>
-      </ScrollView>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
-  );
+  )
 }
 
 export default RegisterScreen;

@@ -97,7 +97,6 @@ const AccommodationDetailsScreen = (props) => {
         {!isCurrentRenting(roomInfo, item) && (
           <RequestRentalButton item={item} />
         )}
-        
       </Box>
     </SafeAreaView>
   );

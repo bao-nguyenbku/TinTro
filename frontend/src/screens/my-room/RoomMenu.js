@@ -3,9 +3,9 @@ import { Box, isEmptyObj, ScrollView, Text, VStack } from 'native-base';
 import { TouchableOpacity, RefreshControl } from 'react-native';
 import { selectRentingState, getRoomInfo } from 'store/reducer/renting';
 import { useDispatch, useSelector } from 'react-redux';
+import { useContainerHeight } from 'hooks/useContainerHeight';
 import Loading from 'components/loading';
 import { Ionicons } from '@expo/vector-icons';
-import { useContainerHeight } from 'hooks/useContainerHeight';
 import CheckoutButton from './Checkout';
 
 const isUserRequest = (data) => {
@@ -42,10 +42,17 @@ const RoomMenu = ({ navigation, stack }) => {
   if (loading) {
     return <Loading />;
   }
+  console.log(data);
   return (
     <ScrollView flex={1} refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
       {isEmptyObj(data) ? (
-        <Box flex={1} alignItems="center" justifyContent="center" position="absolute" top={Math.floor(containerHeight / 2)} width="full">
+        <Box 
+          flex={1} 
+          marginTop={Math.floor(containerHeight / 2)}
+          alignItems="center" 
+          justifyContent="center"
+          width='full'
+        >
           <Text>Bạn chưa thuê phòng nào</Text>
         </Box>
       ) : (

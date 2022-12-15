@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ScrollView, VStack, isEmptyObj } from 'native-base';
+import { ScrollView, VStack } from 'native-base';
 import { RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRentRequestByRenter, selectAccommodationState } from 'store/reducer/accommodation';
@@ -19,7 +19,7 @@ const RentRequestScreen = () => {
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRentRequestByRenter())} />}>
       <VStack space="2" p="2">
-        {!isEmptyObj(data) &&
+        {data &&
           data.map((item) => {
             return <SingItem key={item.id} item={item} />;
           })}

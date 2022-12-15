@@ -12,14 +12,16 @@ const ConfirmModal = (props) => {
     <Modal isOpen={isOpen} onClose={onClose} safeAreaTop size='full'>
       <Modal.Content maxWidth="400" center={{}}>
         <Modal.CloseButton />
-        <Modal.Header>{headerTitle}</Modal.Header>
+        <Modal.Header>
+          <Text>{headerTitle}</Text>
+        </Modal.Header>
         <Modal.Body>
           <Text>{content}</Text>
         </Modal.Body>
         <Modal.Footer>
           <Button.Group space={2}>
             <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
-              {cancelTitle}
+              <Text>{cancelTitle}</Text>
             </Button>
             <Button 
               onPress={() => {
@@ -28,7 +30,7 @@ const ConfirmModal = (props) => {
               }}
               bgColor={status}
             >
-              {saveTitle}
+              <Text color='white'>{saveTitle}</Text>
             </Button>
           </Button.Group>
         </Modal.Footer>
