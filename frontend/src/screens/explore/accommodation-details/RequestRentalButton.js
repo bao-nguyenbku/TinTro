@@ -15,7 +15,7 @@ const RequestRentalButton = (props) => {
   const { roomInfo } = useSelector(selectRentingState);
   const rentRequestData = rentRequest.data;
   const rentRequestLoading = rentRequest.loading;
-  const { error, isSuccess } = rentRequest;
+  const { isSuccess } = rentRequest;
   const dispatch = useDispatch();
   const [buttonProps, setButtonProps] = useState({
     title: 'Yêu cầu thuê phòng',
@@ -55,10 +55,8 @@ const RequestRentalButton = (props) => {
       });
     }
 
-
-    return () =>
-      dispatch(resetRentRequest())
-  }, [isSuccess, toast, dispatch])
+    return () => dispatch(resetRentRequest());
+  }, [isSuccess, toast, dispatch]);
   const onConfirm = () => {
     dispatch(requestRentRoom(item));
   };
@@ -81,9 +79,9 @@ const RequestRentalButton = (props) => {
               opacity: 0.8,
             }}
           >
-
-           <Text color='white' fontSize='xl' fontWeight='bold'>Yêu cầu thuê phòng</Text>
-
+            <Text color="white" fontSize="xl" fontWeight="bold">
+              Yêu cầu thuê phòng
+            </Text>
           </Button>
         )}
       </TouchableOpacity>
