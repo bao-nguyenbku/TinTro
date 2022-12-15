@@ -42,14 +42,8 @@ function RegisterScreen() {
   });
 
   return (
-    <KeyboardAvoidingView
-      flex={1}
-      behavior={Platform.OS === 'ios' && 'padding'}
-      keyboardVerticalOffset={Platform.OS === 'ios' && topHeight}
-    >
-      <TouchableWithoutFeedback
-        onPress={Keyboard.dismiss}
-      >
+    <KeyboardAvoidingView flex={1} behavior={Platform.OS === 'ios' && 'padding'} keyboardVerticalOffset={Platform.OS === 'ios' && topHeight}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <VStack w="100%" space={3} alignItems="center">
           {/* Header */}
           <Center mt={12} w="100%" h="1/6">
@@ -230,7 +224,7 @@ function RegisterScreen() {
         </VStack>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
-  )
+  );
 }
 
 export default RegisterScreen;

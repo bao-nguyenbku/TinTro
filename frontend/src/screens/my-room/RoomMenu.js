@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useContainerHeight } from 'hooks/useContainerHeight';
 import Loading from 'components/loading';
 import { Ionicons } from '@expo/vector-icons';
+import CustomToast from 'components/custom-toast';
 import CheckoutButton from './Checkout';
 import ReviewModal from './review';
-import CustomToast from 'components/custom-toast';
 
 const isUserRequest = (data) => {
   return data?.status === 'CHECKOUT' && data?.requestRole === 'USER';
