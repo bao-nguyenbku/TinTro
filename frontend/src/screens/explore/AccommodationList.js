@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect } from 'react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { ScrollView, Box, Text } from 'native-base';
 import { RefreshControl, TouchableOpacity } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { getAllAccommodations, selectAccommodationState, getRecommendAccommodations } from 'store/reducer/accommodation';
 import { useDispatch, useSelector } from 'react-redux';
 import SingleItem from './SingleItem';
@@ -13,12 +14,16 @@ const AccommodationList = (props) => {
   const { accommodationDetails } = stack;
   const dispatch = useDispatch();
   const bottomBarHeight = useBottomTabBarHeight();
+  const isFocused = useIsFocused();
   async function fetchAllAccommodationData() {
     dispatch(getAllAccommodations());
     dispatch(getRecommendAccommodations());
   }
 
   const { accommodations, loading } = useSelector(selectAccommodationState);
+  useEffect(() => {
+    fetchAllAccommodationData();
+  }, [isFocused])
   useEffect(() => {
     dispatch(getAllAccommodations());
   }, [dispatch]);
