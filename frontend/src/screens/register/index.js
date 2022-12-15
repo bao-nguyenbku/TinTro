@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Box, Button, Center, Flex, Divider, Heading, Input, Pressable, Text, VStack, FormControl, ScrollView, KeyboardAvoidingView } from 'native-base';
+import { Box, Button, Center, Flex, Divider, Heading, Input, Pressable, Text, VStack, FormControl, KeyboardAvoidingView } from 'native-base';
 import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 import { useTopHeight } from 'hooks/useHeaderHeight';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';

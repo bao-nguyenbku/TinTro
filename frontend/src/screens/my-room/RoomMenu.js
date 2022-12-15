@@ -42,7 +42,6 @@ const RoomMenu = ({ navigation, stack }) => {
   if (loading) {
     return <Loading />;
   }
-  console.log(data);
   return (
     <ScrollView flex={1} refreshControl={<RefreshControl refreshing={loading} onRefresh={() => dispatch(getRoomInfo())} />}>
       {isEmptyObj(data) ? (
@@ -81,7 +80,7 @@ const RoomMenu = ({ navigation, stack }) => {
               </Box>
             )}
           </Box>
-          <VStack bgColor="white" p="4" marginTop="8" space="4" roundedTop="2xl" roundedBottom={isAdminRequest(data) && 'xl'}>
+          <VStack bgColor="white" p="4" marginTop="8" space="4" roundedTop="2xl" roundedBottom={isAdminRequest(data) ? 'xl' : 'none'}>
             {menus.map((menuItem) => {
               return (
                 <TouchableOpacity key={menuItem.id} onPress={menuItem.onPress}>
