@@ -1,6 +1,6 @@
 {
   "name": "tintro",
-  "version": "1.0.2_ALPHA",
+  "version": "1.0.31_ALPHA",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",

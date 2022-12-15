@@ -17,7 +17,7 @@ import Utility from './Utility';
 
 const isCurrentRenting = (roomInfo, item) => {
   return roomInfo.data?.accommodationId === item.id && roomInfo.data?.status === 'RENTING';
-}
+};
 
 const AccommodationDetailsScreen = (props) => {
   const navigation = useNavigation();
@@ -60,11 +60,11 @@ const AccommodationDetailsScreen = (props) => {
   return (
     <SafeAreaView
       style={{
-        flex: 1
+        flex: 1,
       }}
     >
       <ScrollView>
-        <Box flex={1} p='4'>
+        <Box flex={1} p="4">
           <Box bgColor="transparent">
             <Box height="222px">
               <Image
@@ -93,10 +93,8 @@ const AccommodationDetailsScreen = (props) => {
           </Box>
         </Box>
       </ScrollView>
-      <Box px='4'>
-        {!isCurrentRenting(roomInfo, item) && (
-          <RequestRentalButton item={item} />
-        )}
+      <Box bottom={4} px="4">
+        {!isCurrentRenting(roomInfo, item) && <RequestRentalButton item={item} />}
       </Box>
     </SafeAreaView>
   );
