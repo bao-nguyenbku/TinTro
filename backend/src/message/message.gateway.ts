@@ -100,6 +100,7 @@ export class MessageGateway
     this.logger.log(
       `Client disconnected: ${client.id} of user id: ${this.currentUser.id}`,
     );
+    client.disconnect();
   }
 
   @SubscribeMessage('message-sent-from-client')
