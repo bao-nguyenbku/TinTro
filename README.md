@@ -1,5 +1,3 @@
-# Show your tips here
+# TinTro React Mobile App
 
-## Fix Vietnamese (unicode) error when running backup script
-
-[psql](https://stackoverflow.com/questions/20952893/postgresql-encoding-problems-on-windows-when-using-psql-command-line-utility)
+### Note: source code for the app is moved to other repo
