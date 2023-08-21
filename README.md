@@ -5,39 +5,50 @@
 # TinTro Mobile App Services
 
 ## Description
+This is backend source code for TinTro mobile application.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Technical Stack
+![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)
 
 ## Installation
 
 ```bash
-$ npm install
+$ yarn install
 ```
+
+## How to generate database
+Take a look at `docker-compose.yml`, we created a container for database postgresql. Server of nest app will be runned in dev mode. (You can create new container for nest server).
+```
+$ docker-compose up -d
+```
+Run `prisma generate` to sync with `PrismaClient`:
+```bash
+$ yarn generate
+```
+Run `prisma migrate` to migrate schema to database:
+```bash
+$ yarn migrate:dev
+```
+Run `prisma studio` to show UI for manage database:
+```bash
+$ yarn studio
+```
+
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+$ yarn start
 
 # watch mode
-$ npm run start:dev
+$ yarn start:dev
 
 # production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ yarn start:prod
 ```
 ## Folder Structure
 
@@ -46,8 +57,5 @@ $ npm run test:cov
 Nest is [MIT licensed](LICENSE).
 
 
-### `Note: source code for the app is moved to other repo`
-
 ## Maintenance ⚠
-### We are considering to move out `backend` folder and delete `frontend` folder.
-We currently refactor on the branch `refactor`
+We are currently refactoring
